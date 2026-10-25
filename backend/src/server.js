@@ -13,6 +13,9 @@ const postRoutes = require('./routes/posts');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Running behind the AWS ALB + nginx: trust X-Forwarded-For so rate limiting sees real client IPs
+app.set('trust proxy', 2);
+
 // --- Prometheus metrics ---
 const register = new client.Registry();
 client.collectDefaultMetrics({ register });
@@ -26,7 +29,9 @@ register.registerMetric(httpRequestDuration);
 app.use((req, res, next) => {
   const end = httpRequestDuration.startTimer();
   res.on('finish', () => {
-    end({ method: req.method, route: req.path, status: res.statusCode });
+    // Use the matched route pattern (e.g. /api/posts/:slug) to keep label cardinality low
+    const route = req.route ? `${req.baseUrl}${req.route.path}` : 'unmatched';
+    end({ method: req.method, route, status: res.statusCode });
   });
   next();
 });
@@ -71,8 +76,19 @@ app.use((err, _req, res, _next) => {
 
 app.use((_req, res) => res.status(404).json({ error: 'Route not found' }));
 
-app.listen(PORT, () => {
-  console.log(`Blog API listening on port ${PORT}`);
-});
+if (require.main === module) {
+  const server = app.listen(PORT, () => {
+    console.log(`Blog API listening on port ${PORT}`);
+  });
+
+  // Graceful shutdown so Kubernetes rolling updates don't drop in-flight requests
+  const shutdown = (signal) => {
+    console.log(`${signal} received, closing server`);
+    server.close(() => process.exit(0));
+    setTimeout(() => process.exit(1), 10000).unref();
+  };
+  process.on('SIGTERM', () => shutdown('SIGTERM'));
+  process.on('SIGINT', () => shutdown('SIGINT'));
+}
 
 module.exports = app;

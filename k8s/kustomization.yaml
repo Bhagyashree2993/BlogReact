@@ -1,0 +1,35 @@
+# Full stack:  kubectl apply -k k8s/
+# Monitoring objects need the Prometheus Operator CRDs (kube-prometheus-stack).
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: blogapp
+labels:
+  - pairs:
+      app.kubernetes.io/part-of: blogapp
+    includeSelectors: false
+resources:
+  - base/namespace.yaml
+  - base/storageclass.yaml
+  - base/resourcequota.yaml
+  - mysql/service.yaml
+  - mysql/statefulset.yaml
+  - backend/configmap.yaml
+  - backend/deployment.yaml
+  - backend/service.yaml
+  - backend/hpa.yaml
+  - frontend/deployment.yaml
+  - frontend/service.yaml
+  - frontend/hpa.yaml
+  - ingress/ingress.yaml
+  - security/networkpolicy.yaml
+  - monitoring/servicemonitor.yaml
+  - monitoring/prometheusrule.yaml
+  - monitoring/grafana-dashboard.yaml
+# The pipeline rewrites newName/newTag on every build (see Jenkinsfile "Deploy to EKS").
+images:
+  - name: blogapp-backend
+    newName: ECR_REGISTRY/blogapp-backend
+    newTag: latest
+  - name: blogapp-frontend
+    newName: ECR_REGISTRY/blogapp-frontend
+    newTag: latest

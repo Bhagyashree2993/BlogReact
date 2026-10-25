@@ -1,0 +1,36 @@
+# Enforced when the VPC CNI network policy agent is enabled
+# (eksctl: addon vpc-cni with enableNetworkPolicy: "true").
+# Traffic path: ALB -> frontend -> backend -> mysql
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: mysql-allow-backend-only
+  namespace: blogapp
+spec:
+  podSelector: { matchLabels: { app: mysql } }
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - podSelector: { matchLabels: { app: backend } }
+      ports:
+        - { protocol: TCP, port: 3306 }
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: backend-allow-frontend-and-monitoring
+  namespace: blogapp
+spec:
+  podSelector: { matchLabels: { app: backend } }
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - podSelector: { matchLabels: { app: frontend } }
+        - podSelector: { matchLabels: { role: smoke-test } }   # pipeline validation pod
+      ports:
+        - { protocol: TCP, port: 5000 }
+    - from:
+        - namespaceSelector:
+            matchLabels: { kubernetes.io/metadata.name: monitoring }
+      ports:
+        - { protocol: TCP, port: 5000 }

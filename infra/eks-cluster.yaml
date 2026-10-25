@@ -1,0 +1,34 @@
+# eksctl create cluster -f infra/eks-cluster.yaml      (~15-20 min)
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+metadata:
+  name: blogapp-eks-cluster
+  region: ap-south-1
+  version: "1.31"
+iam:
+  withOIDC: true                    # IRSA for the EBS CSI driver & LB controller
+  serviceAccounts:
+    - metadata: { name: aws-load-balancer-controller, namespace: kube-system }
+      wellKnownPolicies: { awsLoadBalancerController: true }
+addons:
+  - name: vpc-cni
+    configurationValues: '{"enableNetworkPolicy": "true"}'
+  - name: coredns
+  - name: kube-proxy
+  - name: aws-ebs-csi-driver
+    wellKnownPolicies: { ebsCSIController: true }
+  - name: metrics-server            # required by the HPAs
+managedNodeGroups:
+  - name: blogapp-ng
+    instanceType: t3.large
+    minSize: 2
+    desiredCapacity: 3
+    maxSize: 5
+    volumeSize: 30
+    privateNetworking: true
+    labels: { role: app }
+    iam:
+      withAddonPolicies: { autoScaler: true, cloudWatch: true }
+cloudWatch:
+  clusterLogging:
+    enableTypes: ["api", "audit", "authenticator"]

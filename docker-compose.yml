@@ -1,0 +1,43 @@
+# Local development stack: mysql + backend + frontend
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: blogdb
+      MYSQL_USER: bloguser
+      MYSQL_PASSWORD: changeme
+    ports: ["3306:3306"]
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-prootpass"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  backend:
+    build: ./backend
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: bloguser
+      DB_PASSWORD: changeme
+      DB_NAME: blogdb
+      JWT_SECRET: local-dev-secret
+    ports: ["5000:5000"]
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  frontend:
+    build: ./frontend
+    environment:
+      BACKEND_HOST: backend
+      BACKEND_PORT: 5000
+    ports: ["3000:8080"]
+    depends_on: [backend]
+
+volumes:
+  mysql-data:

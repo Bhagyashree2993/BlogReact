@@ -24,9 +24,11 @@ and ships with **Prometheus/Grafana** monitoring hooks.
                                             │ + EBS gp3 volume     │
                                             └─────────────────────┘
 
-CI/CD:  Git push → Jenkins → npm test → SonarQube gate → Nexus (artifact) →
-        docker build → Trivy scan (fails on CRITICAL/HIGH) → push to ECR →
-        kubectl apply -k (EKS) → rollout status → smoke test
+CI/CD:  GitHub push → Jenkins → npm test (Jest) → SonarQube + Quality Gate →
+        Trivy FS scan → artifacts to Nexus (raw) → docker build → Trivy image scan
+        (fails on fixable CRITICAL/HIGH) → push to Nexus docker + ECR →
+        kubectl apply -k (EKS) → rollout status → in-cluster + ALB smoke tests
+        → auto rollback on failure
 
 Monitoring: Prometheus Operator scrapes backend /metrics via ServiceMonitor,
             PrometheusRule alerts on 5xx rate / crash loops / DB down,
@@ -36,21 +38,31 @@ Monitoring: Prometheus Operator scrapes backend /metrics via ServiceMonitor,
 ## Repository layout
 
 ```
-blog-app-eks/
-├── frontend/            React (Vite) SPA, nginx-unprivileged Docker image
-├── backend/              Express REST API, MySQL client, JWT auth, Prometheus metrics
-├── database/init.sql     Schema + seed data (users, posts, comments)
+BlogReact/
+├── frontend/                React (Vite) SPA → nginx-unprivileged image (:8080, /healthz, /api proxy)
+├── backend/                 Express API, MySQL, JWT auth, /healthz /readyz /metrics
+│   └── tests/               Jest + Supertest API tests (DB mocked) → coverage for SonarQube
+├── database/init.sql        Schema + seed data
 ├── k8s/
-│   ├── base/              Namespace, gp3 StorageClass
-│   ├── mysql/              StatefulSet, PVC, Secret, init ConfigMap
-│   ├── backend/            Deployment, Service, HPA, ConfigMap/Secret
-│   ├── frontend/           Deployment, Service, HPA
-│   ├── ingress/            ALB Ingress
-│   ├── monitoring/         ServiceMonitor + PrometheusRule
-│   └── kustomization.yaml  Ties everything together (`kubectl apply -k k8s/`)
-├── Jenkinsfile            Full CI/CD pipeline
-└── docker-compose.yml     Local dev: mysql + backend + frontend
+│   ├── base/                Namespace, encrypted gp3 StorageClass, ResourceQuota/LimitRange
+│   ├── mysql/               StatefulSet + EBS volume, headless Service (secret created by pipeline)
+│   ├── backend/             Deployment, Service, ConfigMap, HPA, PodDisruptionBudget
+│   ├── frontend/            Deployment, Service, HPA, PodDisruptionBudget
+│   ├── ingress/             AWS ALB Ingress
+│   ├── security/            NetworkPolicies (frontend → backend → mysql only)
+│   ├── monitoring/          ServiceMonitor, PrometheusRule alerts, Grafana dashboard, Helm values
+│   └── kustomization.yaml   `kubectl apply -k k8s/`
+├── infra/
+│   ├── eks-cluster.yaml     eksctl cluster definition (OIDC, EBS CSI, metrics-server, netpol)
+│   ├── setup-cicd-server.sh One-shot EC2 bootstrap: Jenkins, SonarQube, Nexus, Trivy, CLIs
+│   └── setup-eks-addons.sh  LB controller, kube-prometheus-stack, ECR repos, Jenkins access
+├── docs/SETUP.md            Step-by-step runbook (start here)
+├── Jenkinsfile              Full CI/CD pipeline
+├── sonar-project.properties SonarQube project config
+└── docker-compose.yml       Local dev: mysql + backend + frontend
 ```
+
+**Start here → [`docs/SETUP.md`](docs/SETUP.md)** for the end-to-end setup.
 
 ## Run it locally first
 
@@ -63,24 +75,16 @@ docker compose up --build
 
 The seed data ships four demo posts; register a new account to write your own entries.
 
-## Prerequisites for the real EKS deployment
-
-1. **EKS cluster** (`eksctl create cluster ...`) with:
-   - AWS EBS CSI driver add-on (for the `gp3` StorageClass / MySQL PVC)
-   - AWS Load Balancer Controller add-on (for the ALB Ingress)
-   - An ACM certificate for your domain, referenced in `k8s/ingress/ingress.yaml`
-2. **ECR** repositories: `blogapp-backend`, `blogapp-frontend`
-3. **Nexus** repository (npm-hosted) reachable from the Jenkins agent
-4. **SonarQube** server + a Jenkins `sonarqube-server` configuration
-5. **Trivy** installed on the Jenkins agent (or run as a container step)
-6. **kube-prometheus-stack** installed via Helm in a `monitoring` namespace
-   (provides the Prometheus Operator CRDs the `ServiceMonitor`/`PrometheusRule` need)
-7. Jenkins credentials: `aws-creds`, `sonarqube-token`, `nexus-creds`, `ecr-registry` (string)
-
 ## Deploying manually (what the pipeline automates)
 
 ```bash
 aws eks update-kubeconfig --name blogapp-eks-cluster --region ap-south-1
+
+# Load the real schema into the init ConfigMap
+kubectl apply -f k8s/base/namespace.yaml
+kubectl -n blogapp create secret generic mysql-secret --from-literal=MYSQL_ROOT_PASSWORD=<root> \
+  --from-literal=MYSQL_USER=bloguser --from-literal=MYSQL_PASSWORD=<app>
+kubectl -n blogapp create secret generic backend-secret --from-literal=JWT_SECRET=$(openssl rand -hex 32)
 
 # Load the real schema into the init ConfigMap
 kubectl create configmap mysql-init-script \
@@ -94,32 +98,32 @@ trivy image --severity CRITICAL,HIGH <ECR_REGISTRY>/blogapp-backend:v1
 docker push <ECR_REGISTRY>/blogapp-backend:v1
 docker push <ECR_REGISTRY>/blogapp-frontend:v1
 
-# Point the manifests at the images you just pushed, then apply
-sed -i "s#<ECR_REGISTRY>/blogapp-backend:IMAGE_TAG#<ECR_REGISTRY>/blogapp-backend:v1#" k8s/backend/deployment.yaml
-sed -i "s#<ECR_REGISTRY>/blogapp-frontend:IMAGE_TAG#<ECR_REGISTRY>/blogapp-frontend:v1#" k8s/frontend/deployment.yaml
+# Point kustomize at the images you just pushed, then apply
+sed -i -e "s#newName: ECR_REGISTRY/#newName: <ECR_REGISTRY>/#" -e "s#newTag: latest#newTag: v1#" k8s/kustomization.yaml
 kubectl apply -k k8s/
 kubectl rollout status deployment/backend -n blogapp
 kubectl rollout status deployment/frontend -n blogapp
 kubectl get ingress blogapp-ingress -n blogapp
 ```
 
-## Secrets — replace before real use
+## Secrets
 
-`k8s/mysql/secret.yaml` and `k8s/backend/config.yaml` contain placeholder passwords
-(`REPLACE_WITH_...`). For production, don't commit real secrets — pull them from
-AWS Secrets Manager via the External Secrets Operator, or inject them at deploy time
-from a Jenkins credential store.
+No secrets live in git. The pipeline creates `mysql-secret` and `backend-secret` from Jenkins
+credentials (`mysql-root-password`, `mysql-app-password`, `jwt-secret`) on every deploy.
+`k8s/mysql/secret.example.yaml` shows the shape. For a hardened setup, move them to AWS
+Secrets Manager + External Secrets Operator.
 
 ## What each tool is doing in the pipeline
 
 | Stage | Tool | Purpose |
 |---|---|---|
 | Static analysis | **SonarQube** | Code smells, bugs, coverage, quality gate blocks bad merges |
-| Artifact storage | **Nexus** | Versioned backend package storage, single source of truth for releases |
+| Artifact storage | **Nexus** | Versioned backend package, frontend bundle and DB script (raw repo) + Docker images (docker-hosted repo) |
 | Image scanning | **Trivy** | Fails the build on CRITICAL/HIGH CVEs in either image, plus a filesystem/dependency scan |
 | Registry | **ECR** | Stores the scanned, tagged images the cluster pulls from |
 | Deploy | **kubectl + kustomize** | Applies the full manifest set to EKS, waits for rollout health |
-| Monitoring | **Prometheus + Grafana** | Scrapes `/metrics`, alerts on error rate / crash loops / DB availability |
+| Validation | **kubectl + curl** | Rollout status, in-cluster smoke test of every tier, public ALB check, automatic `rollout undo` on failure |
+| Monitoring | **Prometheus + Grafana** | Scrapes `/metrics`, alerts on error rate / latency / crash loops / DB / disk, pre-built Grafana dashboard |
 
 ## Frontend design notes
 

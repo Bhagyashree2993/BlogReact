@@ -1,0 +1,31 @@
+# helm upgrade --install kube-prometheus-stack prometheus-community/kube-prometheus-stack \
+#   -n monitoring --create-namespace -f k8s/monitoring/kube-prometheus-values.yaml
+prometheus:
+  prometheusSpec:
+    # Pick up ServiceMonitors / PrometheusRules from every namespace
+    serviceMonitorSelectorNilUsesHelmValues: false
+    ruleSelectorNilUsesHelmValues: false
+    retention: 15d
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: gp3
+          accessModes: ["ReadWriteOnce"]
+          resources: { requests: { storage: 20Gi } }
+grafana:
+  adminPassword: "CHANGE_ME"        # or use grafana.admin.existingSecret
+  service:
+    type: LoadBalancer              # or ClusterIP + port-forward / ingress
+  sidecar:
+    dashboards:
+      enabled: true
+      label: grafana_dashboard
+      searchNamespace: ALL
+alertmanager:
+  alertmanagerSpec:
+    storage:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: gp3
+          accessModes: ["ReadWriteOnce"]
+          resources: { requests: { storage: 2Gi } }

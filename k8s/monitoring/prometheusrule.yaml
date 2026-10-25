@@ -1,0 +1,53 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: blogapp-alerts
+  namespace: blogapp
+  labels:
+    release: kube-prometheus-stack
+spec:
+  groups:
+    - name: blogapp.rules
+      rules:
+        - alert: BlogBackendHigh5xxRate
+          expr: |
+            sum(rate(http_request_duration_seconds_count{namespace="blogapp",status=~"5.."}[5m]))
+              / clamp_min(sum(rate(http_request_duration_seconds_count{namespace="blogapp"}[5m])), 1e-9) > 0.05
+          for: 5m
+          labels: { severity: critical }
+          annotations:
+            summary: "Backend 5xx error rate above 5%"
+            description: "{{ $value | humanizePercentage }} of API requests are failing."
+        - alert: BlogBackendHighLatency
+          expr: |
+            histogram_quantile(0.95, sum by (le) (rate(http_request_duration_seconds_bucket{namespace="blogapp"}[5m]))) > 1
+          for: 10m
+          labels: { severity: warning }
+          annotations:
+            summary: "Backend p95 latency above 1s"
+        - alert: BlogPodCrashLooping
+          expr: increase(kube_pod_container_status_restarts_total{namespace="blogapp"}[15m]) > 3
+          for: 5m
+          labels: { severity: warning }
+          annotations:
+            summary: "Pod {{ $labels.pod }} is restarting repeatedly"
+        - alert: BlogBackendDown
+          expr: absent(up{namespace="blogapp", job="backend-service"} == 1)
+          for: 2m
+          labels: { severity: critical }
+          annotations:
+            summary: "No healthy backend targets are being scraped"
+        - alert: BlogDatabaseNotReady
+          expr: kube_statefulset_status_replicas_ready{namespace="blogapp", statefulset="mysql"} < 1
+          for: 2m
+          labels: { severity: critical }
+          annotations:
+            summary: "MySQL StatefulSet has no ready replicas"
+        - alert: BlogMySQLVolumeFilling
+          expr: |
+            kubelet_volume_stats_available_bytes{namespace="blogapp", persistentvolumeclaim=~"mysql-data-.*"}
+              / kubelet_volume_stats_capacity_bytes{namespace="blogapp", persistentvolumeclaim=~"mysql-data-.*"} < 0.15
+          for: 10m
+          labels: { severity: warning }
+          annotations:
+            summary: "MySQL volume has less than 15% free space"

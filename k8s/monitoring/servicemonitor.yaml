@@ -1,0 +1,18 @@
+# Requires kube-prometheus-stack (Prometheus Operator CRDs).
+# The "release: kube-prometheus-stack" label must match your Helm release name.
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: backend-metrics
+  namespace: blogapp
+  labels:
+    release: kube-prometheus-stack
+spec:
+  selector:
+    matchLabels: { app: backend }
+  namespaceSelector:
+    matchNames: [blogapp]
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 15s
