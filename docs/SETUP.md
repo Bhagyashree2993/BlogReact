@@ -38,13 +38,24 @@ VPC CNI network policies, and an IRSA service account for the AWS Load Balancer 
    ```
    It prints the URLs and initial passwords for Jenkins, SonarQube and Nexus.
 
+## 3–5. Configure Nexus, SonarQube and Jenkins — automated
+One command does steps 3, 4 and 5 below (repos, realm, token, webhook, plugins,
+the 6 credentials, the `blogapp-cicd` job) and starts the first build:
+```bash
+ssh -t -i ~/blogapp-key.pem ubuntu@<server-public-ip> \
+  'cd /opt/BlogReact && sudo git pull && sudo bash infra/configure-cicd.sh'
+```
+It asks for the `blogapp-admin` AWS access key and prints the logins at the end
+(also saved on the server in `/root/blogapp-credentials.txt`). The manual steps
+below are kept for reference.
+
 ## 3. Configure Nexus (`http://<server-ip>:8081`)
 1. Sign in as `admin` (password: `docker exec nexus cat /nexus-data/admin.password`), finish the wizard.
 2. **Create repository → raw (hosted)** → name `blogapp-artifacts`.
 3. **Create repository → docker (hosted)** → name `blogapp-docker`, tick **HTTP**, port **8083**.
 4. **Security → Realms** → activate **Docker Bearer Token Realm**.
 5. **Security → Users** → create `jenkins` with role `nx-admin` (or a scoped deploy role).
-6. In the `Jenkinsfile`, replace `NEXUS_HOST` (two places) with the server's private IP.
+6. Nothing to edit: the `Jenkinsfile` reaches Nexus at `localhost`, since it runs on the same server as Jenkins.
 
 ## 4. Configure SonarQube (`http://<server-ip>:9000`)
 1. Log in `admin/admin`, set a new password.

@@ -16,9 +16,6 @@ spec:
       terminationGracePeriodSeconds: 60
       securityContext:
         fsGroup: 999
-        runAsUser: 999
-        runAsGroup: 999
-        runAsNonRoot: true
       containers:
         - name: mysql
           image: mysql:8.0
@@ -38,7 +35,7 @@ spec:
             requests: { cpu: 250m, memory: 512Mi }
             limits: { cpu: "1", memory: 1Gi }
           volumeMounts:
-            - { name: mysql-data, mountPath: /var/lib/mysql }
+            - { name: mysql-data, mountPath: /var/lib/mysql, subPath: mysql }   # skip EBS lost+found
             - { name: init-script, mountPath: /docker-entrypoint-initdb.d, readOnly: true }
           readinessProbe:
             exec:

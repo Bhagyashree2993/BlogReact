@@ -1,15 +1,17 @@
 # ---------- deps stage: production dependencies only ----------
-FROM node:20-alpine AS deps
+FROM node:22-alpine AS deps
 WORKDIR /app
 COPY package.json package-lock.json* ./
 RUN if [ -f package-lock.json ]; then npm ci --omit=dev; else npm install --omit=dev; fi \
  && npm cache clean --force
 
 # ---------- runtime stage ----------
-FROM node:20-alpine
+FROM node:22-alpine
 ENV NODE_ENV=production PORT=5000
 WORKDIR /app
-RUN apk upgrade --no-cache && apk add --no-cache tini
+RUN apk upgrade --no-cache && apk add --no-cache tini \
+ && rm -rf /usr/local/lib/node_modules/npm /usr/local/lib/node_modules/corepack \
+           /usr/local/bin/npm /usr/local/bin/npx /usr/local/bin/corepack /opt/yarn* /usr/local/bin/yarn*
 COPY --from=deps --chown=node:node /app/node_modules ./node_modules
 COPY --chown=node:node package.json ./
 COPY --chown=node:node src ./src

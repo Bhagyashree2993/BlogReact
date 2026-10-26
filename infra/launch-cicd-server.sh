@@ -77,12 +77,15 @@ cat <<EOF
 ================ CI/CD server launched ================
 Instance   : $INSTANCE_ID
 Public IP  : $PUBLIC_IP
-Private IP : $PRIVATE_IP      <- use this for NEXUS_HOST in the Jenkinsfile
+Private IP : $PRIVATE_IP
 
 Software is installing now (~10 min). Check progress with:
   ssh -i $KEY_FILE ubuntu@$PUBLIC_IP 'tail -5 /var/log/blogapp-setup.log'
 It's finished when this prints the URLs and passwords:
   ssh -i $KEY_FILE ubuntu@$PUBLIC_IP 'sudo tail -8 /var/log/blogapp-setup.log'
+
+Then configure Jenkins + SonarQube + Nexus and start the first build:
+  ssh -t -i $KEY_FILE ubuntu@$PUBLIC_IP 'cd /opt/BlogReact && sudo git pull && sudo bash infra/configure-cicd.sh'
 
 Then open:
   Jenkins   http://$PUBLIC_IP:8080

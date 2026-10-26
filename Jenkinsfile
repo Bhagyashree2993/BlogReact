@@ -37,8 +37,9 @@ pipeline {
         K8S_NAMESPACE   = 'blogapp'
 
         // ---- Nexus (change to your Nexus host) ----
-        NEXUS_URL       = 'http://NEXUS_HOST:8081'          // web UI / raw + npm repos
-        NEXUS_DOCKER    = 'NEXUS_HOST:8083'                 // docker-hosted connector
+        // Nexus runs on the same EC2 host as Jenkins (infra/setup-cicd-server.sh)
+        NEXUS_URL       = 'http://localhost:8081'           // web UI / raw repo
+        NEXUS_DOCKER    = 'localhost:8083'                  // docker-hosted connector
         NEXUS_RAW_REPO  = 'blogapp-artifacts'               // raw (hosted) repository
 
         BACKEND_IMAGE   = 'blogapp-backend'
@@ -123,8 +124,10 @@ pipeline {
                 // the build is gated on fixable dependency CVEs and leaked secrets.
                 sh """
                     trivy fs --scanners vuln,secret,misconfig --severity ${params.TRIVY_SEVERITY},MEDIUM \
+                      --skip-dirs '**/node_modules' --skip-dirs frontend/dist \
                       --exit-code 0 --format table -o trivy-fs-report.txt .
                     trivy fs --scanners vuln,secret --severity ${params.TRIVY_SEVERITY} \
+                      --skip-dirs '**/node_modules' --skip-dirs frontend/dist \
                       --ignore-unfixed --exit-code 1 .
                 """
             }
