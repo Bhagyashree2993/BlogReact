@@ -14,6 +14,10 @@
 # =====================================================================
 set -euo pipefail
 [ "$(id -u)" = 0 ] || { echo "Run with sudo"; exit 1; }
+for t in aws kubectl docker trivy node java; do
+  command -v $t >/dev/null || { echo "'$t' is missing - run: sudo bash infra/setup-cicd-server.sh"; exit 1; }
+done
+id jenkins >/dev/null 2>&1 || { echo "Jenkins is not installed - run: sudo bash infra/setup-cicd-server.sh"; exit 1; }
 
 REPO_URL=${REPO_URL:-$(git -C "$(dirname "$0")/.." remote get-url origin 2>/dev/null || echo https://github.com/Bhagyashree2993/BlogReact.git)}
 CRED_FILE=/root/blogapp-credentials.txt
