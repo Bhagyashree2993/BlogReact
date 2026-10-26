@@ -1,0 +1,27 @@
+# Requires the AWS Load Balancer Controller.
+# For HTTPS: uncomment the certificate-arn / listen-ports / ssl-redirect lines
+# and set your ACM certificate ARN + host.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: blogapp-ingress
+  namespace: blogapp
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/healthcheck-path: /healthz
+    alb.ingress.kubernetes.io/group.name: blogapp
+    # alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    # alb.ingress.kubernetes.io/ssl-redirect: '443'
+    # alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-south-1:<ACCOUNT_ID>:certificate/<CERT_ID>
+spec:
+  ingressClassName: alb
+  rules:
+    - http:          # add "host: blog.example.com" once you have a domain
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend-service
+                port: { number: 80 }
