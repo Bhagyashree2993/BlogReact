@@ -7,6 +7,7 @@
 set -euo pipefail
 export DEBIAN_FRONTEND=noninteractive
 PUBLIC_IP=$(curl -s http://checkip.amazonaws.com || hostname -I | awk '{print $1}')
+PRIVATE_IP=$(hostname -I | awk '{print $1}')
 
 apt-get update -y
 apt-get install -y ca-certificates curl gnupg unzip jq git fontconfig openjdk-17-jre
@@ -19,7 +20,7 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.
 apt-get update -y && apt-get install -y docker-ce docker-ce-cli containerd.io
 # Nexus docker connector is plain HTTP -> allow it as an insecure registry
 cat > /etc/docker/daemon.json <<JSON
-{ "insecure-registries": ["${PUBLIC_IP}:8083", "localhost:8083"] }
+{ "insecure-registries": ["${PRIVATE_IP}:8083", "${PUBLIC_IP}:8083", "localhost:8083"] }
 JSON
 systemctl restart docker
 

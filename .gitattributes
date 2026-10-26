@@ -1,2 +1,5 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+# Shell scripts must keep LF endings or bash fails with $'\r' errors
+*.sh text eol=lf
+Jenkinsfile text eol=lf

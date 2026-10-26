@@ -22,7 +22,7 @@ managedNodeGroups:
   - name: blogapp-ng
     instanceType: t3.large
     minSize: 2
-    desiredCapacity: 3
+    desiredCapacity: 2
     maxSize: 5
     volumeSize: 30
     privateNetworking: true
