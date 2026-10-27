@@ -127,7 +127,7 @@ Register an account to publish your own posts.
 
 ### Monitoring access
 ```bash
-kubectl -n monitoring get svc kube-prometheus-stack-grafana          # EXTERNAL-IP, login admin / CHANGE_ME
+kubectl -n monitoring port-forward svc/kube-prometheus-stack-grafana 3000:80   # http://localhost:3000, admin / CHANGE_ME
 kubectl -n monitoring port-forward svc/kube-prometheus-stack-prometheus 9090   # http://localhost:9090
 ```
 Generate some traffic (`for i in $(seq 200); do curl -s http://<ALB>/api/posts >/dev/null; done`)
