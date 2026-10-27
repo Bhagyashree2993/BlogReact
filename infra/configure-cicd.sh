@@ -31,7 +31,10 @@ log() { printf '\n\033[1;32m>> %s\033[0m\n' "$*"; }
 wait_for() {   # wait_for <name> <url> <expected-substring>
   log "Waiting for $1"
   for _ in $(seq 1 90); do
-    if curl -fsS --max-time 5 "$2" 2>/dev/null | grep -q "$3"; then echo "   $1 is up"; return 0; fi
+    # curl -f fails on non-2xx; some health endpoints (Nexus) return 200 with an empty body
+    if out=$(curl -fsS --max-time 5 "$2" 2>/dev/null) && { [ -z "$3" ] || printf '%s' "$out" | grep -q "$3"; }; then
+      echo "   $1 is up"; return 0
+    fi
     sleep 10
   done
   echo "$1 did not come up at $2"; exit 1
