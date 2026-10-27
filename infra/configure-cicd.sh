@@ -171,7 +171,7 @@ systemctl stop jenkins
 curl -fsSL -o /opt/jenkins-plugin-manager.jar \
   "https://github.com/jenkinsci/plugin-installation-manager-tool/releases/download/${PLUGIN_MANAGER_VERSION}/jenkins-plugin-manager-${PLUGIN_MANAGER_VERSION}.jar"
 java -jar /opt/jenkins-plugin-manager.jar --war /usr/share/java/jenkins.war \
-  --plugin-download-directory "$JENKINS_HOME/plugins" --verbose=false --plugins \
+  --plugin-download-directory "$JENKINS_HOME/plugins" --plugins \
   configuration-as-code job-dsl workflow-aggregator pipeline-stage-view git github \
   credentials-binding aws-credentials sonar docker-workflow \
   ws-cleanup timestamper build-timeout matrix-auth
