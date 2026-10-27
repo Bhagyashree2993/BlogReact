@@ -137,8 +137,24 @@ log "SonarQube: webhook -> Jenkins (for the Quality Gate stage)"
 for key in $(curl "${SQA[@]}" "$SQ/webhooks/list" | python3 -c 'import json,sys; [print(w["key"]) for w in json.load(sys.stdin)["webhooks"] if w["name"]=="jenkins"]'); do
   curl "${SQA[@]}" -X POST "$SQ/webhooks/delete" --data "webhook=$key"
 done
-curl "${SQA[@]}" -X POST "$SQ/webhooks/create" --data name=jenkins \
-     --data-urlencode "url=http://$PRIVATE_IP:8080/sonarqube-webhook/" >/dev/null
+create_webhook() {
+  curl -sS -u "admin:$ADMIN_PASSWORD" -o /tmp/sq-webhook.json -w '%{http_code}' -X POST "$SQ/webhooks/create" \
+       --data name=jenkins --data-urlencode "url=http://$PRIVATE_IP:8080/sonarqube-webhook/"
+}
+CODE=$(create_webhook)
+if [ "$CODE" != 200 ]; then
+  echo "   SonarQube refused the webhook ($CODE): $(cat /tmp/sq-webhook.json)"
+  # Newer SonarQube validates webhook URLs and rejects the server's own private network.
+  # Jenkins lives on this same host, so turn that validation off and retry.
+  log "SonarQube: recreating container with SONAR_VALIDATEWEBHOOKS=false (data is kept)"
+  docker rm -f sonarqube >/dev/null
+  docker run -d --name sonarqube --restart unless-stopped -p 9000:9000 \
+    -e SONAR_VALIDATEWEBHOOKS=false -v sonarqube_data:/opt/sonarqube/data sonarqube:community >/dev/null
+  wait_for SonarQube http://localhost:9000/api/system/status '"status":"UP"'
+  CODE=$(create_webhook)
+  [ "$CODE" = 200 ] || { echo "Webhook still refused ($CODE): $(cat /tmp/sq-webhook.json)"; exit 1; }
+fi
+echo "   webhook created"
 
 # =====================================================================
 #  JENKINS

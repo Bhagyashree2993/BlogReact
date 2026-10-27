@@ -9,6 +9,9 @@ export DEBIAN_FRONTEND=noninteractive
 PUBLIC_IP=$(curl -s http://checkip.amazonaws.com || hostname -I | awk '{print $1}')
 PRIVATE_IP=$(hostname -I | awk '{print $1}')
 
+# A Jenkins repo left by an earlier run with an outdated key would make the first
+# 'apt-get update' fail - drop it; it is re-added with the current key below.
+rm -f /etc/apt/sources.list.d/jenkins.list
 apt-get update -y
 apt-get install -y ca-certificates curl gnupg unzip jq git fontconfig openjdk-21-jre
 
@@ -54,7 +57,7 @@ echo ">> SonarQube + Nexus containers"
 sysctl -w vm.max_map_count=524288 && echo 'vm.max_map_count=524288' > /etc/sysctl.d/99-sonarqube.conf
 docker volume create sonarqube_data >/dev/null; docker volume create nexus-data >/dev/null
 docker inspect sonarqube >/dev/null 2>&1 || docker run -d --name sonarqube --restart unless-stopped -p 9000:9000 \
-  -v sonarqube_data:/opt/sonarqube/data sonarqube:community
+  -e SONAR_VALIDATEWEBHOOKS=false -v sonarqube_data:/opt/sonarqube/data sonarqube:community
 docker inspect nexus >/dev/null 2>&1 || docker run -d --name nexus --restart unless-stopped -p 8081:8081 -p 8083:8083 \
   -v nexus-data:/nexus-data sonatype/nexus3:latest
 touch /var/log/blogapp-setup.done
