@@ -2,6 +2,7 @@
 # One-time cluster bootstrap: LB controller, monitoring stack, ECR repos, Jenkins access.
 # Usage: JENKINS_ROLE_ARN=arn:aws:iam::<acct>:role/<jenkins-role-or-user> ./infra/setup-eks-addons.sh
 set -euo pipefail
+export MSYS_NO_PATHCONV=1 MSYS2_ARG_CONV_EXCL='*'   # Git Bash path-rewriting off
 CLUSTER=${CLUSTER:-blogapp-eks-cluster}
 REGION=${REGION:-ap-south-1}
 
@@ -23,7 +24,8 @@ kubectl apply -f "$(dirname "$0")/../k8s/base/storageclass.yaml"
 echo ">> kube-prometheus-stack (Prometheus, Alertmanager, Grafana)"
 helm upgrade --install kube-prometheus-stack prometheus-community/kube-prometheus-stack \
   -n monitoring --create-namespace \
-  -f "$(dirname "$0")/../k8s/monitoring/kube-prometheus-values.yaml"
+  -f "$(dirname "$0")/../k8s/monitoring/kube-prometheus-values.yaml" --wait --timeout 15m
+kubectl get crd servicemonitors.monitoring.coreos.com >/dev/null && echo "   Prometheus Operator CRDs present"
 
 echo ">> ECR repositories"
 for repo in blogapp-backend blogapp-frontend; do

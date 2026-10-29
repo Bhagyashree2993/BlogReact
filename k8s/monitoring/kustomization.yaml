@@ -1,0 +1,13 @@
+# Monitoring objects for the blog app. Applied by the pipeline only when the
+# Prometheus Operator CRDs (kube-prometheus-stack) are present on the cluster.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: blogapp
+labels:
+  - pairs:
+      app.kubernetes.io/part-of: blogapp
+    includeSelectors: false
+resources:
+  - servicemonitor.yaml
+  - prometheusrule.yaml
+  - grafana-dashboard.yaml

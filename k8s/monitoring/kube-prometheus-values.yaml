@@ -16,6 +16,12 @@ grafana:
   adminPassword: "CHANGE_ME"        # or use grafana.admin.existingSecret
   service:
     type: ClusterIP                 # open with: kubectl -n monitoring port-forward svc/kube-prometheus-stack-grafana 3000:80
+  # Read-only anonymous viewing. Safe here: Grafana has no public address and is only
+  # reachable through `kubectl port-forward`; lets the screenshot script capture dashboards.
+  grafana.ini:
+    auth.anonymous:
+      enabled: true
+      org_role: Viewer
   sidecar:
     dashboards:
       enabled: true

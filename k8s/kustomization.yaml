@@ -1,5 +1,4 @@
 # Full stack:  kubectl apply -k k8s/
-# Monitoring objects need the Prometheus Operator CRDs (kube-prometheus-stack).
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: blogapp
@@ -22,9 +21,8 @@ resources:
   - frontend/hpa.yaml
   - ingress/ingress.yaml
   - security/networkpolicy.yaml
-  - monitoring/servicemonitor.yaml
-  - monitoring/prometheusrule.yaml
-  - monitoring/grafana-dashboard.yaml
+# Monitoring (ServiceMonitor, alerts, Grafana dashboard) lives in k8s/monitoring/ and is
+# applied separately by the pipeline once kube-prometheus-stack is installed.
 # The pipeline rewrites newName/newTag on every build (see Jenkinsfile "Deploy to EKS").
 images:
   - name: blogapp-backend

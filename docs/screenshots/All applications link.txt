@@ -1,0 +1,7 @@
+http://13.234.186.181:8080/job/blogapp-cicd/workflow-stage/  (blogapp)
+
+http://13.234.186.181:9000/quality_gates/show/Sonar%20way  (sonar qube)
+
+http://13.234.186.181:8081/#browse/welcome  (nexus)
+
+http://localhost:3000/d/blogapp-overview/blogapp-e28093-three-tier-overview?from=now-3h&to=now&timezone=browser&var-datasource=prometheus&refresh=30s  (blogapp-three-tier)

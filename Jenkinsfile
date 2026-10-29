@@ -271,6 +271,13 @@ pipeline {
                         kubectl kustomize k8s/ > rendered-manifests.yaml
                         kubectl apply -k k8s/
 
+                        # Monitoring needs the Prometheus Operator CRDs from kube-prometheus-stack
+                        if kubectl get crd servicemonitors.monitoring.coreos.com >/dev/null 2>&1; then
+                          kubectl apply -k k8s/monitoring/
+                        else
+                          echo "WARNING: kube-prometheus-stack not installed - skipping ServiceMonitor/alerts/dashboard"
+                        fi
+
                         kubectl -n "$K8S_NAMESPACE" rollout status statefulset/mysql   --timeout=300s
                         kubectl -n "$K8S_NAMESPACE" rollout status deployment/backend  --timeout=300s
                         kubectl -n "$K8S_NAMESPACE" rollout status deployment/frontend --timeout=300s
@@ -310,6 +317,28 @@ pipeline {
                             curl -fsS "http://frontend-service/api/posts?limit=1" | grep -q "\\"data\\"" && echo "frontend -> backend -> DB path OK"
                           '
 
+                        echo "--- EKS deployment report (archived as eks-deployment-report.txt) ---"
+                        {
+                          echo "### Build $BUILD_NUMBER  image tag $IMAGE_TAG  $(date -u)"
+                          echo; echo "### Workloads, services, ingress, autoscaling"
+                          kubectl -n "$K8S_NAMESPACE" get deploy,sts,pods,svc,ingress,hpa,pdb -o wide
+                          echo; echo "### Image versions running in the cluster"
+                          kubectl -n "$K8S_NAMESPACE" get pods -o 'custom-columns=POD:.metadata.name,IMAGE:.spec.containers[0].image,READY:.status.containerStatuses[0].ready'
+                          echo; echo "### Persistent storage (MySQL on EBS gp3)"
+                          kubectl -n "$K8S_NAMESPACE" get pvc -o wide
+                          echo; echo "### ConfigMaps and Secrets (names only - values never printed)"
+                          kubectl -n "$K8S_NAMESPACE" get configmap,secret
+                          echo; echo "### Network policies"
+                          kubectl -n "$K8S_NAMESPACE" get networkpolicy
+                          echo; echo "### Probes, resources and rollout strategy"
+                          kubectl -n "$K8S_NAMESPACE" get deploy -o 'custom-columns=NAME:.metadata.name,REPLICAS:.spec.replicas,STRATEGY:.spec.strategy.type,MAX_UNAVAILABLE:.spec.strategy.rollingUpdate.maxUnavailable,READINESS:.spec.template.spec.containers[0].readinessProbe.httpGet.path,LIVENESS:.spec.template.spec.containers[0].livenessProbe.httpGet.path,CPU_REQ:.spec.template.spec.containers[0].resources.requests.cpu,MEM_LIMIT:.spec.template.spec.containers[0].resources.limits.memory'
+                          echo; echo "### Database contents (backend -> MySQL integration)"
+                          kubectl -n "$K8S_NAMESPACE" exec mysql-0 -- sh -c 'mysql -uroot -p"$MYSQL_ROOT_PASSWORD" blogdb -e "SHOW TABLES; SELECT COUNT(*) AS users FROM users; SELECT id,title,author_id,created_at FROM posts ORDER BY id;"' 2>/dev/null
+                          echo; echo "### Rollout history"
+                          kubectl -n "$K8S_NAMESPACE" rollout history deployment/backend
+                          kubectl -n "$K8S_NAMESPACE" rollout history deployment/frontend
+                        } | tee eks-deployment-report.txt
+
                         echo "--- Public ALB check ---"
                         for i in $(seq 1 30); do
                           ALB=$(kubectl -n "$K8S_NAMESPACE" get ingress blogapp-ingress \
@@ -341,7 +370,7 @@ pipeline {
 
     post {
         always {
-            archiveArtifacts artifacts: 'trivy-*.txt, rendered-manifests.yaml, app-url.txt, dist-artifacts/*',
+            archiveArtifacts artifacts: 'trivy-*.txt, rendered-manifests.yaml, app-url.txt, eks-deployment-report.txt, dist-artifacts/*',
                              allowEmptyArchive: true
             sh '''
                 docker rmi "$BACKEND_IMAGE:$IMAGE_TAG" "$FRONTEND_IMAGE:$IMAGE_TAG" 2>/dev/null || true

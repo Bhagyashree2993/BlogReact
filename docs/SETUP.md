@@ -3,6 +3,14 @@
 Follow these steps in order. Region used throughout: **ap-south-1 (Mumbai)** — change
 `AWS_REGION` in the `Jenkinsfile` and `infra/*.yaml|sh` if you use another one.
 
+## Fastest path: one command
+After step 0 (tools + `aws configure`), this builds everything below, runs the
+pipeline and writes the evaluation evidence to `docs/evidence/` (~60–75 min, unattended):
+```bash
+./infra/bootstrap-all.sh
+```
+Tear everything down afterwards with `./infra/teardown.sh`. The manual steps follow.
+
 | # | What | Time |
 |---|------|------|
 | 1 | Create the EKS cluster | ~20 min |
