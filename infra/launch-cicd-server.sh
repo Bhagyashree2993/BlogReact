@@ -11,7 +11,8 @@ NAME=blogapp-cicd-server
 KEY_NAME=blogapp-key
 KEY_FILE="$HOME/blogapp-key.pem"
 REPO_URL=${REPO_URL:-https://github.com/Bhagyashree2993/BlogReact.git}
-INSTANCE_TYPE=${INSTANCE_TYPE:-t3.xlarge}
+# t3.large (2 vCPU / 8 GB + swap) fits the default 8-vCPU account limit next to the 2 EKS nodes
+INSTANCE_TYPE=${INSTANCE_TYPE:-t3.large}
 export AWS_DEFAULT_REGION=$REGION
 
 MY_IP=$(curl -s https://checkip.amazonaws.com | tr -d '[:space:]')

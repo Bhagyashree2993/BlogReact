@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Bootstraps ONE Ubuntu 22.04/24.04 EC2 instance (t3.xlarge, 50 GB) as the CI/CD server:
+# Bootstraps ONE Ubuntu 22.04/24.04 EC2 instance (t3.large + 4 GB swap, 50 GB) as the CI/CD server:
 #   Jenkins :8080 | SonarQube :9000 | Nexus :8081 (UI) + :8083 (docker-hosted)
 # plus every CLI the Jenkinsfile calls: node 20, docker, trivy, awscli v2, kubectl, helm, eksctl.
 # Security group: open 8080, 9000, 8081, 8083 to your IP (and 22 for SSH).
@@ -53,12 +53,20 @@ curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 |
 curl -fsSL "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_Linux_amd64.tar.gz" | tar xz -C /usr/local/bin
 aws --version && kubectl version --client && helm version --short
 
+echo ">> 4 GB swap (lets Jenkins + SonarQube + Nexus share a t3.large)"
+if ! swapon --show | grep -q /swapfile; then
+  fallocate -l 4G /swapfile && chmod 600 /swapfile && mkswap /swapfile && swapon /swapfile
+  grep -q '^/swapfile' /etc/fstab || echo '/swapfile none swap sw 0 0' >> /etc/fstab
+fi
+sysctl -w vm.swappiness=10 >/dev/null
+
 echo ">> SonarQube + Nexus containers"
 sysctl -w vm.max_map_count=524288 && echo 'vm.max_map_count=524288' > /etc/sysctl.d/99-sonarqube.conf
 docker volume create sonarqube_data >/dev/null; docker volume create nexus-data >/dev/null
 docker inspect sonarqube >/dev/null 2>&1 || docker run -d --name sonarqube --restart unless-stopped -p 9000:9000 \
   -e SONAR_VALIDATEWEBHOOKS=false -v sonarqube_data:/opt/sonarqube/data sonarqube:community
 docker inspect nexus >/dev/null 2>&1 || docker run -d --name nexus --restart unless-stopped -p 8081:8081 -p 8083:8083 \
+  -e INSTALL4J_ADD_VM_PARAMS="-Xms1g -Xmx1g -XX:MaxDirectMemorySize=1g -Djava.util.prefs.userRoot=/nexus-data/javaprefs" \
   -v nexus-data:/nexus-data sonatype/nexus3:latest
 touch /var/log/blogapp-setup.done
 

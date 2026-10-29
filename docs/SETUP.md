@@ -36,7 +36,7 @@ This enables OIDC, the EBS CSI driver (MySQL volume), metrics-server (HPA),
 VPC CNI network policies, and an IRSA service account for the AWS Load Balancer Controller.
 
 ## 2. Launch the CI/CD server
-1. EC2 → Launch instance: **Ubuntu 24.04, t3.xlarge, 50 GB gp3**.
+1. EC2 → Launch instance: **Ubuntu 24.04, t3.large, 50 GB gp3** (4 GB swap is added by the setup script).
 2. Security group inbound: 22 (your IP), 8080, 9000, 8081, 8083 (your IP).
 3. Attach an **IAM role** to the instance (recommended) with: `AmazonEC2ContainerRegistryPowerUser`
    and an inline policy allowing `eks:DescribeCluster`. Note its ARN.
