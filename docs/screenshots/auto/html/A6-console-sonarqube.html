@@ -1,0 +1,53 @@
+<!doctype html><meta charset="utf-8"><style>
+      body{margin:0;background:#0d1117;font:13px/17px Consolas,"Cascadia Mono",monospace;color:#d1d7e0}
+      .bar{background:#161b22;padding:9px 14px;color:#8b949e;border-bottom:1px solid #30363d;font-family:Segoe UI,sans-serif}
+      .bar b{color:#e6edf3} .dot{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px}
+      pre{margin:0;padding:12px 16px;white-space:pre}
+      .ok{color:#3fb950}.bad{color:#f85149}.cmd{color:#79c0ff}.hd{color:#d2a8ff;font-weight:bold}</style>
+<div class="bar"><span class="dot" style="background:#f85149"></span><span class="dot" style="background:#d29922"></span><span class="dot" style="background:#3fb950"></span> <b>Console output - SonarQube analysis + Quality Gate</b> &nbsp; — captured 2026-10-29 18:12</div><pre>[2026-10-29T12:17:57.485Z] 12:17:56.817 INFO  gRPC analyze-project server listening on 127.0.0.1:43211
+[2026-10-29T12:17:57.737Z] 12:17:57.564 INFO  Plugin version: [14.0.0.46108]
+[2026-10-29T12:18:01.864Z] 12:18:01.470 INFO  Found 0 tsconfig.json file(s): []
+[2026-10-29T12:18:08.351Z] 12:18:07.551 INFO  20 source files to be analyzed
+[2026-10-29T12:18:08.351Z] 12:18:07.554 INFO  Analyzing 19 file(s) using default options [lib: lib.esnext.d.ts, lib.dom.d.ts]
+[2026-10-29T12:18:08.351Z] 12:18:07.554 INFO  20/20 source files have been analyzed
+[2026-10-29T12:18:08.351Z] 12:18:07.569 INFO  Hit the cache for 0 out of 19
+[2026-10-29T12:18:08.352Z] 12:18:07.571 INFO  Miss the cache for 19 out of 19: ANALYSIS_MODE_INELIGIBLE [19/19]
+[2026-10-29T12:18:08.352Z] 12:18:07.571 INFO  Sensor JavaScript/TypeScript/CSS analysis [javascript] (done) | time=19171ms
+[2026-10-29T12:18:08.352Z] 12:18:07.574 INFO  Sensor IaC Project Sensor [iac]
+[2026-10-29T12:18:08.352Z] 12:18:07.575 INFO  Sensor IaC Project Sensor [iac] (done) | time=2ms
+[2026-10-29T12:18:08.352Z] 12:18:07.576 INFO  Sensor Zero Coverage Sensor
+[2026-10-29T12:18:08.353Z] 12:18:07.591 INFO  Sensor Zero Coverage Sensor (done) | time=17ms
+[2026-10-29T12:18:08.353Z] 12:18:07.591 INFO  ------------- Gather SCA dependencies on project
+[2026-10-29T12:18:08.353Z] 12:18:07.613 INFO  Dependency analysis skipped
+[2026-10-29T12:18:08.353Z] 12:18:07.620 INFO  SCM Publisher SCM provider for this project is: git
+[2026-10-29T12:18:08.353Z] 12:18:07.623 INFO  SCM Publisher 20 source files to be analyzed
+[2026-10-29T12:18:08.604Z] 12:18:08.452 INFO  SCM Publisher 20/20 source files have been analyzed (done) | time=828ms
+[2026-10-29T12:18:08.604Z] 12:18:08.469 INFO  CPD Executor 2 files had no CPD blocks
+[2026-10-29T12:18:08.604Z] 12:18:08.471 INFO  CPD Executor Calculating CPD for 17 files
+[2026-10-29T12:18:08.604Z] 12:18:08.522 INFO  CPD Executor CPD calculation finished (done) | time=51ms
+[2026-10-29T12:18:08.604Z] 12:18:08.538 INFO  SCM revision ID '29944b26fd5ef3b25d8de8e018fd7c02cd843a4c'
+[2026-10-29T12:18:09.157Z] 12:18:08.911 INFO  Analysis report generated in 368ms, dir size=276.6 kB
+[2026-10-29T12:18:09.157Z] 12:18:08.983 INFO  Analysis report compressed in 73ms, zip size=109.1 kB
+[2026-10-29T12:18:10.070Z] 12:18:09.755 INFO  Analysis report uploaded in 769ms
+[2026-10-29T12:18:10.070Z] 12:18:09.758 INFO  ANALYSIS SUCCESSFUL, you can find the results at: http://localhost:9000/dashboard?id=blogapp
+[2026-10-29T12:18:10.070Z] 12:18:09.759 INFO  Note that you will be able to access the updated dashboard once the server has processed the submitted analysis report
+[2026-10-29T12:18:10.070Z] 12:18:09.764 INFO  More about the report processing at http://localhost:9000/api/ce/task?id=9f266f75-cc82-4842-8f46-7832c0b6f9cf
+[2026-10-29T12:18:10.070Z] 12:18:09.972 INFO  Analysis total time: 32.294 s
+[2026-10-29T12:18:10.070Z] 12:18:09.979 INFO  SonarScanner Engine completed successfully
+[2026-10-29T12:18:10.070Z] 12:18:10.051 INFO  EXECUTION <span class="ok">SUCCESS</span>
+[2026-10-29T12:18:10.070Z] 12:18:10.053 INFO  Total time: 38.595s
+[Pipeline] }
+[Pipeline] // withSonarQubeEnv
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Quality Gate)
+[Pipeline] timeout
+[2026-10-29T12:18:11.271Z] Timeout set to expire in 10 min
+[Pipeline] {
+[Pipeline] waitForQualityGate
+[2026-10-29T12:18:11.435Z] Checking status of SonarQube task '9f266f75-cc82-4842-8f46-7832c0b6f9cf' on server 'sonarqube-server'
+[2026-10-29T12:18:11.634Z] SonarQube task '9f266f75-cc82-4842-8f46-7832c0b6f9cf' status is 'IN_PROGRESS'
+[2026-10-29T12:18:19.116Z] SonarQube task '9f266f75-cc82-4842-8f46-7832c0b6f9cf' status is '<span class="ok">SUCCESS</span>'
+[2026-10-29T12:18:19.116Z] SonarQube task '9f266f75-cc82-4842-8f46-7832c0b6f9cf' completed. Quality gate is '<span class="ok">OK</span>'
+</pre>

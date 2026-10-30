@@ -1,0 +1,35 @@
+
+========== Nexus repository: blogapp-artifacts ==========
+  /blogapp/1-29944b2/blogapp-backend-1-29944b2.tgz             
+  /blogapp/1-29944b2/blogapp-db-init-1-29944b2.sql             
+  /blogapp/1-29944b2/blogapp-frontend-1-29944b2.tar.gz         
+
+========== Nexus repository: blogapp-docker ==========
+  blogapp-backend                                              version=1-29944b2
+  blogapp-frontend                                             version=1-29944b2
+
+========== Amazon ECR: blogapp-backend (versioned, immutable tags, scan on push) ==========
+
+$ aws ecr describe-images --repository-name blogapp-backend --query sort_by(imageDetails,&imagePushedAt)[].{tag:imageTags[0],pushed:imagePushedAt,sizeMB:imageSizeInBytes} --output table
+---------------------------------------------------------------
+|                       DescribeImages                        |
++-----------------------------------+-----------+-------------+
+|              pushed               |  sizeMB   |     tag     |
++-----------------------------------+-----------+-------------+
+|  2026-10-29T17:49:35.797000+05:30 |  1574     |  None       |
+|  2026-10-29T17:49:35.800000+05:30 |  65190916 |  None       |
+|  2026-10-29T17:49:35.982000+05:30 |  65190916 |  1-29944b2  |
++-----------------------------------+-----------+-------------+
+
+========== Amazon ECR: blogapp-frontend (versioned, immutable tags, scan on push) ==========
+
+$ aws ecr describe-images --repository-name blogapp-frontend --query sort_by(imageDetails,&imagePushedAt)[].{tag:imageTags[0],pushed:imagePushedAt,sizeMB:imageSizeInBytes} --output table
+---------------------------------------------------------------
+|                       DescribeImages                        |
++-----------------------------------+-----------+-------------+
+|              pushed               |  sizeMB   |     tag     |
++-----------------------------------+-----------+-------------+
+|  2026-10-29T17:49:38.841000+05:30 |  27518774 |  None       |
+|  2026-10-29T17:49:38.856000+05:30 |  1752     |  None       |
+|  2026-10-29T17:49:39.038000+05:30 |  27518774 |  1-29944b2  |
++-----------------------------------+-----------+-------------+

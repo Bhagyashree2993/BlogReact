@@ -1,0 +1,572 @@
+<!doctype html><meta charset="utf-8"><style>
+      body{margin:0;background:#0d1117;font:13px/17px Consolas,"Cascadia Mono",monospace;color:#d1d7e0}
+      .bar{background:#161b22;padding:9px 14px;color:#8b949e;border-bottom:1px solid #30363d;font-family:Segoe UI,sans-serif}
+      .bar b{color:#e6edf3} .dot{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px}
+      pre{margin:0;padding:12px 16px;white-space:pre}
+      .ok{color:#3fb950}.bad{color:#f85149}.cmd{color:#79c0ff}.hd{color:#d2a8ff;font-weight:bold}</style>
+<div class="bar"><span class="dot" style="background:#f85149"></span><span class="dot" style="background:#d29922"></span><span class="dot" style="background:#3fb950"></span> <b>Trivy reports (filesystem + both images)</b> &nbsp; — captured 2026-10-29 18:13</div><pre>
+<span class="hd">========== Trivy: trivy-fs-report.txt (pipeline gate = fail on fixable HIGH/CRITICAL) ==========</span>
+
+Report Summary
+
+┌───────────────────────────────────────┬────────────┬─────────────────┬─────────┬───────────────────┐
+│                Target                 │    Type    │ Vulnerabilities │ Secrets │ Misconfigurations │
+├───────────────────────────────────────┼────────────┼─────────────────┼─────────┼───────────────────┤
+│ backend/package-lock.json             │    npm     │        0        │    -    │         -         │
+├───────────────────────────────────────┼────────────┼─────────────────┼─────────┼───────────────────┤
+│ frontend/package-lock.json            │    npm     │        2        │    -    │         -         │
+├───────────────────────────────────────┼────────────┼─────────────────┼─────────┼───────────────────┤
+│ backend/Dockerfile                    │ dockerfile │        -        │    -    │         0         │
+├───────────────────────────────────────┼────────────┼─────────────────┼─────────┼───────────────────┤
+│ frontend/Dockerfile                   │ dockerfile │        -        │    -    │         0         │
+├───────────────────────────────────────┼────────────┼─────────────────┼─────────┼───────────────────┤
+│ infra/eks-cluster.yaml                │ kubernetes │        -        │    -    │         0         │
+├───────────────────────────────────────┼────────────┼─────────────────┼─────────┼───────────────────┤
+│ k8s/backend/configmap.yaml            │ kubernetes │        -        │    -    │         1         │
+├───────────────────────────────────────┼────────────┼─────────────────┼─────────┼───────────────────┤
+│ k8s/backend/deployment.yaml           │ kubernetes │        -        │    -    │         2         │
+├───────────────────────────────────────┼────────────┼─────────────────┼─────────┼───────────────────┤
+│ k8s/backend/hpa.yaml                  │ kubernetes │        -        │    -    │         0         │
+├───────────────────────────────────────┼────────────┼─────────────────┼─────────┼───────────────────┤
+│ k8s/backend/service.yaml              │ kubernetes │        -        │    -    │         0         │
+├───────────────────────────────────────┼────────────┼─────────────────┼─────────┼───────────────────┤
+│ k8s/base/namespace.yaml               │ kubernetes │        -        │    -    │         0         │
+├───────────────────────────────────────┼────────────┼─────────────────┼─────────┼───────────────────┤
+│ k8s/base/resourcequota.yaml           │ kubernetes │        -        │    -    │         0         │
+├───────────────────────────────────────┼────────────┼─────────────────┼─────────┼───────────────────┤
+│ k8s/base/storageclass.yaml            │ kubernetes │        -        │    -    │         0         │
+├───────────────────────────────────────┼────────────┼─────────────────┼─────────┼───────────────────┤
+│ k8s/frontend/deployment.yaml          │ kubernetes │        -        │    -    │         2         │
+├───────────────────────────────────────┼────────────┼─────────────────┼─────────┼───────────────────┤
+│ k8s/frontend/hpa.yaml                 │ kubernetes │        -        │    -    │         0         │
+├───────────────────────────────────────┼────────────┼─────────────────┼─────────┼───────────────────┤
+│ k8s/frontend/service.yaml             │ kubernetes │        -        │    -    │         0         │
+├───────────────────────────────────────┼────────────┼─────────────────┼─────────┼───────────────────┤
+│ k8s/ingress/ingress.yaml              │ kubernetes │        -        │    -    │         0         │
+├───────────────────────────────────────┼────────────┼─────────────────┼─────────┼───────────────────┤
+│ k8s/monitoring/grafana-dashboard.yaml │ kubernetes │        -        │    -    │         0         │
+├───────────────────────────────────────┼────────────┼─────────────────┼─────────┼───────────────────┤
+│ k8s/monitoring/prometheusrule.yaml    │ kubernetes │        -        │    -    │         0         │
+├───────────────────────────────────────┼────────────┼─────────────────┼─────────┼───────────────────┤
+│ k8s/monitoring/servicemonitor.yaml    │ kubernetes │        -        │    -    │         0         │
+├───────────────────────────────────────┼────────────┼─────────────────┼─────────┼───────────────────┤
+│ k8s/mysql/secret.example.yaml         │ kubernetes │        -        │    -    │         0         │
+├───────────────────────────────────────┼────────────┼─────────────────┼─────────┼───────────────────┤
+│ k8s/mysql/service.yaml                │ kubernetes │        -        │    -    │         0         │
+├───────────────────────────────────────┼────────────┼─────────────────┼─────────┼───────────────────┤
+│ k8s/mysql/statefulset.yaml            │ kubernetes │        -        │    -    │         5         │
+├───────────────────────────────────────┼────────────┼─────────────────┼─────────┼───────────────────┤
+│ k8s/security/networkpolicy.yaml       │ kubernetes │        -        │    -    │         0         │
+└───────────────────────────────────────┴────────────┴─────────────────┴─────────┴───────────────────┘
+Legend:
+- '-': Not scanned
+- '0': Clean (no security findings detected)
+
+
+For OSS Maintainers: VEX Notice
+--------------------------------
+If you're an OSS maintainer and Trivy has detected vulnerabilities in your project that you believe are not actually exploitable, consider issuing a VEX (Vulnerability Exploitability eXchange) statement.
+VEX allows you to communicate the actual status of vulnerabilities in your project, improving security transparency and reducing false positives for your users.
+Learn more and start using VEX: https://trivy.dev/docs/v0.76/guide/supply-chain/vex/repo#publishing-vex-documents
+
+To disable this notice, set the TRIVY_DISABLE_VEX_NOTICE environment variable.
+
+
+frontend/package-lock.json (npm)
+<span class="hd">================================</span>
+Total: 2 (MEDIUM: 2, HIGH: 0, CRITICAL: 0)
+
+┌──────────────┬────────────────┬──────────┬────────┬───────────────────┬───────────────┬─────────────────────────────────────────────────────────────┐
+│   Library    │ Vulnerability  │ Severity │ Status │ Installed Version │ Fixed Version │                            Title                            │
+├──────────────┼────────────────┼──────────┼────────┼───────────────────┼───────────────┼─────────────────────────────────────────────────────────────┤
+│ react-router │ CVE-2026-53666 │ MEDIUM   │ fixed  │ 6.30.6            │ 7.18.0        │ react-router: React Router: Information disclosure via      │
+│              │                │          │        │                   │               │ client-side constructor execution                           │
+│              │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2026-53666                  │
+│              ├────────────────┤          │        │                   │               ├─────────────────────────────────────────────────────────────┤
+│              │ CVE-2026-53669 │          │        │                   │               │ react-router: React Router: Open Redirect vulnerability via │
+│              │                │          │        │                   │               │ backslashes in navigation components                        │
+│              │                │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2026-53669                  │
+└──────────────┴────────────────┴──────────┴────────┴───────────────────┴───────────────┴─────────────────────────────────────────────────────────────┘
+
+k8s/backend/configmap.yaml (kubernetes)
+<span class="hd">=======================================</span>
+Tests: 41 (SUCCESSES: 40, FAILURES: 1)
+Failures: 1 (MEDIUM: 1, HIGH: 0, CRITICAL: 0)
+
+KSV-01010 (MEDIUM): ConfigMap 'backend-config' in 'blogapp' namespace stores sensitive contents in key(s) or value(s) '{"DB_PORT", "PORT"}'
+════════════════════════════════════════
+Storing sensitive content such as usernames and email addresses in configMaps is unsafe
+
+See https://avd.aquasec.com/misconfig/ksv-01010
+────────────────────────────────────────
+
+
+
+k8s/backend/deployment.yaml (kubernetes)
+<span class="hd">========================================</span>
+Tests: 41 (SUCCESSES: 39, FAILURES: 2)
+Failures: 2 (MEDIUM: 1, HIGH: 1, CRITICAL: 0)
+
+KSV-0013 (MEDIUM): Container 'backend' of Deployment 'backend' should specify an image tag
+════════════════════════════════════════
+It is best to avoid using the ':latest' image tag when deploying containers in production. Doing so makes it hard to track which version of the image is running, and hard to roll back the version.
+
+See https://avd.aquasec.com/misconfig/ksv-0013
+────────────────────────────────────────
+ k8s/backend/deployment.yaml:39-71
+────────────────────────────────────────
+  39 ┌         - name: backend
+  40 │           image: blogapp-backend     # rewritten by kustomize "images:" in k8s/kustomization.yaml
+  41 │           imagePullPolicy: IfNotPresent
+  42 │           ports:
+  43 │             - { name: http, containerPort: 5000 }
+  44 │           envFrom:
+  45 │             - configMapRef: { name: backend-config }
+  46 │           env:
+  47 └             - name: DB_USER
+  ..   
+────────────────────────────────────────
+
+
+KSV-0014 (HIGH): Container 'wait-for-mysql' of Deployment 'backend' should set 'securityContext.readOnlyRootFilesystem' to true
+════════════════════════════════════════
+An immutable root file system prevents applications from writing to their local disk. This can limit intrusions, as attackers will not be able to tamper with the file system or write foreign executables to disk.
+
+See https://avd.aquasec.com/misconfig/ksv-0014
+────────────────────────────────────────
+ k8s/backend/deployment.yaml:31-37
+────────────────────────────────────────
+  31 ┌         - name: wait-for-mysql
+  32 │           image: busybox:1.36
+  33 │           command: ["sh", "-c", "until nc -z mysql-service 3306; do echo waiting for mysql; sleep 3; done"]
+  34 │           securityContext: { allowPrivilegeEscalation: false, runAsUser: 1000 }
+  35 │           resources:
+  36 │             requests: { cpu: 10m, memory: 16Mi }
+  37 └             limits: { cpu: 50m, memory: 32Mi }
+────────────────────────────────────────
+
+
+
+k8s/frontend/deployment.yaml (kubernetes)
+<span class="hd">=========================================</span>
+Tests: 41 (SUCCESSES: 39, FAILURES: 2)
+Failures: 2 (MEDIUM: 1, HIGH: 1, CRITICAL: 0)
+
+KSV-0013 (MEDIUM): Container 'frontend' of Deployment 'frontend' should specify an image tag
+════════════════════════════════════════
+It is best to avoid using the ':latest' image tag when deploying containers in production. Doing so makes it hard to track which version of the image is running, and hard to roll back the version.
+
+See https://avd.aquasec.com/misconfig/ksv-0013
+────────────────────────────────────────
+ k8s/frontend/deployment.yaml:29-52
+────────────────────────────────────────
+  29 ┌         - name: frontend
+  30 │           image: blogapp-frontend    # rewritten by kustomize "images:" in k8s/kustomization.yaml
+  31 │           imagePullPolicy: IfNotPresent
+  32 │           ports:
+  33 │             - { name: http, containerPort: 8080 }
+  34 │           env:
+  35 │             - { name: BACKEND_HOST, value: backend-service }
+  36 │             - { name: BACKEND_PORT, value: "5000" }
+  37 └           resources:
+  ..   
+────────────────────────────────────────
+
+
+KSV-0014 (HIGH): Container 'frontend' of Deployment 'frontend' should set 'securityContext.readOnlyRootFilesystem' to true
+════════════════════════════════════════
+An immutable root file system prevents applications from writing to their local disk. This can limit intrusions, as attackers will not be able to tamper with the file system or write foreign executables to disk.
+
+See https://avd.aquasec.com/misconfig/ksv-0014
+────────────────────────────────────────
+ k8s/frontend/deployment.yaml:29-52
+────────────────────────────────────────
+  29 ┌         - name: frontend
+  30 │           image: blogapp-frontend    # rewritten by kustomize "images:" in k8s/kustomization.yaml
+  31 │           imagePullPolicy: IfNotPresent
+  32 │           ports:
+  33 │             - { name: http, containerPort: 8080 }
+  34 │           env:
+  35 │             - { name: BACKEND_HOST, value: backend-service }
+  36 │             - { name: BACKEND_PORT, value: "5000" }
+  37 └           resources:
+  ..   
+────────────────────────────────────────
+
+
+
+k8s/mysql/statefulset.yaml (kubernetes)
+<span class="hd">=======================================</span>
+Tests: 41 (SUCCESSES: 36, FAILURES: 5)
+Failures: 5 (MEDIUM: 3, HIGH: 2, CRITICAL: 0)
+
+KSV-0001 (MEDIUM): Container 'mysql' of StatefulSet 'mysql' should set 'securityContext.allowPrivilegeEscalation' to false
+════════════════════════════════════════
+A program inside the container can elevate its own privileges and run as root, which might give the program control over the container and node.
+
+See https://avd.aquasec.com/misconfig/ksv-0001
+────────────────────────────────────────
+ k8s/mysql/statefulset.yaml:20-51
+────────────────────────────────────────
+  20 ┌         - name: mysql
+  21 │           image: mysql:8.0
+  22 │           args: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
+  23 │           ports:
+  24 │             - { name: mysql, containerPort: 3306 }
+  25 │           env:
+  26 │             - name: MYSQL_ROOT_PASSWORD
+  27 │               valueFrom: { secretKeyRef: { name: mysql-secret, key: MYSQL_ROOT_PASSWORD } }
+  28 └             - name: MYSQL_DATABASE
+  ..   
+────────────────────────────────────────
+
+
+KSV-0012 (MEDIUM): Container 'mysql' of StatefulSet 'mysql' should set 'securityContext.runAsNonRoot' to true
+════════════════════════════════════════
+Force the running image to run as a non-root user to ensure least privileges.
+
+See https://avd.aquasec.com/misconfig/ksv-0012
+────────────────────────────────────────
+ k8s/mysql/statefulset.yaml:20-51
+────────────────────────────────────────
+  20 ┌         - name: mysql
+  21 │           image: mysql:8.0
+  22 │           args: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
+  23 │           ports:
+  24 │             - { name: mysql, containerPort: 3306 }
+  25 │           env:
+  26 │             - name: MYSQL_ROOT_PASSWORD
+  27 │               valueFrom: { secretKeyRef: { name: mysql-secret, key: MYSQL_ROOT_PASSWORD } }
+  28 └             - name: MYSQL_DATABASE
+  ..   
+────────────────────────────────────────
+
+
+KSV-0014 (HIGH): Container 'mysql' of StatefulSet 'mysql' should set 'securityContext.readOnlyRootFilesystem' to true
+════════════════════════════════════════
+An immutable root file system prevents applications from writing to their local disk. This can limit intrusions, as attackers will not be able to tamper with the file system or write foreign executables to disk.
+
+See https://avd.aquasec.com/misconfig/ksv-0014
+────────────────────────────────────────
+ k8s/mysql/statefulset.yaml:20-51
+────────────────────────────────────────
+  20 ┌         - name: mysql
+  21 │           image: mysql:8.0
+  22 │           args: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
+  23 │           ports:
+  24 │             - { name: mysql, containerPort: 3306 }
+  25 │           env:
+  26 │             - name: MYSQL_ROOT_PASSWORD
+  27 │               valueFrom: { secretKeyRef: { name: mysql-secret, key: MYSQL_ROOT_PASSWORD } }
+  28 └             - name: MYSQL_DATABASE
+  ..   
+────────────────────────────────────────
+
+
+KSV-0104 (MEDIUM): container "mysql" of statefulset "mysql" in "blogapp" namespace should specify a seccomp profile
+════════════════════════════════════════
+A program inside the container can bypass Seccomp protection policies.
+
+See https://avd.aquasec.com/misconfig/ksv-0104
+────────────────────────────────────────
+ k8s/mysql/statefulset.yaml:20-51
+────────────────────────────────────────
+  20 ┌         - name: mysql
+  21 │           image: mysql:8.0
+  22 │           args: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
+  23 │           ports:
+  24 │             - { name: mysql, containerPort: 3306 }
+  25 │           env:
+  26 │             - name: MYSQL_ROOT_PASSWORD
+  27 │               valueFrom: { secretKeyRef: { name: mysql-secret, key: MYSQL_ROOT_PASSWORD } }
+  28 └             - name: MYSQL_DATABASE
+  ..   
+────────────────────────────────────────
+
+
+KSV-0118 (HIGH): container mysql in blogapp namespace is using the default security context
+════════════════════════════════════════
+Security context controls the allocation of security parameters for the pod/container/volume, ensuring the appropriate level of protection. Relying on default security context may expose vulnerabilities to potential attacks that rely on privileged access.
+
+See https://avd.aquasec.com/misconfig/ksv-0118
+────────────────────────────────────────
+ k8s/mysql/statefulset.yaml:20-51
+────────────────────────────────────────
+  20 ┌         - name: mysql
+  21 │           image: mysql:8.0
+  22 │           args: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
+  23 │           ports:
+  24 │             - { name: mysql, containerPort: 3306 }
+  25 │           env:
+  26 │             - name: MYSQL_ROOT_PASSWORD
+  27 │               valueFrom: { secretKeyRef: { name: mysql-secret, key: MYSQL_ROOT_PASSWORD } }
+  28 └             - name: MYSQL_DATABASE
+  ..   
+────────────────────────────────────────
+
+
+
+<span class="hd">========== Trivy: trivy-blogapp-backend-report.txt (pipeline gate = fail on fixable HIGH/CRITICAL) ==========</span>
+
+Report Summary
+
+┌───────────────────────────────────────────────────────────────────────┬──────────┬─────────────────┬─────────┐
+│                                Target                                 │   Type   │ Vulnerabilities │ Secrets │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ blogapp-backend:1-29944b2 (alpine 3.24.3)                             │  alpine  │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/@opentelemetry/api/package.json                      │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/@types/node/package.json                             │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/accepts/package.json                                 │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/array-flatten/package.json                           │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/aws-ssl-profiles/package.json                        │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/basic-auth/node_modules/safe-buffer/package.json     │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/basic-auth/package.json                              │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/bcryptjs/package.json                                │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/bintrees/package.json                                │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/body-parser/node_modules/debug/package.json          │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/body-parser/node_modules/ms/package.json             │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/body-parser/package.json                             │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/buffer-equal-constant-time/package.json              │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/bytes/package.json                                   │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/call-bind-apply-helpers/package.json                 │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/call-bound/package.json                              │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/content-disposition/package.json                     │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/content-type/package.json                            │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/cookie-signature/package.json                        │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/cookie/package.json                                  │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/cors/package.json                                    │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/depd/package.json                                    │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/destroy/package.json                                 │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/dotenv/package.json                                  │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/dunder-proto/package.json                            │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/ecdsa-sig-formatter/package.json                     │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/ee-first/package.json                                │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/encodeurl/package.json                               │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/es-define-property/package.json                      │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/es-errors/package.json                               │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/es-object-atoms/package.json                         │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/escape-html/package.json                             │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/etag/package.json                                    │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/express-rate-limit/package.json                      │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/express-validator/package.json                       │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/express/node_modules/debug/package.json              │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/express/node_modules/ms/package.json                 │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/express/package.json                                 │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/finalhandler/node_modules/debug/package.json         │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/finalhandler/node_modules/ms/package.json            │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/finalhandler/package.json                            │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/forwarded/package.json                               │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/fresh/package.json                                   │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/function-bind/package.json                           │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/generate-function/package.json                       │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/get-intrinsic/package.json                           │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/get-proto/package.json                               │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/gopd/package.json                                    │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/has-symbols/package.json                             │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/hasown/package.json                                  │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/helmet/package.json                                  │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/http-errors/package.json                             │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/iconv-lite/package.json                              │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/inherits/package.json                                │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/ipaddr.js/package.json                               │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/is-property/package.json                             │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/jsonwebtoken/node_modules/semver/package.json        │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/jsonwebtoken/package.json                            │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/jwa/package.json                                     │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/jws/package.json                                     │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/lodash.includes/package.json                         │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/lodash.isboolean/package.json                        │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/lodash.isinteger/package.json                        │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/lodash.isnumber/package.json                         │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/lodash.isplainobject/package.json                    │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/lodash.isstring/package.json                         │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/lodash.once/package.json                             │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/lodash/package.json                                  │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/long/package.json                                    │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/lru.min/package.json                                 │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/math-intrinsics/package.json                         │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/media-typer/package.json                             │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/merge-descriptors/package.json                       │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/methods/package.json                                 │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/mime-db/package.json                                 │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/mime-types/package.json                              │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/mime/package.json                                    │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/morgan/node_modules/debug/package.json               │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/morgan/node_modules/ms/package.json                  │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/morgan/package.json                                  │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/ms/package.json                                      │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/mysql2/node_modules/iconv-lite/package.json          │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/mysql2/package.json                                  │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/named-placeholders/package.json                      │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/negotiator/package.json                              │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/object-assign/package.json                           │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/object-inspect/package.json                          │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/on-finished/package.json                             │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/on-headers/package.json                              │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/parseurl/package.json                                │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/path-to-regexp/package.json                          │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/prom-client/package.json                             │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/proxy-addr/package.json                              │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/qs/package.json                                      │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/range-parser/package.json                            │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/raw-body/package.json                                │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/safe-buffer/package.json                             │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/safer-buffer/package.json                            │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/send/node_modules/debug/node_modules/ms/package.json │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/send/node_modules/debug/package.json                 │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/send/package.json                                    │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/serve-static/package.json                            │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/setprototypeof/package.json                          │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/side-channel-list/package.json                       │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/side-channel-map/package.json                        │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/side-channel-weakmap/package.json                    │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/side-channel/package.json                            │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/sql-escaper/package.json                             │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/statuses/package.json                                │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/tdigest/package.json                                 │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/toidentifier/package.json                            │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/type-is/package.json                                 │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/undici-types/package.json                            │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/unpipe/package.json                                  │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/utils-merge/package.json                             │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/validator/package.json                               │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/node_modules/vary/package.json                                    │ node-pkg │        0        │    -    │
+├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+│ app/package.json                                                      │ node-pkg │        0        │    -    │
+└───────────────────────────────────────────────────────────────────────┴──────────┴─────────────────┴─────────┘
+Legend:
+- '-': Not scanned
+- '0': Clean (no security findings detected)
+
+
+<span class="hd">========== Trivy: trivy-blogapp-frontend-report.txt (pipeline gate = fail on fixable HIGH/CRITICAL) ==========</span>
+
+Report Summary
+
+┌────────────────────────────────────────────┬────────┬─────────────────┬─────────┐
+│                   Target                   │  Type  │ Vulnerabilities │ Secrets │
+├────────────────────────────────────────────┼────────┼─────────────────┼─────────┤
+│ blogapp-frontend:1-29944b2 (alpine 3.24.2) │ alpine │        0        │    -    │
+└────────────────────────────────────────────┴────────┴─────────────────┴─────────┘
+Legend:
+- '-': Not scanned
+- '0': Clean (no security findings detected)
+
+</pre>

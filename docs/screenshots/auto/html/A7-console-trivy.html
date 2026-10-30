@@ -1,0 +1,70 @@
+<!doctype html><meta charset="utf-8"><style>
+      body{margin:0;background:#0d1117;font:13px/17px Consolas,"Cascadia Mono",monospace;color:#d1d7e0}
+      .bar{background:#161b22;padding:9px 14px;color:#8b949e;border-bottom:1px solid #30363d;font-family:Segoe UI,sans-serif}
+      .bar b{color:#e6edf3} .dot{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px}
+      pre{margin:0;padding:12px 16px;white-space:pre}
+      .ok{color:#3fb950}.bad{color:#f85149}.cmd{color:#79c0ff}.hd{color:#d2a8ff;font-weight:bold}</style>
+<div class="bar"><span class="dot" style="background:#f85149"></span><span class="dot" style="background:#d29922"></span><span class="dot" style="background:#3fb950"></span> <b>Console output - Trivy image scan (gate: fixable HIGH/CRITICAL)</b> &nbsp; — captured 2026-10-29 18:12</div><pre>[Pipeline] {
+[Pipeline] sh
+[2026-10-29T12:19:15.434Z] + trivy image --severity CRITICAL,HIGH,MEDIUM --exit-code 0 --format table -o trivy-blogapp-backend-report.txt blogapp-backend:1-29944b2
+[2026-10-29T12:19:15.435Z] 2026-10-29T12:19:15Z	INFO	[vuln] Vulnerability scanning is enabled
+[2026-10-29T12:19:15.435Z] 2026-10-29T12:19:15Z	INFO	[secret] Secret scanning is enabled
+[2026-10-29T12:19:15.435Z] 2026-10-29T12:19:15Z	INFO	[secret] If your scanning is slow, please try '--scanners vuln' to disable secret scanning
+[2026-10-29T12:19:15.435Z] 2026-10-29T12:19:15Z	INFO	[secret] Please see https://trivy.dev/docs/v0.76/guide/scanner/secret#recommendation for faster secret detection
+[2026-10-29T12:19:20.632Z] 2026-10-29T12:19:20Z	INFO	Detected OS	family="alpine" version="3.24.3"
+[2026-10-29T12:19:20.632Z] 2026-10-29T12:19:20Z	INFO	[alpine] Detecting vulnerabilities...	os_version="3.24" repository="3.24" pkg_num=20
+[2026-10-29T12:19:20.632Z] 2026-10-29T12:19:20Z	INFO	Number of language-specific files	num=1
+[2026-10-29T12:19:20.632Z] 2026-10-29T12:19:20Z	INFO	[node-pkg] Detecting vulnerabilities...
+[2026-10-29T12:19:20.632Z] + trivy image --severity CRITICAL,HIGH --ignore-unfixed --exit-code 1 blogapp-backend:1-29944b2
+[2026-10-29T12:19:20.632Z] 2026-10-29T12:19:20Z	INFO	[vuln] Vulnerability scanning is enabled
+[2026-10-29T12:19:20.632Z] 2026-10-29T12:19:20Z	INFO	[secret] Secret scanning is enabled
+[2026-10-29T12:19:20.632Z] 2026-10-29T12:19:20Z	INFO	[secret] If your scanning is slow, please try '--scanners vuln' to disable secret scanning
+[2026-10-29T12:19:20.632Z] 2026-10-29T12:19:20Z	INFO	[secret] Please see https://trivy.dev/docs/v0.76/guide/scanner/secret#recommendation for faster secret detection
+[2026-10-29T12:19:20.632Z] 2026-10-29T12:19:20Z	INFO	Detected OS	family="alpine" version="3.24.3"
+[2026-10-29T12:19:20.632Z] 2026-10-29T12:19:20Z	INFO	[alpine] Detecting vulnerabilities...	os_version="3.24" repository="3.24" pkg_num=20
+[2026-10-29T12:19:20.632Z] 2026-10-29T12:19:20Z	INFO	Number of language-specific files	num=1
+[2026-10-29T12:19:20.632Z] 2026-10-29T12:19:20Z	INFO	[node-pkg] Detecting vulnerabilities...
+[2026-10-29T12:19:20.632Z] 
+[2026-10-29T12:19:20.632Z] Report Summary
+[2026-10-29T12:19:20.632Z] 
+[2026-10-29T12:19:20.632Z] ┌───────────────────────────────────────────────────────────────────────┬──────────┬─────────────────┬─────────┐
+[2026-10-29T12:19:20.632Z] │                                Target                                 │   Type   │ Vulnerabilities │ Secrets │
+[2026-10-29T12:19:20.632Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.632Z] │ blogapp-backend:1-29944b2 (alpine 3.24.3)                             │  alpine  │        0        │    -    │
+[2026-10-29T12:19:20.632Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.632Z] │ app/node_modules/@opentelemetry/api/package.json                      │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.632Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.632Z] │ app/node_modules/@types/node/package.json                             │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.632Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.632Z] │ app/node_modules/accepts/package.json                                 │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.632Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.632Z] │ app/node_modules/array-flatten/package.json                           │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.632Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.632Z] │ app/node_modules/aws-ssl-profiles/package.json                        │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.632Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.632Z] │ app/node_modules/basic-auth/node_modules/safe-buffer/package.json     │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.632Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.632Z] │ app/node_modules/basic-auth/package.json                              │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.633Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.633Z] │ app/node_modules/bcryptjs/package.json                                │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.633Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.633Z] │ app/node_modules/bintrees/package.json                                │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.633Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.633Z] │ app/node_modules/body-parser/node_modules/debug/package.json          │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.633Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.633Z] │ app/node_modules/body-parser/node_modules/ms/package.json             │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.633Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.633Z] │ app/node_modules/body-parser/package.json                             │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.633Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.633Z] │ app/node_modules/buffer-equal-constant-time/package.json              │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.633Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.633Z] │ app/node_modules/bytes/package.json                                   │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.633Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.633Z] │ app/node_modules/call-bind-apply-helpers/package.json                 │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.633Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.633Z] │ app/node_modules/call-bound/package.json                              │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.633Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.633Z] │ app/node_modules/content-disposition/package.json                     │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.633Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.633Z] │ app/node_modules/content-type/package.json                            │ node-pkg │        0        │    -    │
+</pre>

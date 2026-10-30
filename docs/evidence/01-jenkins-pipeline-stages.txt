@@ -1,0 +1,29 @@
+
+========== Jenkins pipeline - last build, every stage ==========
+Build #1 (29944b2)   status: SUCCESS   total: 5.4 min
+
+#   STAGE                                      STATUS         TIME
+1   Declarative: Checkout SCM                  SUCCESS        1.4s
+2   Checkout                                   SUCCESS        1.7s
+3   Install Dependencies                       SUCCESS        0.2s
+4   Backend                                    SUCCESS       36.4s
+5   Frontend                                   SUCCESS        8.0s
+6   Lint & Unit Test                           SUCCESS        0.2s
+7   Backend tests                              SUCCESS        6.4s
+8   Frontend build check                       SUCCESS        6.4s
+9   SonarQube Analysis                         SUCCESS       41.3s
+10  Quality Gate                               SUCCESS        8.2s
+11  Trivy Filesystem Scan                      SUCCESS       21.5s
+12  Package & Publish Artifacts to Nexus       SUCCESS        3.3s
+13  Docker Build                               SUCCESS        0.2s
+14  Backend image                              SUCCESS       26.3s
+15  Frontend image                             SUCCESS       30.1s
+16  Trivy Image Scan                           SUCCESS        8.6s
+17  Push Images                                SUCCESS        0.1s
+18  Push to Nexus registry                     SUCCESS       10.7s
+19  Push to Amazon ECR                         SUCCESS       15.9s
+20  Deploy to EKS                              SUCCESS       87.1s
+21  Deployment Validation                      SUCCESS       48.0s
+22  Declarative: Post Actions                  SUCCESS        0.8s
+
+========== Build history ==========

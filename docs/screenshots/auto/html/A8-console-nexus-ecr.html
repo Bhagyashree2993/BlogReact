@@ -1,0 +1,44 @@
+<!doctype html><meta charset="utf-8"><style>
+      body{margin:0;background:#0d1117;font:13px/17px Consolas,"Cascadia Mono",monospace;color:#d1d7e0}
+      .bar{background:#161b22;padding:9px 14px;color:#8b949e;border-bottom:1px solid #30363d;font-family:Segoe UI,sans-serif}
+      .bar b{color:#e6edf3} .dot{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px}
+      pre{margin:0;padding:12px 16px;white-space:pre}
+      .ok{color:#3fb950}.bad{color:#f85149}.cmd{color:#79c0ff}.hd{color:#d2a8ff;font-weight:bold}</style>
+<div class="bar"><span class="dot" style="background:#f85149"></span><span class="dot" style="background:#d29922"></span><span class="dot" style="background:#3fb950"></span> <b>Console output - Nexus upload + image push</b> &nbsp; — captured 2026-10-29 18:12</div><pre>[Pipeline] {
+[Pipeline] sh
+[2026-10-29T12:18:43.615Z] + basename dist-artifacts/blogapp-backend-1-29944b2.tgz
+[2026-10-29T12:18:43.615Z] + echo Uploading blogapp-backend-1-29944b2.tgz
+[2026-10-29T12:18:43.620Z] Uploading blogapp-backend-1-29944b2.tgz
+[2026-10-29T12:18:43.620Z] + basename dist-artifacts/blogapp-backend-1-29944b2.tgz
+[2026-10-29T12:18:43.620Z] + curl -fsS -u admin:**** --upload-file dist-artifacts/blogapp-backend-1-29944b2.tgz http://localhost:8081/repository/blogapp-artifacts/blogapp/1-29944b2/blogapp-backend-1-29944b2.tgz
+[2026-10-29T12:18:43.871Z] + basename dist-artifacts/blogapp-db-init-1-29944b2.sql
+[2026-10-29T12:18:43.871Z] + echo Uploading blogapp-db-init-1-29944b2.sql
+[2026-10-29T12:18:43.871Z] Uploading blogapp-db-init-1-29944b2.sql
+[2026-10-29T12:18:43.871Z] + basename dist-artifacts/blogapp-db-init-1-29944b2.sql
+[2026-10-29T12:18:43.871Z] + curl -fsS -u admin:**** --upload-file dist-artifacts/blogapp-db-init-1-29944b2.sql http://localhost:8081/repository/blogapp-artifacts/blogapp/1-29944b2/blogapp-db-init-1-29944b2.sql
+[2026-10-29T12:18:44.121Z] + basename dist-artifacts/blogapp-frontend-1-29944b2.tar.gz
+[2026-10-29T12:18:44.121Z] + echo Uploading blogapp-frontend-1-29944b2.tar.gz
+[2026-10-29T12:18:44.121Z] Uploading blogapp-frontend-1-29944b2.tar.gz
+[2026-10-29T12:18:44.121Z] + basename dist-artifacts/blogapp-frontend-1-29944b2.tar.gz
+[2026-10-29T12:18:44.122Z] + curl -fsS -u admin:**** --upload-file dist-artifacts/blogapp-frontend-1-29944b2.tar.gz http://localhost:8081/repository/blogapp-artifacts/blogapp/1-29944b2/blogapp-frontend-1-29944b2.tar.gz
+[Pipeline] }
+[Pipeline] // withCredentials
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Docker Build)
+[Pipeline] parallel
+[Pipeline] { (Branch: Backend image)
+[Pipeline] { (Branch: Frontend image)
+[Pipeline] stage
+[Pipeline] { (Backend image)
+[Pipeline] stage
+[Pipeline] { (Frontend image)
+[Pipeline] sh
+[Pipeline] sh
+[2026-10-29T12:18:44.998Z] + docker build --pull -t blogapp-backend:1-29944b2 --label org.opencontainers.image.revision=29944b2 ./backend
+[2026-10-29T12:18:45.061Z] + docker build --pull -t blogapp-frontend:1-29944b2 --label org.opencontainers.image.revision=29944b2 ./frontend
+[2026-10-29T12:18:46.342Z] #0 building with "default" instance using docker driver
+[2026-10-29T12:18:46.343Z] 
+[2026-10-29T12:18:46.343Z] #1 [internal] load build definition from Dockerfile
+</pre>

@@ -1,0 +1,77 @@
+<!doctype html><meta charset="utf-8"><style>
+      body{margin:0;background:#0d1117;font:13px/17px Consolas,"Cascadia Mono",monospace;color:#d1d7e0}
+      .bar{background:#161b22;padding:9px 14px;color:#8b949e;border-bottom:1px solid #30363d;font-family:Segoe UI,sans-serif}
+      .bar b{color:#e6edf3} .dot{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px}
+      pre{margin:0;padding:12px 16px;white-space:pre}
+      .ok{color:#3fb950}.bad{color:#f85149}.cmd{color:#79c0ff}.hd{color:#d2a8ff;font-weight:bold}</style>
+<div class="bar"><span class="dot" style="background:#f85149"></span><span class="dot" style="background:#d29922"></span><span class="dot" style="background:#3fb950"></span> <b>Console output - checkout, install, unit tests</b> &nbsp; — captured 2026-10-29 18:12</div><pre>Started by user admin
+Obtained Jenkinsfile from git https://github.com/Bhagyashree2993/BlogReact.git
+[Pipeline] Start of Pipeline
+[Pipeline] node
+<span class="ok">Running</span> on Jenkins in /var/lib/jenkins/workspace/blogapp-cicd
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+No credentials specified
+Cloning the remote Git repository
+Cloning repository https://github.com/Bhagyashree2993/BlogReact.git
+ &gt; git init /var/lib/jenkins/workspace/blogapp-cicd # timeout=10
+Fetching upstream changes from https://github.com/Bhagyashree2993/BlogReact.git
+ &gt; git --version # timeout=10
+ &gt; git --version # 'git version 2.43.0'
+ &gt; git fetch --tags --force --progress -- https://github.com/Bhagyashree2993/BlogReact.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ &gt; git config remote.origin.url https://github.com/Bhagyashree2993/BlogReact.git # timeout=10
+ &gt; git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+Avoid second fetch
+ &gt; git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision 29944b26fd5ef3b25d8de8e018fd7c02cd843a4c (refs/remotes/origin/main)
+ &gt; git config core.sparsecheckout # timeout=10
+ &gt; git checkout -f 29944b26fd5ef3b25d8de8e018fd7c02cd843a4c # timeout=10
+Commit message: "CI server t3.large + swap (fits 8 vCPU limit)"
+First time build. Skipping changelog.
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] tool
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] timestamps
+[Pipeline] {
+[Pipeline] timeout
+[2026-10-29T12:16:44.359Z] Timeout set to expire in 1 hr 0 min
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Checkout)
+[Pipeline] checkout
+[2026-10-29T12:16:44.610Z] Selected Git installation does not exist. Using Default
+[2026-10-29T12:16:44.610Z] The recommended git tool is: NONE
+[2026-10-29T12:16:44.610Z] No credentials specified
+[2026-10-29T12:16:44.613Z]  &gt; git rev-parse --resolve-git-dir /var/lib/jenkins/workspace/blogapp-cicd/.git # timeout=10
+[2026-10-29T12:16:44.625Z] Fetching changes from the remote Git repository
+[2026-10-29T12:16:44.630Z]  &gt; git config remote.origin.url https://github.com/Bhagyashree2993/BlogReact.git # timeout=10
+[2026-10-29T12:16:44.641Z] Fetching upstream changes from https://github.com/Bhagyashree2993/BlogReact.git
+[2026-10-29T12:16:44.641Z]  &gt; git --version # timeout=10
+[2026-10-29T12:16:44.654Z]  &gt; git --version # 'git version 2.43.0'
+[2026-10-29T12:16:44.655Z]  &gt; git fetch --tags --force --progress -- https://github.com/Bhagyashree2993/BlogReact.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+[2026-10-29T12:16:45.290Z]  &gt; git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+[2026-10-29T12:16:45.299Z] Checking out Revision 29944b26fd5ef3b25d8de8e018fd7c02cd843a4c (refs/remotes/origin/main)
+[2026-10-29T12:16:45.300Z]  &gt; git config core.sparsecheckout # timeout=10
+[2026-10-29T12:16:45.306Z]  &gt; git checkout -f 29944b26fd5ef3b25d8de8e018fd7c02cd843a4c # timeout=10
+[2026-10-29T12:16:45.350Z] Commit message: "CI server t3.large + swap (fits 8 vCPU limit)"
+[Pipeline] script
+[Pipeline] {
+[Pipeline] sh
+[2026-10-29T12:16:45.796Z] + git rev-parse --short HEAD
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] echo
+[2026-10-29T12:16:46.051Z] Image tag for this build: 1-29944b2
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Install Dependencies)
+</pre>

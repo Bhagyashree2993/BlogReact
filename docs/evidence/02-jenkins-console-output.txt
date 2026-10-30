@@ -1,0 +1,1619 @@
+Started by user admin
+Obtained Jenkinsfile from git https://github.com/Bhagyashree2993/BlogReact.git
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/lib/jenkins/workspace/blogapp-cicd
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+No credentials specified
+Cloning the remote Git repository
+Cloning repository https://github.com/Bhagyashree2993/BlogReact.git
+ > git init /var/lib/jenkins/workspace/blogapp-cicd # timeout=10
+Fetching upstream changes from https://github.com/Bhagyashree2993/BlogReact.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.43.0'
+ > git fetch --tags --force --progress -- https://github.com/Bhagyashree2993/BlogReact.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/Bhagyashree2993/BlogReact.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+Avoid second fetch
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision 29944b26fd5ef3b25d8de8e018fd7c02cd843a4c (refs/remotes/origin/main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 29944b26fd5ef3b25d8de8e018fd7c02cd843a4c # timeout=10
+Commit message: "CI server t3.large + swap (fits 8 vCPU limit)"
+First time build. Skipping changelog.
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] tool
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] timestamps
+[Pipeline] {
+[Pipeline] timeout
+[2026-10-29T12:16:44.359Z] Timeout set to expire in 1 hr 0 min
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Checkout)
+[Pipeline] checkout
+[2026-10-29T12:16:44.610Z] Selected Git installation does not exist. Using Default
+[2026-10-29T12:16:44.610Z] The recommended git tool is: NONE
+[2026-10-29T12:16:44.610Z] No credentials specified
+[2026-10-29T12:16:44.613Z]  > git rev-parse --resolve-git-dir /var/lib/jenkins/workspace/blogapp-cicd/.git # timeout=10
+[2026-10-29T12:16:44.625Z] Fetching changes from the remote Git repository
+[2026-10-29T12:16:44.630Z]  > git config remote.origin.url https://github.com/Bhagyashree2993/BlogReact.git # timeout=10
+[2026-10-29T12:16:44.641Z] Fetching upstream changes from https://github.com/Bhagyashree2993/BlogReact.git
+[2026-10-29T12:16:44.641Z]  > git --version # timeout=10
+[2026-10-29T12:16:44.654Z]  > git --version # 'git version 2.43.0'
+[2026-10-29T12:16:44.655Z]  > git fetch --tags --force --progress -- https://github.com/Bhagyashree2993/BlogReact.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+[2026-10-29T12:16:45.290Z]  > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+[2026-10-29T12:16:45.299Z] Checking out Revision 29944b26fd5ef3b25d8de8e018fd7c02cd843a4c (refs/remotes/origin/main)
+[2026-10-29T12:16:45.300Z]  > git config core.sparsecheckout # timeout=10
+[2026-10-29T12:16:45.306Z]  > git checkout -f 29944b26fd5ef3b25d8de8e018fd7c02cd843a4c # timeout=10
+[2026-10-29T12:16:45.350Z] Commit message: "CI server t3.large + swap (fits 8 vCPU limit)"
+[Pipeline] script
+[Pipeline] {
+[Pipeline] sh
+[2026-10-29T12:16:45.796Z] + git rev-parse --short HEAD
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] echo
+[2026-10-29T12:16:46.051Z] Image tag for this build: 1-29944b2
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Install Dependencies)
+[Pipeline] parallel
+[Pipeline] { (Branch: Backend)
+[Pipeline] { (Branch: Frontend)
+[Pipeline] stage
+[Pipeline] { (Backend)
+[Pipeline] stage
+[Pipeline] { (Frontend)
+[Pipeline] dir
+[2026-10-29T12:16:46.461Z] Running in /var/lib/jenkins/workspace/blogapp-cicd/backend
+[Pipeline] {
+[Pipeline] dir
+[2026-10-29T12:16:46.495Z] Running in /var/lib/jenkins/workspace/blogapp-cicd/frontend
+[Pipeline] {
+[Pipeline] sh
+[Pipeline] sh
+[2026-10-29T12:16:46.820Z] + [ -f package-lock.json ]
+[2026-10-29T12:16:46.821Z] + npm install
+[2026-10-29T12:16:46.859Z] + npm ci
+[2026-10-29T12:16:50.987Z] npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+[2026-10-29T12:16:50.987Z] npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+[2026-10-29T12:16:50.987Z] npm warn deprecated glob@7.2.3: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+[2026-10-29T12:16:50.987Z] npm warn deprecated @humanwhocodes/config-array@0.13.0: Use @eslint/config-array instead
+[2026-10-29T12:16:50.987Z] npm warn deprecated @humanwhocodes/object-schema@2.0.3: Use @eslint/object-schema instead
+[2026-10-29T12:16:54.219Z] npm warn deprecated eslint@8.57.1: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+[2026-10-29T12:16:54.220Z] 
+[2026-10-29T12:16:54.220Z] added 164 packages, and audited 165 packages in 7s
+[2026-10-29T12:16:54.220Z] 
+[2026-10-29T12:16:54.220Z] 32 packages are looking for funding
+[2026-10-29T12:16:54.220Z]   run `npm fund` for details
+[2026-10-29T12:16:54.220Z] 
+[2026-10-29T12:16:54.220Z] 6 vulnerabilities (3 moderate, 3 high)
+[2026-10-29T12:16:54.220Z] 
+[2026-10-29T12:16:54.220Z] To address issues that do not require attention, run:
+[2026-10-29T12:16:54.220Z]   npm audit fix
+[2026-10-29T12:16:54.220Z] 
+[2026-10-29T12:16:54.220Z] To address all issues (including breaking changes), run:
+[2026-10-29T12:16:54.220Z]   npm audit fix --force
+[2026-10-29T12:16:54.220Z] 
+[2026-10-29T12:16:54.220Z] Run `npm audit` for details.
+[Pipeline] }
+[Pipeline] // dir
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[2026-10-29T12:17:18.760Z] npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+[2026-10-29T12:17:18.761Z] npm warn deprecated @humanwhocodes/config-array@0.13.0: Use @eslint/config-array instead
+[2026-10-29T12:17:18.761Z] npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+[2026-10-29T12:17:18.761Z] npm warn deprecated glob@7.2.3: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+[2026-10-29T12:17:18.761Z] npm warn deprecated @humanwhocodes/object-schema@2.0.3: Use @eslint/object-schema instead
+[2026-10-29T12:17:20.626Z] npm warn deprecated prom-client@15.1.3: prom-client has been replaced by @prometheus-io/client
+[2026-10-29T12:17:21.970Z] npm warn deprecated eslint@8.57.1: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+[2026-10-29T12:17:22.524Z] 
+[2026-10-29T12:17:22.524Z] added 482 packages, and audited 483 packages in 35s
+[2026-10-29T12:17:22.524Z] 
+[2026-10-29T12:17:22.524Z] 83 packages are looking for funding
+[2026-10-29T12:17:22.524Z]   run `npm fund` for details
+[2026-10-29T12:17:22.524Z] 
+[2026-10-29T12:17:22.524Z] 6 low severity vulnerabilities
+[2026-10-29T12:17:22.524Z] 
+[2026-10-29T12:17:22.524Z] To address issues that do not require attention, run:
+[2026-10-29T12:17:22.524Z]   npm audit fix
+[2026-10-29T12:17:22.524Z] 
+[2026-10-29T12:17:22.524Z] To address all issues (including breaking changes), run:
+[2026-10-29T12:17:22.524Z]   npm audit fix --force
+[2026-10-29T12:17:22.524Z] 
+[2026-10-29T12:17:22.524Z] Run `npm audit` for details.
+[Pipeline] }
+[Pipeline] // dir
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // parallel
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Lint & Unit Test)
+[Pipeline] parallel
+[Pipeline] { (Branch: Backend tests)
+[Pipeline] { (Branch: Frontend build check)
+[Pipeline] stage
+[Pipeline] { (Backend tests)
+[Pipeline] stage
+[Pipeline] { (Frontend build check)
+[Pipeline] dir
+[2026-10-29T12:17:23.265Z] Running in /var/lib/jenkins/workspace/blogapp-cicd/backend
+[Pipeline] {
+[Pipeline] dir
+[2026-10-29T12:17:23.305Z] Running in /var/lib/jenkins/workspace/blogapp-cicd/frontend
+[Pipeline] {
+[Pipeline] sh
+[Pipeline] sh
+[2026-10-29T12:17:23.615Z] + npm run lint
+[2026-10-29T12:17:23.658Z] + npm run lint
+[2026-10-29T12:17:23.866Z] 
+[2026-10-29T12:17:23.866Z] > blogapp-backend@1.0.0 lint
+[2026-10-29T12:17:23.866Z] > eslint src --ext .js
+[2026-10-29T12:17:23.866Z] 
+[2026-10-29T12:17:23.914Z] 
+[2026-10-29T12:17:23.914Z] > blogapp-frontend@1.0.0 lint
+[2026-10-29T12:17:23.914Z] > eslint src --ext .js,.jsx
+[2026-10-29T12:17:23.914Z] 
+[Pipeline] sh
+[2026-10-29T12:17:24.826Z] 
+[2026-10-29T12:17:24.827Z] /var/lib/jenkins/workspace/blogapp-cicd/frontend/src/pages/PostDetail.jsx
+[2026-10-29T12:17:24.827Z]   19:5  error  Definition for rule 'react-hooks/exhaustive-deps' was not found  react-hooks/exhaustive-deps
+[2026-10-29T12:17:24.827Z] 
+[2026-10-29T12:17:24.827Z] ✖ 1 problem (1 error, 0 warnings)
+[2026-10-29T12:17:24.827Z] 
+[2026-10-29T12:17:24.827Z] + true
+[Pipeline] sh
+[2026-10-29T12:17:25.070Z] + npm test
+[2026-10-29T12:17:25.174Z] + npm run build
+[2026-10-29T12:17:25.174Z] 
+[2026-10-29T12:17:25.176Z] > blogapp-frontend@1.0.0 build
+[2026-10-29T12:17:25.176Z] > vite build
+[2026-10-29T12:17:25.176Z] 
+[2026-10-29T12:17:25.321Z] 
+[2026-10-29T12:17:25.321Z] > blogapp-backend@1.0.0 test
+[2026-10-29T12:17:25.321Z] > jest --coverage --passWithNoTests --ci --forceExit
+[2026-10-29T12:17:25.321Z] 
+[2026-10-29T12:17:26.093Z] [36mvite v5.4.21 [32mbuilding for production...[36m[39m
+[2026-10-29T12:17:26.095Z] transforming...
+[2026-10-29T12:17:28.554Z] 127.0.0.1 - - [29/Oct/2026:12:17:28 +0000] "GET /healthz HTTP/1.1" 200 15 "-" "-"
+[2026-10-29T12:17:28.554Z] 127.0.0.1 - - [29/Oct/2026:12:17:28 +0000] "GET /readyz HTTP/1.1" 200 18 "-" "-"
+[2026-10-29T12:17:28.554Z] 127.0.0.1 - - [29/Oct/2026:12:17:28 +0000] "GET /readyz HTTP/1.1" 503 45 "-" "-"
+[2026-10-29T12:17:28.554Z] 127.0.0.1 - - [29/Oct/2026:12:17:28 +0000] "GET /metrics HTTP/1.1" 200 - "-" "-"
+[2026-10-29T12:17:28.554Z] 127.0.0.1 - - [29/Oct/2026:12:17:28 +0000] "GET /nope HTTP/1.1" 404 27 "-" "-"
+[2026-10-29T12:17:28.809Z] 127.0.0.1 - - [29/Oct/2026:12:17:28 +0000] "POST /api/auth/register HTTP/1.1" 400 296 "-" "-"
+[2026-10-29T12:17:28.809Z] 127.0.0.1 - - [29/Oct/2026:12:17:28 +0000] "POST /api/auth/register HTTP/1.1" 409 36 "-" "-"
+[2026-10-29T12:17:29.060Z] 127.0.0.1 - - [29/Oct/2026:12:17:28 +0000] "POST /api/auth/register HTTP/1.1" 201 256 "-" "-"
+[2026-10-29T12:17:29.060Z] 127.0.0.1 - - [29/Oct/2026:12:17:28 +0000] "POST /api/auth/login HTTP/1.1" 200 256 "-" "-"
+[2026-10-29T12:17:29.060Z] 127.0.0.1 - - [29/Oct/2026:12:17:29 +0000] "POST /api/auth/login HTTP/1.1" 401 31 "-" "-"
+[2026-10-29T12:17:29.060Z] 127.0.0.1 - - [29/Oct/2026:12:17:29 +0000] "GET /api/posts?page=1&limit=5 HTTP/1.1" 200 79 "-" "-"
+[2026-10-29T12:17:29.060Z] 127.0.0.1 - - [29/Oct/2026:12:17:29 +0000] "GET /api/posts/missing HTTP/1.1" 404 26 "-" "-"
+[2026-10-29T12:17:29.060Z] 127.0.0.1 - - [29/Oct/2026:12:17:29 +0000] "GET /api/posts/x HTTP/1.1" 200 53 "-" "-"
+[2026-10-29T12:17:29.312Z] 127.0.0.1 - - [29/Oct/2026:12:17:29 +0000] "POST /api/posts HTTP/1.1" 401 35 "-" "-"
+[2026-10-29T12:17:29.312Z] 127.0.0.1 - - [29/Oct/2026:12:17:29 +0000] "POST /api/posts HTTP/1.1" 201 40 "-" "-"
+[2026-10-29T12:17:29.312Z] 127.0.0.1 - - [29/Oct/2026:12:17:29 +0000] "POST /api/posts/x/comments HTTP/1.1" 201 27 "-" "-"
+[2026-10-29T12:17:29.312Z]   console.error
+[2026-10-29T12:17:29.312Z]     List posts error: boom
+[2026-10-29T12:17:29.312Z] 
+[2026-10-29T12:17:29.313Z]     [0m [90m 42 |[39m     res[33m.[39mjson({ data[33m:[39m rows[33m,[39m page[33m,[39m limit[33m,[39m total[33m,[39m totalPages[33m:[39m [33mMath[39m[33m.[39mceil(total [33m/[39m limit) })[33m;[39m
+[2026-10-29T12:17:29.313Z]      [90m 43 |[39m   } [36mcatch[39m (err) {
+[2026-10-29T12:17:29.313Z]     [31m[1m>[22m[39m[90m 44 |[39m     console[33m.[39merror([32m'List posts error:'[39m[33m,[39m err[33m.[39mmessage)[33m;[39m
+[2026-10-29T12:17:29.313Z]      [90m    |[39m             [31m[1m^[22m[39m
+[2026-10-29T12:17:29.313Z]      [90m 45 |[39m     res[33m.[39mstatus([35m500[39m)[33m.[39mjson({ error[33m:[39m [32m'Failed to fetch posts'[39m })[33m;[39m
+[2026-10-29T12:17:29.313Z]      [90m 46 |[39m   }
+[2026-10-29T12:17:29.313Z]      [90m 47 |[39m })[33m;[39m[0m
+[2026-10-29T12:17:29.313Z] 
+[2026-10-29T12:17:29.313Z]       at error (src/routes/posts.js:44:13)
+[2026-10-29T12:17:29.313Z] 
+[2026-10-29T12:17:29.313Z] 127.0.0.1 - - [29/Oct/2026:12:17:29 +0000] "GET /api/posts HTTP/1.1" 500 33 "-" "-"
+[2026-10-29T12:17:29.313Z] PASS tests/api.test.js
+[2026-10-29T12:17:29.313Z]   health & metrics
+[2026-10-29T12:17:29.313Z]     ✓ GET /healthz returns ok (49 ms)
+[2026-10-29T12:17:29.313Z]     ✓ GET /readyz returns 200 when DB is reachable (10 ms)
+[2026-10-29T12:17:29.313Z]     ✓ GET /readyz returns 503 when DB is down (6 ms)
+[2026-10-29T12:17:29.313Z]     ✓ GET /metrics exposes Prometheus metrics (12 ms)
+[2026-10-29T12:17:29.313Z]     ✓ unknown route returns 404 (6 ms)
+[2026-10-29T12:17:29.313Z]   auth
+[2026-10-29T12:17:29.313Z]     ✓ register validates input (28 ms)
+[2026-10-29T12:17:29.313Z]     ✓ register rejects duplicate email (11 ms)
+[2026-10-29T12:17:29.313Z]     ✓ register creates user and returns token (381 ms)
+[2026-10-29T12:17:29.313Z]     ✓ login succeeds with correct password (22 ms)
+[2026-10-29T12:17:29.313Z]     ✓ login fails with wrong password (14 ms)
+[2026-10-29T12:17:29.313Z]   posts
+[2026-10-29T12:17:29.313Z]     ✓ lists posts with pagination (7 ms)
+[2026-10-29T12:17:29.313Z]     ✓ returns 404 for missing post (20 ms)
+[2026-10-29T12:17:29.313Z]     ✓ returns post with comments (13 ms)
+[2026-10-29T12:17:29.313Z]     ✓ creating a post requires auth (10 ms)
+[2026-10-29T12:17:29.313Z]     ✓ creates a post when authenticated (10 ms)
+[2026-10-29T12:17:29.313Z]     ✓ adds a comment when authenticated (7 ms)
+[2026-10-29T12:17:29.314Z]     ✓ returns 500 when DB fails (44 ms)
+[2026-10-29T12:17:29.314Z] 
+[2026-10-29T12:17:29.314Z] 
+[2026-10-29T12:17:29.314Z] =============================== Coverage summary ===============================
+[2026-10-29T12:17:29.314Z] Statements   : 75.82% ( 138/182 )
+[2026-10-29T12:17:29.314Z] Branches     : 67.18% ( 43/64 )
+[2026-10-29T12:17:29.314Z] Functions    : 63.63% ( 14/22 )
+[2026-10-29T12:17:29.314Z] Lines        : 79.16% ( 133/168 )
+[2026-10-29T12:17:29.314Z] ================================================================================
+[2026-10-29T12:17:29.314Z] Test Suites: 1 passed, 1 total
+[2026-10-29T12:17:29.314Z] Tests:       17 passed, 17 total
+[2026-10-29T12:17:29.314Z] Snapshots:   0 total
+[2026-10-29T12:17:29.314Z] Time:        3.493 s
+[2026-10-29T12:17:29.314Z] Ran all test suites.
+[2026-10-29T12:17:29.314Z] Force exiting Jest: Have you considered using `--detectOpenHandles` to detect async operations that kept running after all tests finished?
+[2026-10-29T12:17:29.328Z] [32m✓[39m 45 modules transformed.
+[2026-10-29T12:17:29.328Z] rendering chunks...
+[2026-10-29T12:17:29.328Z] computing gzip size...
+[2026-10-29T12:17:29.328Z] [2mdist/[22m[32mindex.html                 [39m[1m[2m  0.94 kB[22m[1m[22m[2m │ gzip:  0.49 kB[22m
+[2026-10-29T12:17:29.328Z] [2mdist/[22m[2massets/[22m[35mindex-C-hzGyab.css  [39m[1m[2m  7.76 kB[22m[1m[22m[2m │ gzip:  2.28 kB[22m
+[2026-10-29T12:17:29.328Z] [2mdist/[22m[2massets/[22m[36mindex-JXVfb9TF.js   [39m[1m[2m175.24 kB[22m[1m[22m[2m │ gzip: 56.51 kB[22m
+[2026-10-29T12:17:29.328Z] [32m✓ built in 3.21s[39m
+[Pipeline] }
+[Pipeline] }
+[Pipeline] // dir
+[Pipeline] // dir
+[Pipeline] }
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] }
+[Pipeline] // parallel
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (SonarQube Analysis)
+[Pipeline] withSonarQubeEnv
+[2026-10-29T12:17:29.894Z] Injecting SonarQube environment variables using the configuration: sonarqube-server
+[Pipeline] {
+[Pipeline] sh
+[2026-10-29T12:17:30.564Z] + /opt/sonar-scanner/bin/sonar-scanner -Dsonar.projectVersion=1-29944b2
+[2026-10-29T12:17:31.910Z] 12:17:31.543 INFO  Scanner configuration file: /opt/sonar-scanner/conf/sonar-scanner.properties
+[2026-10-29T12:17:31.910Z] 12:17:31.557 INFO  Project root configuration file: /var/lib/jenkins/workspace/blogapp-cicd/sonar-project.properties
+[2026-10-29T12:17:31.910Z] 12:17:31.592 INFO  SonarScanner CLI 6.2.1.4610
+[2026-10-29T12:17:31.910Z] 12:17:31.595 INFO  Java 17.0.12 Eclipse Adoptium (64-bit)
+[2026-10-29T12:17:31.910Z] 12:17:31.596 INFO  Linux 7.0.0-1014-aws amd64
+[2026-10-29T12:17:31.910Z] 12:17:31.663 INFO  User cache: /var/lib/jenkins/.sonar/cache
+[2026-10-29T12:17:33.255Z] 12:17:33.059 INFO  JRE provisioning: os[linux], arch[x86_64]
+[2026-10-29T12:17:37.382Z] 12:17:37.128 INFO  Communicating with SonarQube Server 26.10.0.133078
+[2026-10-29T12:17:37.633Z] 12:17:37.591 INFO  Starting SonarScanner Engine...
+[2026-10-29T12:17:37.633Z] 12:17:37.591 INFO  Java 21.0.12.1 Eclipse Adoptium (64-bit)
+[2026-10-29T12:17:39.498Z] 12:17:39.192 INFO  Load global settings
+[2026-10-29T12:17:39.498Z] 12:17:39.431 INFO  Load global settings (done) | time=236ms
+[2026-10-29T12:17:39.498Z] 12:17:39.438 INFO  Server id: 147B411E-AaGHk2sd1SAma4lUt3Yj
+[2026-10-29T12:17:39.498Z] 12:17:39.460 INFO  Loading required plugins
+[2026-10-29T12:17:39.498Z] 12:17:39.463 INFO  Load plugins index
+[2026-10-29T12:17:39.749Z] 12:17:39.603 INFO  Load plugins index (done) | time=98ms
+[2026-10-29T12:17:39.749Z] 12:17:39.607 INFO  Load/download plugins
+[2026-10-29T12:17:40.662Z] 12:17:40.327 INFO  Load/download plugins (done) | time=763ms
+[2026-10-29T12:17:41.219Z] 12:17:41.171 INFO  Load project settings for component key: 'blogapp'
+[2026-10-29T12:17:41.470Z] 12:17:41.245 INFO  Process project properties
+[2026-10-29T12:17:41.471Z] 12:17:41.281 INFO  Process project properties (done) | time=35ms
+[2026-10-29T12:17:41.471Z] 12:17:41.314 INFO  Project key: blogapp
+[2026-10-29T12:17:41.471Z] 12:17:41.315 INFO  Base dir: /var/lib/jenkins/workspace/blogapp-cicd
+[2026-10-29T12:17:41.472Z] 12:17:41.319 INFO  Working dir: /var/lib/jenkins/workspace/blogapp-cicd/.scannerwork
+[2026-10-29T12:17:41.722Z] 12:17:41.699 INFO  Load quality profiles
+[2026-10-29T12:17:42.286Z] 12:17:42.078 INFO  Load quality profiles (done) | time=378ms
+[2026-10-29T12:17:42.286Z] 12:17:42.127 INFO  Auto-configuring with CI 'Jenkins'
+[2026-10-29T12:17:42.286Z] 12:17:42.217 INFO  Load active rules
+[2026-10-29T12:17:43.202Z] 12:17:43.184 INFO  Load active rules (done) | time=971ms
+[2026-10-29T12:17:43.453Z] 12:17:43.207 INFO  Load analysis cache
+[2026-10-29T12:17:43.453Z] 12:17:43.232 INFO  Load analysis cache (404) | time=24ms
+[2026-10-29T12:17:43.453Z] 12:17:43.372 INFO  Preprocessing files...
+[2026-10-29T12:17:43.707Z] 12:17:43.505 INFO  2 languages detected in 20 preprocessed files (done) | time=132ms
+[2026-10-29T12:17:43.707Z] 12:17:43.508 INFO  0 files ignored because of inclusion/exclusion patterns
+[2026-10-29T12:17:43.707Z] 12:17:43.508 INFO  0 files ignored because of scm ignore settings
+[2026-10-29T12:17:43.707Z] 12:17:43.514 INFO  Loading plugins for detected languages
+[2026-10-29T12:17:43.707Z] 12:17:43.518 INFO  Load/download plugins
+[2026-10-29T12:17:45.052Z] 12:17:44.977 INFO  Load/download plugins (done) | time=1461ms
+[2026-10-29T12:17:45.609Z] 12:17:45.351 INFO  Load project repositories
+[2026-10-29T12:17:45.609Z] 12:17:45.382 INFO  Load project repositories (done) | time=30ms
+[2026-10-29T12:17:45.609Z] 12:17:45.492 INFO  Indexing files...
+[2026-10-29T12:17:45.609Z] 12:17:45.493 INFO  Project configuration:
+[2026-10-29T12:17:45.609Z] 12:17:45.493 INFO    Excluded sources: **/node_modules/**, **/dist/**, **/coverage/**
+[2026-10-29T12:17:45.609Z] 12:17:45.513 INFO  20 files indexed (done) | time=22ms
+[2026-10-29T12:17:45.609Z] 12:17:45.516 INFO  Quality profile for css: Sonar way core
+[2026-10-29T12:17:45.609Z] 12:17:45.517 INFO  Quality profile for js: Sonar way core
+[2026-10-29T12:17:45.609Z] 12:17:45.517 INFO  ------------- Run sensors on module BlogApp (Marginal)
+[2026-10-29T12:17:45.609Z] 12:17:45.603 INFO  Load metrics repository
+[2026-10-29T12:17:45.866Z] 12:17:45.694 INFO  Load metrics repository (done) | time=90ms
+[2026-10-29T12:17:46.781Z] 12:17:46.555 INFO  Reflections took 162 ms to scan 1 urls, producing 30 keys and 303 values
+[2026-10-29T12:17:47.032Z] 12:17:46.849 INFO  Sensor IaC YAML File Type Classification Sensor [iac]
+[2026-10-29T12:17:47.032Z] 12:17:46.858 INFO  Sensor IaC YAML File Type Classification Sensor [iac] (done) | time=7ms
+[2026-10-29T12:17:47.032Z] 12:17:46.860 INFO  Sensor IaC hadolint report Sensor [iac]
+[2026-10-29T12:17:47.032Z] 12:17:46.861 INFO  Sensor IaC hadolint report Sensor [iac] (done) | time=0ms
+[2026-10-29T12:17:47.032Z] 12:17:46.861 INFO  Sensor Java Config Sensor [iac]
+[2026-10-29T12:17:47.032Z] 12:17:46.861 INFO  There are no files to be analyzed for the Java language
+[2026-10-29T12:17:47.032Z] 12:17:46.863 INFO  Sensor Java Config Sensor [iac] (done) | time=0ms
+[2026-10-29T12:17:47.032Z] 12:17:46.863 INFO  Sensor IaC Docker Sensor [iac]
+[2026-10-29T12:17:47.032Z] 12:17:46.872 INFO  There are no files to be analyzed for the Docker language
+[2026-10-29T12:17:47.034Z] 12:17:46.872 INFO  Sensor IaC Docker Sensor [iac] (done) | time=11ms
+[2026-10-29T12:17:47.034Z] 12:17:46.875 INFO  Sensor HTML [web]
+[2026-10-29T12:17:47.034Z] 12:17:46.887 INFO  Sensor HTML [web] (done) | time=15ms
+[2026-10-29T12:17:47.034Z] 12:17:46.888 INFO  Sensor JavaScript/TypeScript Coverage [javascript]
+[2026-10-29T12:17:47.034Z] 12:17:46.888 INFO  Analysing [/var/lib/jenkins/workspace/blogapp-cicd/backend/coverage/lcov.info]
+[2026-10-29T12:17:47.034Z] 12:17:46.959 INFO  Sensor JavaScript/TypeScript Coverage [javascript] (done) | time=70ms
+[2026-10-29T12:17:47.034Z] 12:17:46.959 INFO  Sensor TextAndSecretsSensor [text]
+[2026-10-29T12:17:47.034Z] 12:17:46.983 INFO  Available processors: 2
+[2026-10-29T12:17:47.034Z] 12:17:46.987 INFO  Using 2 threads for analysis.
+[2026-10-29T12:17:47.947Z] 12:17:47.635 INFO  Start fetching files for the text and secrets analysis
+[2026-10-29T12:17:47.948Z] 12:17:47.648 INFO  Using Git CLI to retrieve dirty files
+[2026-10-29T12:17:47.948Z] 12:17:47.662 INFO  Retrieving language associated files and files included via "sonar.text.inclusions" that are tracked by git
+[2026-10-29T12:17:47.948Z] 12:17:47.665 INFO  Starting the text and secrets analysis
+[2026-10-29T12:17:47.948Z] 12:17:47.670 INFO  20 source files to be analyzed for the text and secrets analysis
+[2026-10-29T12:17:47.948Z] 12:17:47.821 INFO  20/20 source files have been analyzed for the text and secrets analysis
+[2026-10-29T12:17:47.948Z] 12:17:47.827 INFO  Sensor TextAndSecretsSensor [text] (done) | time=867ms
+[2026-10-29T12:17:47.948Z] 12:17:47.832 INFO  ------------- Run sensors on project
+[2026-10-29T12:17:48.499Z] 12:17:48.399 INFO  Sensor JavaScript/TypeScript/CSS analysis [javascript]
+[2026-10-29T12:17:49.052Z] 12:17:48.838 INFO  Detected os: Linux arch: amd64 alpine: false. Platform: LINUX_X64
+[2026-10-29T12:17:49.052Z] 12:17:48.839 INFO  Deploy location /var/lib/jenkins/.sonar/js/node-runtime, tagetRuntime: /var/lib/jenkins/.sonar/js/node-runtime/node,  version: /var/lib/jenkins/.sonar/js/node-runtime/version.txt
+[2026-10-29T12:17:54.253Z] 12:17:53.319 INFO  Using embedded Node.js runtime.
+[2026-10-29T12:17:54.253Z] 12:17:53.320 INFO  Using Node.js executable: '/var/lib/jenkins/.sonar/js/node-runtime/node'.
+[2026-10-29T12:17:57.485Z] 12:17:56.803 INFO  Memory configuration: OS (7816 MB), Node.js (2240 MB).
+[2026-10-29T12:17:57.485Z] 12:17:56.817 INFO  gRPC analyze-project server listening on 127.0.0.1:43211
+[2026-10-29T12:17:57.737Z] 12:17:57.564 INFO  Plugin version: [14.0.0.46108]
+[2026-10-29T12:18:01.864Z] 12:18:01.470 INFO  Found 0 tsconfig.json file(s): []
+[2026-10-29T12:18:08.351Z] 12:18:07.551 INFO  20 source files to be analyzed
+[2026-10-29T12:18:08.351Z] 12:18:07.554 INFO  Analyzing 19 file(s) using default options [lib: lib.esnext.d.ts, lib.dom.d.ts]
+[2026-10-29T12:18:08.351Z] 12:18:07.554 INFO  20/20 source files have been analyzed
+[2026-10-29T12:18:08.351Z] 12:18:07.569 INFO  Hit the cache for 0 out of 19
+[2026-10-29T12:18:08.352Z] 12:18:07.571 INFO  Miss the cache for 19 out of 19: ANALYSIS_MODE_INELIGIBLE [19/19]
+[2026-10-29T12:18:08.352Z] 12:18:07.571 INFO  Sensor JavaScript/TypeScript/CSS analysis [javascript] (done) | time=19171ms
+[2026-10-29T12:18:08.352Z] 12:18:07.574 INFO  Sensor IaC Project Sensor [iac]
+[2026-10-29T12:18:08.352Z] 12:18:07.575 INFO  Sensor IaC Project Sensor [iac] (done) | time=2ms
+[2026-10-29T12:18:08.352Z] 12:18:07.576 INFO  Sensor Zero Coverage Sensor
+[2026-10-29T12:18:08.353Z] 12:18:07.591 INFO  Sensor Zero Coverage Sensor (done) | time=17ms
+[2026-10-29T12:18:08.353Z] 12:18:07.591 INFO  ------------- Gather SCA dependencies on project
+[2026-10-29T12:18:08.353Z] 12:18:07.613 INFO  Dependency analysis skipped
+[2026-10-29T12:18:08.353Z] 12:18:07.620 INFO  SCM Publisher SCM provider for this project is: git
+[2026-10-29T12:18:08.353Z] 12:18:07.623 INFO  SCM Publisher 20 source files to be analyzed
+[2026-10-29T12:18:08.604Z] 12:18:08.452 INFO  SCM Publisher 20/20 source files have been analyzed (done) | time=828ms
+[2026-10-29T12:18:08.604Z] 12:18:08.469 INFO  CPD Executor 2 files had no CPD blocks
+[2026-10-29T12:18:08.604Z] 12:18:08.471 INFO  CPD Executor Calculating CPD for 17 files
+[2026-10-29T12:18:08.604Z] 12:18:08.522 INFO  CPD Executor CPD calculation finished (done) | time=51ms
+[2026-10-29T12:18:08.604Z] 12:18:08.538 INFO  SCM revision ID '29944b26fd5ef3b25d8de8e018fd7c02cd843a4c'
+[2026-10-29T12:18:09.157Z] 12:18:08.911 INFO  Analysis report generated in 368ms, dir size=276.6 kB
+[2026-10-29T12:18:09.157Z] 12:18:08.983 INFO  Analysis report compressed in 73ms, zip size=109.1 kB
+[2026-10-29T12:18:10.070Z] 12:18:09.755 INFO  Analysis report uploaded in 769ms
+[2026-10-29T12:18:10.070Z] 12:18:09.758 INFO  ANALYSIS SUCCESSFUL, you can find the results at: http://localhost:9000/dashboard?id=blogapp
+[2026-10-29T12:18:10.070Z] 12:18:09.759 INFO  Note that you will be able to access the updated dashboard once the server has processed the submitted analysis report
+[2026-10-29T12:18:10.070Z] 12:18:09.764 INFO  More about the report processing at http://localhost:9000/api/ce/task?id=9f266f75-cc82-4842-8f46-7832c0b6f9cf
+[2026-10-29T12:18:10.070Z] 12:18:09.972 INFO  Analysis total time: 32.294 s
+[2026-10-29T12:18:10.070Z] 12:18:09.979 INFO  SonarScanner Engine completed successfully
+[2026-10-29T12:18:10.070Z] 12:18:10.051 INFO  EXECUTION SUCCESS
+[2026-10-29T12:18:10.070Z] 12:18:10.053 INFO  Total time: 38.595s
+[Pipeline] }
+[Pipeline] // withSonarQubeEnv
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Quality Gate)
+[Pipeline] timeout
+[2026-10-29T12:18:11.271Z] Timeout set to expire in 10 min
+[Pipeline] {
+[Pipeline] waitForQualityGate
+[2026-10-29T12:18:11.435Z] Checking status of SonarQube task '9f266f75-cc82-4842-8f46-7832c0b6f9cf' on server 'sonarqube-server'
+[2026-10-29T12:18:11.634Z] SonarQube task '9f266f75-cc82-4842-8f46-7832c0b6f9cf' status is 'IN_PROGRESS'
+[2026-10-29T12:18:19.116Z] SonarQube task '9f266f75-cc82-4842-8f46-7832c0b6f9cf' status is 'SUCCESS'
+[2026-10-29T12:18:19.116Z] SonarQube task '9f266f75-cc82-4842-8f46-7832c0b6f9cf' completed. Quality gate is 'OK'
+[Pipeline] }
+[Pipeline] // timeout
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Trivy Filesystem Scan)
+[Pipeline] sh
+[2026-10-29T12:18:19.880Z] + trivy fs --scanners vuln,secret,misconfig --severity CRITICAL,HIGH,MEDIUM --skip-dirs **/node_modules --skip-dirs frontend/dist --exit-code 0 --format table -o trivy-fs-report.txt .
+[2026-10-29T12:18:21.227Z] 2026-10-29T12:18:20Z	INFO	[vulndb] Need to update DB
+[2026-10-29T12:18:21.227Z] 2026-10-29T12:18:20Z	INFO	[vulndb] Downloading vulnerability DB...
+[2026-10-29T12:18:21.227Z] 2026-10-29T12:18:20Z	INFO	[vulndb] Downloading artifact...	repo="mirror.gcr.io/aquasec/trivy-db:2"
+[2026-10-29T12:18:35.572Z] 223.25 KiB / 130.44 MiB [>___________________________________________________________] 0.17% ? p/s ?2.08 MiB / 130.44 MiB [>_____________________________________________________________] 1.59% ? p/s ?13.50 MiB / 130.44 MiB [------>_____________________________________________________] 10.35% ? p/s ?26.95 MiB / 130.44 MiB [--------->_____________________________________] 20.66% 44.62 MiB p/s ETA 2s40.12 MiB / 130.44 MiB [-------------->________________________________] 30.75% 44.62 MiB p/s ETA 2s53.26 MiB / 130.44 MiB [------------------->___________________________] 40.83% 44.62 MiB p/s ETA 1s67.07 MiB / 130.44 MiB [------------------------>______________________] 51.42% 46.05 MiB p/s ETA 1s79.65 MiB / 130.44 MiB [---------------------------->__________________] 61.06% 46.05 MiB p/s ETA 1s93.59 MiB / 130.44 MiB [--------------------------------->_____________] 71.75% 46.05 MiB p/s ETA 0s106.15 MiB / 130.44 MiB [------------------------------------->________] 81.37% 47.28 MiB p/s ETA 0s120.07 MiB / 130.44 MiB [------------------------------------------>___] 92.05% 47.28 MiB p/s ETA 0s130.44 MiB / 130.44 MiB [-------------------------------------------->] 100.00% 47.28 MiB p/s ETA 0s130.44 MiB / 130.44 MiB [-------------------------------------------->] 100.00% 46.84 MiB p/s ETA 0s130.44 MiB / 130.44 MiB [-------------------------------------------->] 100.00% 46.84 MiB p/s ETA 0s130.44 MiB / 130.44 MiB [-------------------------------------------->] 100.00% 46.84 MiB p/s ETA 0s130.44 MiB / 130.44 MiB [-------------------------------------------->] 100.00% 43.82 MiB p/s ETA 0s130.44 MiB / 130.44 MiB [-------------------------------------------->] 100.00% 43.82 MiB p/s ETA 0s130.44 MiB / 130.44 MiB [-------------------------------------------->] 100.00% 43.82 MiB p/s ETA 0s130.44 MiB / 130.44 MiB [-------------------------------------------->] 100.00% 40.99 MiB p/s ETA 0s130.44 MiB / 130.44 MiB [-------------------------------------------->] 100.00% 40.99 MiB p/s ETA 0s130.44 MiB / 130.44 MiB [-------------------------------------------->] 100.00% 40.99 MiB p/s ETA 0s130.44 MiB / 130.44 MiB [-------------------------------------------->] 100.00% 38.35 MiB p/s ETA 0s130.44 MiB / 130.44 MiB [-------------------------------------------->] 100.00% 38.35 MiB p/s ETA 0s130.44 MiB / 130.44 MiB [-------------------------------------------->] 100.00% 35.88 MiB p/s ETA 0s130.44 MiB / 130.44 MiB [-------------------------------------------->] 100.00% 35.88 MiB p/s ETA 0s130.44 MiB / 130.44 MiB [-------------------------------------------->] 100.00% 35.88 MiB p/s ETA 0s130.44 MiB / 130.44 MiB [-------------------------------------------->] 100.00% 33.56 MiB p/s ETA 0s130.44 MiB / 130.44 MiB [-------------------------------------------->] 100.00% 33.56 MiB p/s ETA 0s130.44 MiB / 130.44 MiB [-------------------------------------------->] 100.00% 33.56 MiB p/s ETA 0s130.44 MiB / 130.44 MiB [-------------------------------------------->] 100.00% 31.40 MiB p/s ETA 0s130.44 MiB / 130.44 MiB [-------------------------------------------->] 100.00% 31.40 MiB p/s ETA 0s130.44 MiB / 130.44 MiB [-------------------------------------------->] 100.00% 31.40 MiB p/s ETA 0s130.44 MiB / 130.44 MiB [-------------------------------------------->] 100.00% 29.37 MiB p/s ETA 0s130.44 MiB / 130.44 MiB [-------------------------------------------->] 100.00% 29.37 MiB p/s ETA 0s130.44 MiB / 130.44 MiB [-------------------------------------------->] 100.00% 29.37 MiB p/s ETA 0s130.44 MiB / 130.44 MiB [-------------------------------------------->] 100.00% 27.48 MiB p/s ETA 0s130.44 MiB / 130.44 MiB [-------------------------------------------->] 100.00% 27.48 MiB p/s ETA 0s130.44 MiB / 130.44 MiB [-------------------------------------------->] 100.00% 27.48 MiB p/s ETA 0s130.44 MiB / 130.44 MiB [-------------------------------------------->] 100.00% 25.70 MiB p/s ETA 0s130.44 MiB / 130.44 MiB [-------------------------------------------->] 100.00% 25.70 MiB p/s ETA 0s130.44 MiB / 130.44 MiB [-------------------------------------------->] 100.00% 25.70 MiB p/s ETA 0s130.44 MiB / 130.44 MiB [-------------------------------------------->] 100.00% 24.04 MiB p/s ETA 0s130.44 MiB / 130.44 MiB [-------------------------------------------->] 100.00% 24.04 MiB p/s ETA 0s130.44 MiB / 130.44 MiB [-------------------------------------------->] 100.00% 24.04 MiB p/s ETA 0s130.44 MiB / 130.44 MiB [-------------------------------------------->] 100.00% 22.49 MiB p/s ETA 0s130.44 MiB / 130.44 MiB [-------------------------------------------->] 100.00% 22.49 MiB p/s ETA 0s130.44 MiB / 130.44 MiB [-------------------------------------------->] 100.00% 22.49 MiB p/s ETA 0s130.44 MiB / 130.44 MiB [-------------------------------------------->] 100.00% 21.04 MiB p/s ETA 0s130.44 MiB / 130.44 MiB [-------------------------------------------->] 100.00% 21.04 MiB p/s ETA 0s130.44 MiB / 130.44 MiB [-------------------------------------------------] 100.00% 9.78 MiB p/s 14s2026-10-29T12:18:35Z	INFO	[vulndb] Artifact successfully downloaded	repo="mirror.gcr.io/aquasec/trivy-db:2"
+[2026-10-29T12:18:35.572Z] 2026-10-29T12:18:35Z	INFO	[vuln] Vulnerability scanning is enabled
+[2026-10-29T12:18:35.572Z] 2026-10-29T12:18:35Z	INFO	[misconfig] Misconfiguration scanning is enabled
+[2026-10-29T12:18:35.572Z] 2026-10-29T12:18:35Z	INFO	[checks-client] Need to update the checks bundle
+[2026-10-29T12:18:35.572Z] 2026-10-29T12:18:35Z	INFO	[checks-client] Downloading the checks bundle...
+[2026-10-29T12:18:38.784Z] 207.25 KiB / 234.57 KiB [---------------------------------------------------->______] 88.35% ? p/s ?234.57 KiB / 234.57 KiB [-----------------------------------------------] 100.00% 2.95 MiB p/s 300ms2026-10-29T12:18:38Z	INFO	[secret] Secret scanning is enabled
+[2026-10-29T12:18:38.784Z] 2026-10-29T12:18:38Z	INFO	[secret] If your scanning is slow, please try '--scanners vuln,misconfig' to disable secret scanning
+[2026-10-29T12:18:38.784Z] 2026-10-29T12:18:38Z	INFO	[secret] Please see https://trivy.dev/docs/v0.76/guide/scanner/secret#recommendation for faster secret detection
+[2026-10-29T12:18:40.649Z] 2026-10-29T12:18:40Z	INFO	[npm] Run "npm install" to collect the license information of packages	dir="backend/node_modules"
+[2026-10-29T12:18:40.649Z] 2026-10-29T12:18:40Z	INFO	[npm] Run "npm install" to collect the license information of packages	dir="frontend/node_modules"
+[2026-10-29T12:18:40.649Z] 2026-10-29T12:18:40Z	INFO	Suppressing dependencies for development and testing. To display them, try the '--include-dev-deps' flag.
+[2026-10-29T12:18:40.649Z] 2026-10-29T12:18:40Z	INFO	Number of language-specific files	num=2
+[2026-10-29T12:18:40.649Z] 2026-10-29T12:18:40Z	INFO	[npm] Detecting vulnerabilities...
+[2026-10-29T12:18:40.649Z] 2026-10-29T12:18:40Z	INFO	Detected config files	num=21
+[2026-10-29T12:18:40.649Z] + trivy fs --scanners vuln,secret --severity CRITICAL,HIGH --skip-dirs **/node_modules --skip-dirs frontend/dist --ignore-unfixed --exit-code 1 .
+[2026-10-29T12:18:40.649Z] 2026-10-29T12:18:40Z	INFO	[vuln] Vulnerability scanning is enabled
+[2026-10-29T12:18:40.649Z] 2026-10-29T12:18:40Z	INFO	[secret] Secret scanning is enabled
+[2026-10-29T12:18:40.649Z] 2026-10-29T12:18:40Z	INFO	[secret] If your scanning is slow, please try '--scanners vuln' to disable secret scanning
+[2026-10-29T12:18:40.649Z] 2026-10-29T12:18:40Z	INFO	[secret] Please see https://trivy.dev/docs/v0.76/guide/scanner/secret#recommendation for faster secret detection
+[2026-10-29T12:18:40.900Z] 2026-10-29T12:18:40Z	INFO	[npm] Run "npm install" to collect the license information of packages	dir="backend/node_modules"
+[2026-10-29T12:18:40.900Z] 2026-10-29T12:18:40Z	INFO	[npm] Run "npm install" to collect the license information of packages	dir="frontend/node_modules"
+[2026-10-29T12:18:40.900Z] 2026-10-29T12:18:40Z	INFO	Suppressing dependencies for development and testing. To display them, try the '--include-dev-deps' flag.
+[2026-10-29T12:18:40.900Z] 2026-10-29T12:18:40Z	INFO	Number of language-specific files	num=2
+[2026-10-29T12:18:40.900Z] 2026-10-29T12:18:40Z	INFO	[npm] Detecting vulnerabilities...
+[2026-10-29T12:18:40.900Z] 
+[2026-10-29T12:18:40.900Z] Report Summary
+[2026-10-29T12:18:40.900Z] 
+[2026-10-29T12:18:40.900Z] ┌────────────────────────────┬──────┬─────────────────┬─────────┐
+[2026-10-29T12:18:40.900Z] │           Target           │ Type │ Vulnerabilities │ Secrets │
+[2026-10-29T12:18:40.900Z] ├────────────────────────────┼──────┼─────────────────┼─────────┤
+[2026-10-29T12:18:40.900Z] │ backend/package-lock.json  │ npm  │        0        │    -    │
+[2026-10-29T12:18:40.900Z] ├────────────────────────────┼──────┼─────────────────┼─────────┤
+[2026-10-29T12:18:40.900Z] │ frontend/package-lock.json │ npm  │        0        │    -    │
+[2026-10-29T12:18:40.900Z] └────────────────────────────┴──────┴─────────────────┴─────────┘
+[2026-10-29T12:18:40.900Z] Legend:
+[2026-10-29T12:18:40.900Z] - '-': Not scanned
+[2026-10-29T12:18:40.900Z] - '0': Clean (no security findings detected)
+[2026-10-29T12:18:40.900Z] 
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Package & Publish Artifacts to Nexus)
+[Pipeline] sh
+[2026-10-29T12:18:41.316Z] + mkdir -p dist-artifacts
+[2026-10-29T12:18:41.316Z] + cd backend
+[2026-10-29T12:18:41.316Z] + npm pack --pack-destination ../dist-artifacts
+[2026-10-29T12:18:43.182Z] npm notice
+[2026-10-29T12:18:43.183Z] npm notice 📦  blogapp-backend@1.0.0
+[2026-10-29T12:18:43.183Z] npm notice Tarball Contents
+[2026-10-29T12:18:43.183Z] npm notice 93B .dockerignore
+[2026-10-29T12:18:43.183Z] npm notice 159B .env.example
+[2026-10-29T12:18:43.183Z] npm notice 229B .eslintrc.json
+[2026-10-29T12:18:43.183Z] npm notice 955B Dockerfile
+[2026-10-29T12:18:43.183Z] npm notice 5.4kB coverage/lcov-report/base.css
+[2026-10-29T12:18:43.183Z] npm notice 2.7kB coverage/lcov-report/block-navigation.js
+[2026-10-29T12:18:43.183Z] npm notice 445B coverage/lcov-report/favicon.png
+[2026-10-29T12:18:43.183Z] npm notice 6.4kB coverage/lcov-report/index.html
+[2026-10-29T12:18:43.183Z] npm notice 676B coverage/lcov-report/prettify.css
+[2026-10-29T12:18:43.183Z] npm notice 17.6kB coverage/lcov-report/prettify.js
+[2026-10-29T12:18:43.183Z] npm notice 138B coverage/lcov-report/sort-arrow-sprite.png
+[2026-10-29T12:18:43.183Z] npm notice 6.7kB coverage/lcov-report/sorter.js
+[2026-10-29T12:18:43.183Z] npm notice 6.5kB coverage/lcov-report/src/config/db.js.html
+[2026-10-29T12:18:43.183Z] npm notice 4.4kB coverage/lcov-report/src/config/index.html
+[2026-10-29T12:18:43.183Z] npm notice 4.4kB coverage/lcov-report/src/index.html
+[2026-10-29T12:18:43.183Z] npm notice 7.5kB coverage/lcov-report/src/middleware/auth.js.html
+[2026-10-29T12:18:43.183Z] npm notice 4.5kB coverage/lcov-report/src/middleware/index.html
+[2026-10-29T12:18:43.183Z] npm notice 12.7kB coverage/lcov-report/src/routes/auth.js.html
+[2026-10-29T12:18:43.183Z] npm notice 5.1kB coverage/lcov-report/src/routes/index.html
+[2026-10-29T12:18:43.183Z] npm notice 21.0kB coverage/lcov-report/src/routes/posts.js.html
+[2026-10-29T12:18:43.183Z] npm notice 15.8kB coverage/lcov-report/src/server.js.html
+[2026-10-29T12:18:43.183Z] npm notice 3.5kB coverage/lcov.info
+[2026-10-29T12:18:43.183Z] npm notice 967B package.json
+[2026-10-29T12:18:43.183Z] npm notice 613B src/config/db.js
+[2026-10-29T12:18:43.183Z] npm notice 920B src/middleware/auth.js
+[2026-10-29T12:18:43.183Z] npm notice 2.7kB src/routes/auth.js
+[2026-10-29T12:18:43.183Z] npm notice 4.7kB src/routes/posts.js
+[2026-10-29T12:18:43.183Z] npm notice 3.0kB src/server.js
+[2026-10-29T12:18:43.183Z] npm notice 5.4kB tests/api.test.js
+[2026-10-29T12:18:43.183Z] npm notice Tarball Details
+[2026-10-29T12:18:43.183Z] npm notice name: blogapp-backend
+[2026-10-29T12:18:43.183Z] npm notice version: 1.0.0
+[2026-10-29T12:18:43.183Z] npm notice filename: blogapp-backend-1.0.0.tgz
+[2026-10-29T12:18:43.183Z] npm notice package size: 29.3 kB
+[2026-10-29T12:18:43.183Z] npm notice unpacked size: 145.0 kB
+[2026-10-29T12:18:43.183Z] npm notice shasum: 456e641761f09af90a2e1e7ae4a6d53caedeea7b
+[2026-10-29T12:18:43.183Z] npm notice integrity: sha512-0/lgkjfl0zHhm[...]fNSikDbbpKPVw==
+[2026-10-29T12:18:43.183Z] npm notice total files: 29
+[2026-10-29T12:18:43.183Z] npm notice
+[2026-10-29T12:18:43.183Z] blogapp-backend-1.0.0.tgz
+[2026-10-29T12:18:43.183Z] + tar -czf dist-artifacts/blogapp-frontend-1-29944b2.tar.gz -C frontend/dist .
+[2026-10-29T12:18:43.183Z] + mv dist-artifacts/blogapp-backend-1.0.0.tgz dist-artifacts/blogapp-backend-1-29944b2.tgz
+[2026-10-29T12:18:43.183Z] + cp database/init.sql dist-artifacts/blogapp-db-init-1-29944b2.sql
+[2026-10-29T12:18:43.183Z] + ls -lh dist-artifacts
+[2026-10-29T12:18:43.183Z] total 96K
+[2026-10-29T12:18:43.183Z] -rw-r--r-- 1 jenkins jenkins  29K Oct 29 12:18 blogapp-backend-1-29944b2.tgz
+[2026-10-29T12:18:43.183Z] -rw-r--r-- 1 jenkins jenkins 3.0K Oct 29 12:18 blogapp-db-init-1-29944b2.sql
+[2026-10-29T12:18:43.183Z] -rw-r--r-- 1 jenkins jenkins  59K Oct 29 12:18 blogapp-frontend-1-29944b2.tar.gz
+[Pipeline] withCredentials
+[2026-10-29T12:18:43.317Z] Masking supported pattern matches of $NEXUS_PASS
+[Pipeline] {
+[Pipeline] sh
+[2026-10-29T12:18:43.615Z] + basename dist-artifacts/blogapp-backend-1-29944b2.tgz
+[2026-10-29T12:18:43.615Z] + echo Uploading blogapp-backend-1-29944b2.tgz
+[2026-10-29T12:18:43.620Z] Uploading blogapp-backend-1-29944b2.tgz
+[2026-10-29T12:18:43.620Z] + basename dist-artifacts/blogapp-backend-1-29944b2.tgz
+[2026-10-29T12:18:43.620Z] + curl -fsS -u admin:**** --upload-file dist-artifacts/blogapp-backend-1-29944b2.tgz http://localhost:8081/repository/blogapp-artifacts/blogapp/1-29944b2/blogapp-backend-1-29944b2.tgz
+[2026-10-29T12:18:43.871Z] + basename dist-artifacts/blogapp-db-init-1-29944b2.sql
+[2026-10-29T12:18:43.871Z] + echo Uploading blogapp-db-init-1-29944b2.sql
+[2026-10-29T12:18:43.871Z] Uploading blogapp-db-init-1-29944b2.sql
+[2026-10-29T12:18:43.871Z] + basename dist-artifacts/blogapp-db-init-1-29944b2.sql
+[2026-10-29T12:18:43.871Z] + curl -fsS -u admin:**** --upload-file dist-artifacts/blogapp-db-init-1-29944b2.sql http://localhost:8081/repository/blogapp-artifacts/blogapp/1-29944b2/blogapp-db-init-1-29944b2.sql
+[2026-10-29T12:18:44.121Z] + basename dist-artifacts/blogapp-frontend-1-29944b2.tar.gz
+[2026-10-29T12:18:44.121Z] + echo Uploading blogapp-frontend-1-29944b2.tar.gz
+[2026-10-29T12:18:44.121Z] Uploading blogapp-frontend-1-29944b2.tar.gz
+[2026-10-29T12:18:44.121Z] + basename dist-artifacts/blogapp-frontend-1-29944b2.tar.gz
+[2026-10-29T12:18:44.122Z] + curl -fsS -u admin:**** --upload-file dist-artifacts/blogapp-frontend-1-29944b2.tar.gz http://localhost:8081/repository/blogapp-artifacts/blogapp/1-29944b2/blogapp-frontend-1-29944b2.tar.gz
+[Pipeline] }
+[Pipeline] // withCredentials
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Docker Build)
+[Pipeline] parallel
+[Pipeline] { (Branch: Backend image)
+[Pipeline] { (Branch: Frontend image)
+[Pipeline] stage
+[Pipeline] { (Backend image)
+[Pipeline] stage
+[Pipeline] { (Frontend image)
+[Pipeline] sh
+[Pipeline] sh
+[2026-10-29T12:18:44.998Z] + docker build --pull -t blogapp-backend:1-29944b2 --label org.opencontainers.image.revision=29944b2 ./backend
+[2026-10-29T12:18:45.061Z] + docker build --pull -t blogapp-frontend:1-29944b2 --label org.opencontainers.image.revision=29944b2 ./frontend
+[2026-10-29T12:18:46.342Z] #0 building with "default" instance using docker driver
+[2026-10-29T12:18:46.343Z] 
+[2026-10-29T12:18:46.343Z] #1 [internal] load build definition from Dockerfile
+[2026-10-29T12:18:46.343Z] #1 transferring dockerfile: 994B 0.0s done
+[2026-10-29T12:18:46.343Z] #1 DONE 0.1s
+[2026-10-29T12:18:46.343Z] 
+[2026-10-29T12:18:46.343Z] #2 [internal] load metadata for docker.io/library/node:22-alpine
+[2026-10-29T12:18:46.409Z] #0 building with "default" instance using docker driver
+[2026-10-29T12:18:46.409Z] 
+[2026-10-29T12:18:46.409Z] #1 [internal] load build definition from Dockerfile
+[2026-10-29T12:18:46.409Z] #1 transferring dockerfile: 884B 0.0s done
+[2026-10-29T12:18:46.409Z] #1 DONE 0.1s
+[2026-10-29T12:18:46.409Z] 
+[2026-10-29T12:18:46.409Z] #2 [internal] load metadata for docker.io/nginxinc/nginx-unprivileged:stable-alpine
+[2026-10-29T12:18:48.271Z] #2 DONE 2.0s
+[2026-10-29T12:18:48.271Z] 
+[2026-10-29T12:18:48.271Z] #3 [internal] load metadata for docker.io/library/node:22-alpine
+[2026-10-29T12:18:48.271Z] #3 DONE 2.1s
+[2026-10-29T12:18:48.271Z] 
+[2026-10-29T12:18:48.271Z] #4 [internal] load .dockerignore
+[2026-10-29T12:18:48.271Z] #4 transferring context:
+[2026-10-29T12:18:48.523Z] #4 transferring context: 109B done
+[2026-10-29T12:18:48.523Z] #4 DONE 0.0s
+[2026-10-29T12:18:48.523Z] 
+[2026-10-29T12:18:48.523Z] #5 [internal] load build context
+[2026-10-29T12:18:48.523Z] #5 DONE 0.0s
+[2026-10-29T12:18:48.523Z] 
+[2026-10-29T12:18:48.523Z] #6 [build 1/6] FROM docker.io/library/node:22-alpine@sha256:fe4f6d74e20370acb04ad889077d14d0f64a9c8ea6a42bc60cddf1e844699914
+[2026-10-29T12:18:48.523Z] #6 resolve docker.io/library/node:22-alpine@sha256:fe4f6d74e20370acb04ad889077d14d0f64a9c8ea6a42bc60cddf1e844699914 0.1s done
+[2026-10-29T12:18:48.523Z] #6 DONE 0.1s
+[2026-10-29T12:18:48.523Z] 
+[2026-10-29T12:18:48.523Z] #7 [stage-1 1/4] FROM docker.io/nginxinc/nginx-unprivileged:stable-alpine@sha256:f5116ed4606f3eb015dd4a8e28cb9b351476dc0ad4bc6e9f93b19cec130cdf03
+[2026-10-29T12:18:48.523Z] #7 resolve docker.io/nginxinc/nginx-unprivileged:stable-alpine@sha256:f5116ed4606f3eb015dd4a8e28cb9b351476dc0ad4bc6e9f93b19cec130cdf03 0.0s done
+[2026-10-29T12:18:48.523Z] #7 DONE 0.1s
+[2026-10-29T12:18:48.775Z] 
+[2026-10-29T12:18:48.775Z] #5 [internal] load build context
+[2026-10-29T12:18:48.775Z] #5 transferring context: 133.45kB 0.0s done
+[2026-10-29T12:18:48.775Z] #5 DONE 0.1s
+[2026-10-29T12:18:48.775Z] 
+[2026-10-29T12:18:48.775Z] #6 [build 1/6] FROM docker.io/library/node:22-alpine@sha256:fe4f6d74e20370acb04ad889077d14d0f64a9c8ea6a42bc60cddf1e844699914
+[2026-10-29T12:18:48.775Z] #6 DONE 0.2s
+[2026-10-29T12:18:48.775Z] 
+[2026-10-29T12:18:48.775Z] #7 [stage-1 1/4] FROM docker.io/nginxinc/nginx-unprivileged:stable-alpine@sha256:f5116ed4606f3eb015dd4a8e28cb9b351476dc0ad4bc6e9f93b19cec130cdf03
+[2026-10-29T12:18:48.828Z] #2 DONE 2.1s
+[2026-10-29T12:18:48.828Z] 
+[2026-10-29T12:18:48.828Z] #3 [internal] load .dockerignore
+[2026-10-29T12:18:48.828Z] #3 transferring context: 133B done
+[2026-10-29T12:18:48.828Z] #3 DONE 0.0s
+[2026-10-29T12:18:48.828Z] 
+[2026-10-29T12:18:48.828Z] #4 [internal] load build context
+[2026-10-29T12:18:48.828Z] #4 transferring context: 240.12kB 0.0s done
+[2026-10-29T12:18:48.828Z] #4 DONE 0.1s
+[2026-10-29T12:18:48.828Z] 
+[2026-10-29T12:18:48.828Z] #5 [build 1/6] FROM docker.io/library/node:22-alpine@sha256:fe4f6d74e20370acb04ad889077d14d0f64a9c8ea6a42bc60cddf1e844699914
+[2026-10-29T12:18:48.828Z] #5 resolve docker.io/library/node:22-alpine@sha256:fe4f6d74e20370acb04ad889077d14d0f64a9c8ea6a42bc60cddf1e844699914 0.1s done
+[2026-10-29T12:18:48.828Z] #5 DONE 0.2s
+[2026-10-29T12:18:48.828Z] 
+[2026-10-29T12:18:48.828Z] #5 [build 1/6] FROM docker.io/library/node:22-alpine@sha256:fe4f6d74e20370acb04ad889077d14d0f64a9c8ea6a42bc60cddf1e844699914
+[2026-10-29T12:18:48.828Z] #5 extracting sha256:7b229517ed222597277036d94892173207d01a731ab3a88eeb1de2e963a2c788
+[2026-10-29T12:18:48.828Z] #5 sha256:304511616d6a6d472222f696b9045e20dc90e8043b2a8ba2acb61746595781f3 0B / 442B 0.2s
+[2026-10-29T12:18:48.828Z] #5 extracting sha256:7b229517ed222597277036d94892173207d01a731ab3a88eeb1de2e963a2c788 0.3s done
+[2026-10-29T12:18:48.828Z] #5 sha256:7246d4c6a55dd0f8dd00d2e63aece3a68d91e6a5d04c4e748fc2706897d96312 0B / 1.26MB 0.2s
+[2026-10-29T12:18:48.828Z] #5 sha256:8776aa3d2ba7247a375d06dcec03856b99dbb0e16e904a5672d3bf08c852d4f1 0B / 56.22MB 0.2s
+[2026-10-29T12:18:49.026Z] #7 sha256:ff3fbed5e913226bf2387e1f4d75e910ef4959d6149f1e8fed749e924227e07e 0B / 17.35MB 0.2s
+[2026-10-29T12:18:49.026Z] #7 sha256:911bd3a49d26bae1ce395def8d5e3c2b306275ffbbfd47355bac30d2e095935e 0B / 1.40kB 0.2s
+[2026-10-29T12:18:49.078Z] #5 sha256:304511616d6a6d472222f696b9045e20dc90e8043b2a8ba2acb61746595781f3 442B / 442B 0.3s done
+[2026-10-29T12:18:49.276Z] #7 sha256:ff3fbed5e913226bf2387e1f4d75e910ef4959d6149f1e8fed749e924227e07e 5.24MB / 17.35MB 0.3s
+[2026-10-29T12:18:49.329Z] #5 sha256:7246d4c6a55dd0f8dd00d2e63aece3a68d91e6a5d04c4e748fc2706897d96312 1.26MB / 1.26MB 0.5s done
+[2026-10-29T12:18:49.329Z] #5 sha256:8776aa3d2ba7247a375d06dcec03856b99dbb0e16e904a5672d3bf08c852d4f1 3.15MB / 56.22MB 0.6s
+[2026-10-29T12:18:49.527Z] #7 sha256:ff3fbed5e913226bf2387e1f4d75e910ef4959d6149f1e8fed749e924227e07e 17.35MB / 17.35MB 0.5s done
+[2026-10-29T12:18:49.527Z] #7 sha256:911bd3a49d26bae1ce395def8d5e3c2b306275ffbbfd47355bac30d2e095935e 1.40kB / 1.40kB 0.4s done
+[2026-10-29T12:18:49.527Z] #7 sha256:511976c6ab3d18f06369d88a401beb8fa48862cb60d8a025a4dd51cc092a5565 0B / 1.20kB 0.2s
+[2026-10-29T12:18:49.527Z] #7 sha256:511976c6ab3d18f06369d88a401beb8fa48862cb60d8a025a4dd51cc092a5565 1.20kB / 1.20kB 0.3s done
+[2026-10-29T12:18:49.580Z] #5 sha256:8776aa3d2ba7247a375d06dcec03856b99dbb0e16e904a5672d3bf08c852d4f1 11.53MB / 56.22MB 0.8s
+[2026-10-29T12:18:49.580Z] #5 sha256:8776aa3d2ba7247a375d06dcec03856b99dbb0e16e904a5672d3bf08c852d4f1 25.17MB / 56.22MB 0.9s
+[2026-10-29T12:18:49.778Z] #7 sha256:3cbf0502908f3bd4ec5e5dc3aeb3da0bc1c6690ac394a16fecebb8af91ae1c1f 404B / 404B 0.2s done
+[2026-10-29T12:18:49.778Z] #7 sha256:0513567031b18f3d5d8fc07e4ce48950f2a51d493a05045755763fb41f76076f 0B / 964B 0.2s
+[2026-10-29T12:18:49.778Z] #7 sha256:a13b501623601157699cbc90849b0c6c89c00d01ccaf41f038157454b44c2c9a 0B / 628B 0.2s
+[2026-10-29T12:18:49.778Z] #7 sha256:0513567031b18f3d5d8fc07e4ce48950f2a51d493a05045755763fb41f76076f 964B / 964B 0.3s done
+[2026-10-29T12:18:49.778Z] #7 sha256:a13b501623601157699cbc90849b0c6c89c00d01ccaf41f038157454b44c2c9a 628B / 628B 0.2s done
+[2026-10-29T12:18:49.778Z] #7 sha256:a13df183ba7f55b6feb80b286c9028f1c64432c5aeffa748f6c530e0abf4770e 0B / 2.79kB 0.2s
+[2026-10-29T12:18:49.831Z] #5 sha256:8776aa3d2ba7247a375d06dcec03856b99dbb0e16e904a5672d3bf08c852d4f1 35.65MB / 56.22MB 1.1s
+[2026-10-29T12:18:49.831Z] #5 sha256:8776aa3d2ba7247a375d06dcec03856b99dbb0e16e904a5672d3bf08c852d4f1 49.28MB / 56.22MB 1.2s
+[2026-10-29T12:18:50.028Z] #7 sha256:a13df183ba7f55b6feb80b286c9028f1c64432c5aeffa748f6c530e0abf4770e 2.79kB / 2.79kB 0.2s done
+[2026-10-29T12:18:50.029Z] #7 sha256:618365c073173c14719b1175033543c9185a5b93aa837004b92993c9d28cce43 4.36MB / 4.36MB 0.3s done
+[2026-10-29T12:18:50.029Z] #7 sha256:e2de96513ba9eb53b431787ec8a65cdde380ac4772a3e4c4b714dcfde2a102b5 0B / 3.85MB 0.2s
+[2026-10-29T12:18:50.082Z] #5 sha256:8776aa3d2ba7247a375d06dcec03856b99dbb0e16e904a5672d3bf08c852d4f1 56.22MB / 56.22MB 1.4s done
+[2026-10-29T12:18:50.279Z] #7 sha256:e2de96513ba9eb53b431787ec8a65cdde380ac4772a3e4c4b714dcfde2a102b5 3.85MB / 3.85MB 0.2s done
+[2026-10-29T12:18:50.279Z] #7 extracting sha256:e2de96513ba9eb53b431787ec8a65cdde380ac4772a3e4c4b714dcfde2a102b5
+[2026-10-29T12:18:50.279Z] #7 extracting sha256:e2de96513ba9eb53b431787ec8a65cdde380ac4772a3e4c4b714dcfde2a102b5 0.3s done
+[2026-10-29T12:18:50.279Z] #7 DONE 1.9s
+[2026-10-29T12:18:50.279Z] 
+[2026-10-29T12:18:50.279Z] #6 [build 1/6] FROM docker.io/library/node:22-alpine@sha256:fe4f6d74e20370acb04ad889077d14d0f64a9c8ea6a42bc60cddf1e844699914
+[2026-10-29T12:18:50.279Z] #6 extracting sha256:7b229517ed222597277036d94892173207d01a731ab3a88eeb1de2e963a2c788 0.3s done
+[2026-10-29T12:18:50.279Z] #6 sha256:304511616d6a6d472222f696b9045e20dc90e8043b2a8ba2acb61746595781f3 442B / 442B 0.3s done
+[2026-10-29T12:18:50.279Z] #6 sha256:7246d4c6a55dd0f8dd00d2e63aece3a68d91e6a5d04c4e748fc2706897d96312 1.26MB / 1.26MB 0.5s done
+[2026-10-29T12:18:50.279Z] #6 sha256:8776aa3d2ba7247a375d06dcec03856b99dbb0e16e904a5672d3bf08c852d4f1 56.22MB / 56.22MB 1.4s done
+[2026-10-29T12:18:50.279Z] #6 extracting sha256:8776aa3d2ba7247a375d06dcec03856b99dbb0e16e904a5672d3bf08c852d4f1
+[2026-10-29T12:18:50.333Z] #5 extracting sha256:8776aa3d2ba7247a375d06dcec03856b99dbb0e16e904a5672d3bf08c852d4f1
+[2026-10-29T12:18:50.830Z] #6 ...
+[2026-10-29T12:18:50.830Z] 
+[2026-10-29T12:18:50.830Z] #7 [stage-1 1/4] FROM docker.io/nginxinc/nginx-unprivileged:stable-alpine@sha256:f5116ed4606f3eb015dd4a8e28cb9b351476dc0ad4bc6e9f93b19cec130cdf03
+[2026-10-29T12:18:50.830Z] #7 extracting sha256:618365c073173c14719b1175033543c9185a5b93aa837004b92993c9d28cce43 0.4s done
+[2026-10-29T12:18:50.830Z] #7 DONE 2.3s
+[2026-10-29T12:18:50.830Z] 
+[2026-10-29T12:18:50.830Z] #7 [stage-1 1/4] FROM docker.io/nginxinc/nginx-unprivileged:stable-alpine@sha256:f5116ed4606f3eb015dd4a8e28cb9b351476dc0ad4bc6e9f93b19cec130cdf03
+[2026-10-29T12:18:50.830Z] #7 extracting sha256:a13df183ba7f55b6feb80b286c9028f1c64432c5aeffa748f6c530e0abf4770e 0.0s done
+[2026-10-29T12:18:50.830Z] #7 extracting sha256:a13b501623601157699cbc90849b0c6c89c00d01ccaf41f038157454b44c2c9a 0.0s done
+[2026-10-29T12:18:50.830Z] #7 extracting sha256:0513567031b18f3d5d8fc07e4ce48950f2a51d493a05045755763fb41f76076f 0.0s done
+[2026-10-29T12:18:50.830Z] #7 extracting sha256:3cbf0502908f3bd4ec5e5dc3aeb3da0bc1c6690ac394a16fecebb8af91ae1c1f 0.0s done
+[2026-10-29T12:18:50.830Z] #7 extracting sha256:511976c6ab3d18f06369d88a401beb8fa48862cb60d8a025a4dd51cc092a5565 0.0s done
+[2026-10-29T12:18:50.830Z] #7 extracting sha256:911bd3a49d26bae1ce395def8d5e3c2b306275ffbbfd47355bac30d2e095935e 0.0s done
+[2026-10-29T12:18:50.830Z] #7 DONE 2.4s
+[2026-10-29T12:18:50.830Z] 
+[2026-10-29T12:18:50.830Z] #6 [build 1/6] FROM docker.io/library/node:22-alpine@sha256:fe4f6d74e20370acb04ad889077d14d0f64a9c8ea6a42bc60cddf1e844699914
+[2026-10-29T12:18:51.744Z] #6 ...
+[2026-10-29T12:18:51.744Z] 
+[2026-10-29T12:18:51.744Z] #7 [stage-1 1/4] FROM docker.io/nginxinc/nginx-unprivileged:stable-alpine@sha256:f5116ed4606f3eb015dd4a8e28cb9b351476dc0ad4bc6e9f93b19cec130cdf03
+[2026-10-29T12:18:51.744Z] #7 extracting sha256:ff3fbed5e913226bf2387e1f4d75e910ef4959d6149f1e8fed749e924227e07e 1.0s done
+[2026-10-29T12:18:51.744Z] #7 DONE 3.4s
+[2026-10-29T12:18:51.996Z] 
+[2026-10-29T12:18:51.996Z] #8 [stage-1 2/4] RUN apk upgrade --no-cache
+[2026-10-29T12:18:53.341Z] #8 ...
+[2026-10-29T12:18:53.341Z] 
+[2026-10-29T12:18:53.341Z] #6 [build 1/6] FROM docker.io/library/node:22-alpine@sha256:fe4f6d74e20370acb04ad889077d14d0f64a9c8ea6a42bc60cddf1e844699914
+[2026-10-29T12:18:53.341Z] #6 extracting sha256:8776aa3d2ba7247a375d06dcec03856b99dbb0e16e904a5672d3bf08c852d4f1 3.1s done
+[2026-10-29T12:18:53.341Z] #6 extracting sha256:7246d4c6a55dd0f8dd00d2e63aece3a68d91e6a5d04c4e748fc2706897d96312 0.1s done
+[2026-10-29T12:18:53.341Z] #6 DONE 4.8s
+[2026-10-29T12:18:53.341Z] 
+[2026-10-29T12:18:53.341Z] #6 [build 1/6] FROM docker.io/library/node:22-alpine@sha256:fe4f6d74e20370acb04ad889077d14d0f64a9c8ea6a42bc60cddf1e844699914
+[2026-10-29T12:18:53.341Z] #6 extracting sha256:304511616d6a6d472222f696b9045e20dc90e8043b2a8ba2acb61746595781f3 0.0s done
+[2026-10-29T12:18:53.341Z] #6 DONE 4.8s
+[2026-10-29T12:18:53.341Z] 
+[2026-10-29T12:18:53.341Z] #8 [stage-1 2/4] RUN apk upgrade --no-cache
+[2026-10-29T12:18:53.341Z] #8 1.574 ( 1/10) Upgrading musl (1.2.6-r2 -> 1.2.6-r3)
+[2026-10-29T12:18:53.562Z] #5 extracting sha256:8776aa3d2ba7247a375d06dcec03856b99dbb0e16e904a5672d3bf08c852d4f1 3.1s done
+[2026-10-29T12:18:53.562Z] #5 DONE 4.7s
+[2026-10-29T12:18:53.562Z] 
+[2026-10-29T12:18:53.562Z] #5 [build 1/6] FROM docker.io/library/node:22-alpine@sha256:fe4f6d74e20370acb04ad889077d14d0f64a9c8ea6a42bc60cddf1e844699914
+[2026-10-29T12:18:53.562Z] #5 extracting sha256:7246d4c6a55dd0f8dd00d2e63aece3a68d91e6a5d04c4e748fc2706897d96312 0.1s done
+[2026-10-29T12:18:53.562Z] #5 DONE 4.8s
+[2026-10-29T12:18:53.562Z] 
+[2026-10-29T12:18:53.562Z] #5 [build 1/6] FROM docker.io/library/node:22-alpine@sha256:fe4f6d74e20370acb04ad889077d14d0f64a9c8ea6a42bc60cddf1e844699914
+[2026-10-29T12:18:53.562Z] #5 extracting sha256:304511616d6a6d472222f696b9045e20dc90e8043b2a8ba2acb61746595781f3 0.0s done
+[2026-10-29T12:18:53.562Z] #5 DONE 4.8s
+[2026-10-29T12:18:53.562Z] 
+[2026-10-29T12:18:53.562Z] #6 [build 2/6] WORKDIR /app
+[2026-10-29T12:18:53.593Z] #8 1.586 ( 2/10) Upgrading alpine-release (3.24.2-r0 -> 3.24.3-r0)
+[2026-10-29T12:18:53.593Z] #8 1.592 ( 3/10) Upgrading zlib (1.3.2-r0 -> 1.3.2-r1)
+[2026-10-29T12:18:53.593Z] #8 1.595 ( 4/10) Upgrading ca-certificates-bundle (20260909-r0 -> 20261020-r0)
+[2026-10-29T12:18:53.593Z] #8 1.600 ( 5/10) Upgrading ca-certificates (20260909-r0 -> 20261020-r0)
+[2026-10-29T12:18:53.593Z] #8 1.615 ( 6/10) Upgrading brotli-libs (1.2.0-r1 -> 1.2.1-r0)
+[2026-10-29T12:18:53.593Z] #8 1.630 ( 7/10) Upgrading c-ares (1.34.8-r0 -> 1.34.9-r0)
+[2026-10-29T12:18:53.593Z] #8 1.652 ( 8/10) Upgrading libcurl (8.22.0-r0 -> 8.23.0-r0)
+[2026-10-29T12:18:53.593Z] #8 1.661 ( 9/10) Upgrading curl (8.22.0-r0 -> 8.23.0-r0)
+[2026-10-29T12:18:53.593Z] #8 1.667 (10/10) Upgrading musl-utils (1.2.6-r2 -> 1.2.6-r3)
+[2026-10-29T12:18:53.593Z] #8 1.670 Executing busybox-1.37.0-r31.trigger
+[2026-10-29T12:18:53.593Z] #8 1.688 Executing ca-certificates-20261020-r0.trigger
+[2026-10-29T12:18:53.844Z] #8 1.725 OK: 51.2 MiB in 70 packages
+[2026-10-29T12:18:54.095Z] #8 ...
+[2026-10-29T12:18:54.095Z] 
+[2026-10-29T12:18:54.095Z] #9 [build 2/6] WORKDIR /app
+[2026-10-29T12:18:54.095Z] #9 DONE 0.9s
+[2026-10-29T12:18:54.113Z] #6 DONE 0.9s
+[2026-10-29T12:18:54.346Z] 
+[2026-10-29T12:18:54.346Z] #8 [stage-1 2/4] RUN apk upgrade --no-cache
+[2026-10-29T12:18:54.346Z] #8 DONE 2.3s
+[2026-10-29T12:18:54.346Z] 
+[2026-10-29T12:18:54.346Z] #10 [stage-1 3/4] COPY default.conf.template /etc/nginx/templates/default.conf.template
+[2026-10-29T12:18:54.346Z] #10 ...
+[2026-10-29T12:18:54.346Z] 
+[2026-10-29T12:18:54.346Z] #11 [build 3/6] COPY package.json package-lock.json ./
+[2026-10-29T12:18:54.346Z] #11 DONE 0.2s
+[2026-10-29T12:18:54.346Z] 
+[2026-10-29T12:18:54.346Z] #10 [stage-1 3/4] COPY default.conf.template /etc/nginx/templates/default.conf.template
+[2026-10-29T12:18:54.346Z] #10 DONE 0.2s
+[2026-10-29T12:18:54.346Z] 
+[2026-10-29T12:18:54.346Z] #12 [build 4/6] RUN npm ci
+[2026-10-29T12:18:54.367Z] 
+[2026-10-29T12:18:54.367Z] #7 [deps 3/4] COPY package.json package-lock.json* ./
+[2026-10-29T12:18:54.367Z] #7 DONE 0.2s
+[2026-10-29T12:18:54.367Z] 
+[2026-10-29T12:18:54.367Z] #8 [stage-1 3/6] RUN apk upgrade --no-cache && apk add --no-cache tini  && rm -rf /usr/local/lib/node_modules/npm /usr/local/lib/node_modules/corepack            /usr/local/bin/npm /usr/local/bin/npx /usr/local/bin/corepack /opt/yarn* /usr/local/bin/yarn*
+[2026-10-29T12:18:55.711Z] #8 1.515 OK: 10.9 MiB in 19 packages
+[2026-10-29T12:18:57.058Z] #8 2.623 (1/1) Installing tini (0.19.0-r3)
+[2026-10-29T12:18:57.058Z] #8 2.626 Executing busybox-1.37.0-r31.trigger
+[2026-10-29T12:18:57.058Z] #8 2.751 OK: 10.9 MiB in 20 packages
+[2026-10-29T12:18:57.609Z] #8 DONE 3.3s
+[2026-10-29T12:18:57.610Z] 
+[2026-10-29T12:18:57.610Z] #9 [deps 4/4] RUN if [ -f package-lock.json ]; then npm ci --omit=dev; else npm install --omit=dev; fi  && npm cache clean --force
+[2026-10-29T12:19:00.121Z] #9 5.752 npm warn deprecated prom-client@15.1.3: prom-client has been replaced by @prometheus-io/client
+[2026-10-29T12:19:00.850Z] #12 5.393 npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+[2026-10-29T12:19:00.850Z] #12 5.536 npm warn deprecated @humanwhocodes/config-array@0.13.0: Use @eslint/config-array instead
+[2026-10-29T12:19:00.850Z] #12 5.591 npm warn deprecated @humanwhocodes/object-schema@2.0.3: Use @eslint/object-schema instead
+[2026-10-29T12:19:00.850Z] #12 5.611 npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+[2026-10-29T12:19:00.850Z] #12 5.712 npm warn deprecated glob@7.2.3: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+[2026-10-29T12:19:02.002Z] #9 7.445 
+[2026-10-29T12:19:02.002Z] #9 7.445 added 117 packages, and audited 118 packages in 7s
+[2026-10-29T12:19:02.002Z] #9 7.445 
+[2026-10-29T12:19:02.002Z] #9 7.445 25 packages are looking for funding
+[2026-10-29T12:19:02.002Z] #9 7.445   run `npm fund` for details
+[2026-10-29T12:19:02.002Z] #9 7.448 
+[2026-10-29T12:19:02.002Z] #9 7.448 found 0 vulnerabilities
+[2026-10-29T12:19:02.002Z] #9 7.451 npm notice
+[2026-10-29T12:19:02.002Z] #9 7.451 npm notice New major version of npm available! 10.9.9 -> 12.2.1
+[2026-10-29T12:19:02.003Z] #9 7.451 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+[2026-10-29T12:19:02.003Z] #9 7.451 npm notice To update run: npm install -g npm@12.2.1
+[2026-10-29T12:19:02.003Z] #9 7.451 npm notice
+[2026-10-29T12:19:02.253Z] #9 7.803 npm warn using --force Recommended protections disabled.
+[2026-10-29T12:19:02.804Z] #9 DONE 8.6s
+[2026-10-29T12:19:03.716Z] 
+[2026-10-29T12:19:03.716Z] #10 [stage-1 4/6] COPY --from=deps --chown=node:node /app/node_modules ./node_modules
+[2026-10-29T12:19:04.269Z] #10 DONE 0.7s
+[2026-10-29T12:19:04.269Z] 
+[2026-10-29T12:19:04.269Z] #11 [stage-1 5/6] COPY --chown=node:node package.json ./
+[2026-10-29T12:19:04.521Z] #11 DONE 0.2s
+[2026-10-29T12:19:04.521Z] 
+[2026-10-29T12:19:04.521Z] #12 [stage-1 6/6] COPY --chown=node:node src ./src
+[2026-10-29T12:19:04.521Z] #12 DONE 0.1s
+[2026-10-29T12:19:04.788Z] 
+[2026-10-29T12:19:04.788Z] #13 exporting to image
+[2026-10-29T12:19:04.788Z] #13 exporting layers
+[2026-10-29T12:19:04.977Z] #12 10.75 npm warn deprecated eslint@8.57.1: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+[2026-10-29T12:19:05.529Z] #12 11.19 
+[2026-10-29T12:19:05.529Z] #12 11.19 added 164 packages, and audited 165 packages in 10s
+[2026-10-29T12:19:05.529Z] #12 11.19 
+[2026-10-29T12:19:05.529Z] #12 11.19 32 packages are looking for funding
+[2026-10-29T12:19:05.529Z] #12 11.19   run `npm fund` for details
+[2026-10-29T12:19:05.529Z] #12 11.28 
+[2026-10-29T12:19:05.529Z] #12 11.28 6 vulnerabilities (3 moderate, 3 high)
+[2026-10-29T12:19:05.529Z] #12 11.28 
+[2026-10-29T12:19:05.529Z] #12 11.28 To address issues that do not require attention, run:
+[2026-10-29T12:19:05.529Z] #12 11.28   npm audit fix
+[2026-10-29T12:19:05.529Z] #12 11.28 
+[2026-10-29T12:19:05.529Z] #12 11.28 To address all issues (including breaking changes), run:
+[2026-10-29T12:19:05.529Z] #12 11.28   npm audit fix --force
+[2026-10-29T12:19:05.529Z] #12 11.28 
+[2026-10-29T12:19:05.529Z] #12 11.28 Run `npm audit` for details.
+[2026-10-29T12:19:05.529Z] #12 11.29 npm notice
+[2026-10-29T12:19:05.529Z] #12 11.29 npm notice New major version of npm available! 10.9.9 -> 12.2.1
+[2026-10-29T12:19:05.529Z] #12 11.29 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+[2026-10-29T12:19:05.529Z] #12 11.29 npm notice To update run: npm install -g npm@12.2.1
+[2026-10-29T12:19:05.529Z] #12 11.29 npm notice
+[2026-10-29T12:19:05.781Z] #12 DONE 11.5s
+[2026-10-29T12:19:06.034Z] 
+[2026-10-29T12:19:06.034Z] #13 [build 5/6] COPY . .
+[2026-10-29T12:19:06.034Z] #13 DONE 0.2s
+[2026-10-29T12:19:06.285Z] 
+[2026-10-29T12:19:06.285Z] #14 [build 6/6] RUN npm run build
+[2026-10-29T12:19:06.650Z] #13 exporting layers 1.9s done
+[2026-10-29T12:19:06.650Z] #13 exporting manifest sha256:3f74d9e0fa123f2b28787314e42a0f16c9d9d587ed573abce69b90684adf0f81
+[2026-10-29T12:19:06.650Z] #13 exporting manifest sha256:3f74d9e0fa123f2b28787314e42a0f16c9d9d587ed573abce69b90684adf0f81 0.0s done
+[2026-10-29T12:19:06.650Z] #13 exporting config sha256:86c361fdb6e4111f58698ed67797d784e06e502d2318d0add6cbc6964e1797fa 0.0s done
+[2026-10-29T12:19:06.650Z] #13 exporting attestation manifest sha256:679d753036bd450b678813a0190a15dff6b102824672efb2623c753e98ee5f42 0.0s done
+[2026-10-29T12:19:06.650Z] #13 exporting manifest list sha256:1e98837fefa5bb41ee57a00343061be36457c188337cb43e3e08e75843b15514
+[2026-10-29T12:19:06.650Z] #13 exporting manifest list sha256:1e98837fefa5bb41ee57a00343061be36457c188337cb43e3e08e75843b15514 0.0s done
+[2026-10-29T12:19:06.650Z] #13 naming to docker.io/library/blogapp-backend:1-29944b2 done
+[2026-10-29T12:19:06.650Z] #13 unpacking to docker.io/library/blogapp-backend:1-29944b2
+[2026-10-29T12:19:06.837Z] #14 0.613 
+[2026-10-29T12:19:06.837Z] #14 0.613 > blogapp-frontend@1.0.0 build
+[2026-10-29T12:19:06.837Z] #14 0.613 > vite build
+[2026-10-29T12:19:06.837Z] #14 0.613 
+[2026-10-29T12:19:07.404Z] #14 1.280 vite v5.4.21 building for production...
+[2026-10-29T12:19:07.655Z] #14 1.616 transforming...
+[2026-10-29T12:19:10.791Z] #13 unpacking to docker.io/library/blogapp-backend:1-29944b2 3.9s done
+[2026-10-29T12:19:10.791Z] #13 DONE 5.9s
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[2026-10-29T12:19:11.805Z] #14 5.515 ✓ 45 modules transformed.
+[2026-10-29T12:19:11.805Z] #14 5.765 rendering chunks...
+[2026-10-29T12:19:12.056Z] #14 5.774 computing gzip size...
+[2026-10-29T12:19:12.056Z] #14 5.795 dist/index.html                   0.94 kB │ gzip:  0.49 kB
+[2026-10-29T12:19:12.056Z] #14 5.795 dist/assets/index-C-hzGyab.css    7.76 kB │ gzip:  2.28 kB
+[2026-10-29T12:19:12.056Z] #14 5.795 dist/assets/index-JXVfb9TF.js   175.24 kB │ gzip: 56.51 kB
+[2026-10-29T12:19:12.056Z] #14 5.795 ✓ built in 4.27s
+[2026-10-29T12:19:12.307Z] #14 DONE 6.1s
+[2026-10-29T12:19:12.307Z] 
+[2026-10-29T12:19:12.307Z] #15 [stage-1 4/4] COPY --from=build /app/dist /usr/share/nginx/html
+[2026-10-29T12:19:12.307Z] #15 DONE 0.1s
+[2026-10-29T12:19:12.557Z] 
+[2026-10-29T12:19:12.557Z] #16 exporting to image
+[2026-10-29T12:19:12.557Z] #16 exporting layers
+[2026-10-29T12:19:13.112Z] #16 exporting layers 0.6s done
+[2026-10-29T12:19:13.112Z] #16 exporting manifest sha256:0962bd81e6c658f6fc7db0f4f0bbb581add0ed955a90f85f84597682e813e666 0.0s done
+[2026-10-29T12:19:13.112Z] #16 exporting config sha256:262d7712a0cd58a482b807db0ce0027eb0bb886e510d0a3780f24707ab49753d 0.0s done
+[2026-10-29T12:19:13.112Z] #16 exporting attestation manifest sha256:f2073758d16656db2baa35a4067fa81dd1e1b38e1b3a67bae317be3d2cc3bead 0.0s done
+[2026-10-29T12:19:13.112Z] #16 exporting manifest list sha256:a48cdc3a7e8445f8fb72c62309fdd1604a6252867d351e17f34424e13ffbe4be 0.0s done
+[2026-10-29T12:19:13.112Z] #16 naming to docker.io/library/blogapp-frontend:1-29944b2
+[2026-10-29T12:19:13.112Z] #16 naming to docker.io/library/blogapp-frontend:1-29944b2 done
+[2026-10-29T12:19:13.112Z] #16 unpacking to docker.io/library/blogapp-frontend:1-29944b2
+[2026-10-29T12:19:14.456Z] #16 unpacking to docker.io/library/blogapp-frontend:1-29944b2 1.3s done
+[2026-10-29T12:19:14.456Z] #16 DONE 2.0s
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // parallel
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Trivy Image Scan)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] sh
+[2026-10-29T12:19:15.434Z] + trivy image --severity CRITICAL,HIGH,MEDIUM --exit-code 0 --format table -o trivy-blogapp-backend-report.txt blogapp-backend:1-29944b2
+[2026-10-29T12:19:15.435Z] 2026-10-29T12:19:15Z	INFO	[vuln] Vulnerability scanning is enabled
+[2026-10-29T12:19:15.435Z] 2026-10-29T12:19:15Z	INFO	[secret] Secret scanning is enabled
+[2026-10-29T12:19:15.435Z] 2026-10-29T12:19:15Z	INFO	[secret] If your scanning is slow, please try '--scanners vuln' to disable secret scanning
+[2026-10-29T12:19:15.435Z] 2026-10-29T12:19:15Z	INFO	[secret] Please see https://trivy.dev/docs/v0.76/guide/scanner/secret#recommendation for faster secret detection
+[2026-10-29T12:19:20.632Z] 2026-10-29T12:19:20Z	INFO	Detected OS	family="alpine" version="3.24.3"
+[2026-10-29T12:19:20.632Z] 2026-10-29T12:19:20Z	INFO	[alpine] Detecting vulnerabilities...	os_version="3.24" repository="3.24" pkg_num=20
+[2026-10-29T12:19:20.632Z] 2026-10-29T12:19:20Z	INFO	Number of language-specific files	num=1
+[2026-10-29T12:19:20.632Z] 2026-10-29T12:19:20Z	INFO	[node-pkg] Detecting vulnerabilities...
+[2026-10-29T12:19:20.632Z] + trivy image --severity CRITICAL,HIGH --ignore-unfixed --exit-code 1 blogapp-backend:1-29944b2
+[2026-10-29T12:19:20.632Z] 2026-10-29T12:19:20Z	INFO	[vuln] Vulnerability scanning is enabled
+[2026-10-29T12:19:20.632Z] 2026-10-29T12:19:20Z	INFO	[secret] Secret scanning is enabled
+[2026-10-29T12:19:20.632Z] 2026-10-29T12:19:20Z	INFO	[secret] If your scanning is slow, please try '--scanners vuln' to disable secret scanning
+[2026-10-29T12:19:20.632Z] 2026-10-29T12:19:20Z	INFO	[secret] Please see https://trivy.dev/docs/v0.76/guide/scanner/secret#recommendation for faster secret detection
+[2026-10-29T12:19:20.632Z] 2026-10-29T12:19:20Z	INFO	Detected OS	family="alpine" version="3.24.3"
+[2026-10-29T12:19:20.632Z] 2026-10-29T12:19:20Z	INFO	[alpine] Detecting vulnerabilities...	os_version="3.24" repository="3.24" pkg_num=20
+[2026-10-29T12:19:20.632Z] 2026-10-29T12:19:20Z	INFO	Number of language-specific files	num=1
+[2026-10-29T12:19:20.632Z] 2026-10-29T12:19:20Z	INFO	[node-pkg] Detecting vulnerabilities...
+[2026-10-29T12:19:20.632Z] 
+[2026-10-29T12:19:20.632Z] Report Summary
+[2026-10-29T12:19:20.632Z] 
+[2026-10-29T12:19:20.632Z] ┌───────────────────────────────────────────────────────────────────────┬──────────┬─────────────────┬─────────┐
+[2026-10-29T12:19:20.632Z] │                                Target                                 │   Type   │ Vulnerabilities │ Secrets │
+[2026-10-29T12:19:20.632Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.632Z] │ blogapp-backend:1-29944b2 (alpine 3.24.3)                             │  alpine  │        0        │    -    │
+[2026-10-29T12:19:20.632Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.632Z] │ app/node_modules/@opentelemetry/api/package.json                      │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.632Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.632Z] │ app/node_modules/@types/node/package.json                             │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.632Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.632Z] │ app/node_modules/accepts/package.json                                 │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.632Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.632Z] │ app/node_modules/array-flatten/package.json                           │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.632Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.632Z] │ app/node_modules/aws-ssl-profiles/package.json                        │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.632Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.632Z] │ app/node_modules/basic-auth/node_modules/safe-buffer/package.json     │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.632Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.632Z] │ app/node_modules/basic-auth/package.json                              │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.633Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.633Z] │ app/node_modules/bcryptjs/package.json                                │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.633Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.633Z] │ app/node_modules/bintrees/package.json                                │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.633Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.633Z] │ app/node_modules/body-parser/node_modules/debug/package.json          │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.633Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.633Z] │ app/node_modules/body-parser/node_modules/ms/package.json             │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.633Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.633Z] │ app/node_modules/body-parser/package.json                             │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.633Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.633Z] │ app/node_modules/buffer-equal-constant-time/package.json              │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.633Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.633Z] │ app/node_modules/bytes/package.json                                   │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.633Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.633Z] │ app/node_modules/call-bind-apply-helpers/package.json                 │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.633Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.633Z] │ app/node_modules/call-bound/package.json                              │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.633Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.633Z] │ app/node_modules/content-disposition/package.json                     │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.633Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.633Z] │ app/node_modules/content-type/package.json                            │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.633Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.633Z] │ app/node_modules/cookie-signature/package.json                        │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.633Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.633Z] │ app/node_modules/cookie/package.json                                  │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.633Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.633Z] │ app/node_modules/cors/package.json                                    │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.633Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.633Z] │ app/node_modules/depd/package.json                                    │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.633Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.633Z] │ app/node_modules/destroy/package.json                                 │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.633Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.633Z] │ app/node_modules/dotenv/package.json                                  │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.633Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.633Z] │ app/node_modules/dunder-proto/package.json                            │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.633Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.633Z] │ app/node_modules/ecdsa-sig-formatter/package.json                     │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.633Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.633Z] │ app/node_modules/ee-first/package.json                                │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.633Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.633Z] │ app/node_modules/encodeurl/package.json                               │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.633Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.633Z] │ app/node_modules/es-define-property/package.json                      │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.633Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.633Z] │ app/node_modules/es-errors/package.json                               │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.633Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.633Z] │ app/node_modules/es-object-atoms/package.json                         │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.633Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.633Z] │ app/node_modules/escape-html/package.json                             │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.633Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.633Z] │ app/node_modules/etag/package.json                                    │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.633Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.633Z] │ app/node_modules/express-rate-limit/package.json                      │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.633Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.633Z] │ app/node_modules/express-validator/package.json                       │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.633Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.633Z] │ app/node_modules/express/node_modules/debug/package.json              │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.633Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.633Z] │ app/node_modules/express/node_modules/ms/package.json                 │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.633Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.634Z] │ app/node_modules/express/package.json                                 │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.634Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.634Z] │ app/node_modules/finalhandler/node_modules/debug/package.json         │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.634Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.634Z] │ app/node_modules/finalhandler/node_modules/ms/package.json            │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.634Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.634Z] │ app/node_modules/finalhandler/package.json                            │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.634Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.634Z] │ app/node_modules/forwarded/package.json                               │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.634Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.634Z] │ app/node_modules/fresh/package.json                                   │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.634Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.634Z] │ app/node_modules/function-bind/package.json                           │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.634Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.634Z] │ app/node_modules/generate-function/package.json                       │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.634Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.634Z] │ app/node_modules/get-intrinsic/package.json                           │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.634Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.634Z] │ app/node_modules/get-proto/package.json                               │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.634Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.634Z] │ app/node_modules/gopd/package.json                                    │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.634Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.634Z] │ app/node_modules/has-symbols/package.json                             │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.634Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.634Z] │ app/node_modules/hasown/package.json                                  │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.634Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.634Z] │ app/node_modules/helmet/package.json                                  │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.634Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.634Z] │ app/node_modules/http-errors/package.json                             │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.634Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.634Z] │ app/node_modules/iconv-lite/package.json                              │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.634Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.634Z] │ app/node_modules/inherits/package.json                                │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.634Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.634Z] │ app/node_modules/ipaddr.js/package.json                               │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.634Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.635Z] │ app/node_modules/is-property/package.json                             │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.635Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.635Z] │ app/node_modules/jsonwebtoken/node_modules/semver/package.json        │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.635Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.635Z] │ app/node_modules/jsonwebtoken/package.json                            │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.635Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.635Z] │ app/node_modules/jwa/package.json                                     │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.635Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.635Z] │ app/node_modules/jws/package.json                                     │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.635Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.635Z] │ app/node_modules/lodash.includes/package.json                         │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.635Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.635Z] │ app/node_modules/lodash.isboolean/package.json                        │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.635Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.635Z] │ app/node_modules/lodash.isinteger/package.json                        │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.635Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.635Z] │ app/node_modules/lodash.isnumber/package.json                         │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.635Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.635Z] │ app/node_modules/lodash.isplainobject/package.json                    │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.635Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.635Z] │ app/node_modules/lodash.isstring/package.json                         │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.635Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.635Z] │ app/node_modules/lodash.once/package.json                             │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.635Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.635Z] │ app/node_modules/lodash/package.json                                  │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.635Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.635Z] │ app/node_modules/long/package.json                                    │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.635Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.635Z] │ app/node_modules/lru.min/package.json                                 │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.635Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.635Z] │ app/node_modules/math-intrinsics/package.json                         │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.635Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.635Z] │ app/node_modules/media-typer/package.json                             │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.635Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.635Z] │ app/node_modules/merge-descriptors/package.json                       │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.635Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.635Z] │ app/node_modules/methods/package.json                                 │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.635Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.635Z] │ app/node_modules/mime-db/package.json                                 │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.635Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.635Z] │ app/node_modules/mime-types/package.json                              │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.635Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.635Z] │ app/node_modules/mime/package.json                                    │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.635Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.635Z] │ app/node_modules/morgan/node_modules/debug/package.json               │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.635Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.635Z] │ app/node_modules/morgan/node_modules/ms/package.json                  │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.635Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.635Z] │ app/node_modules/morgan/package.json                                  │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.635Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.635Z] │ app/node_modules/ms/package.json                                      │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.635Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.635Z] │ app/node_modules/mysql2/node_modules/iconv-lite/package.json          │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.635Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.635Z] │ app/node_modules/mysql2/package.json                                  │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.635Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.635Z] │ app/node_modules/named-placeholders/package.json                      │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.635Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.635Z] │ app/node_modules/negotiator/package.json                              │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.635Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.635Z] │ app/node_modules/object-assign/package.json                           │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.635Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.636Z] │ app/node_modules/object-inspect/package.json                          │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.636Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.636Z] │ app/node_modules/on-finished/package.json                             │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.636Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.636Z] │ app/node_modules/on-headers/package.json                              │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.636Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.636Z] │ app/node_modules/parseurl/package.json                                │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.636Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.636Z] │ app/node_modules/path-to-regexp/package.json                          │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.636Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.636Z] │ app/node_modules/prom-client/package.json                             │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.636Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.636Z] │ app/node_modules/proxy-addr/package.json                              │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.636Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.636Z] │ app/node_modules/qs/package.json                                      │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.636Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.636Z] │ app/node_modules/range-parser/package.json                            │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.636Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.636Z] │ app/node_modules/raw-body/package.json                                │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.636Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.636Z] │ app/node_modules/safe-buffer/package.json                             │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.636Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.636Z] │ app/node_modules/safer-buffer/package.json                            │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.636Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.636Z] │ app/node_modules/send/node_modules/debug/node_modules/ms/package.json │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.636Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.636Z] │ app/node_modules/send/node_modules/debug/package.json                 │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.636Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.636Z] │ app/node_modules/send/package.json                                    │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.636Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.636Z] │ app/node_modules/serve-static/package.json                            │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.636Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.636Z] │ app/node_modules/setprototypeof/package.json                          │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.636Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.636Z] │ app/node_modules/side-channel-list/package.json                       │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.636Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.637Z] │ app/node_modules/side-channel-map/package.json                        │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.637Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.637Z] │ app/node_modules/side-channel-weakmap/package.json                    │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.637Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.637Z] │ app/node_modules/side-channel/package.json                            │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.637Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.637Z] │ app/node_modules/sql-escaper/package.json                             │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.637Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.637Z] │ app/node_modules/statuses/package.json                                │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.637Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.637Z] │ app/node_modules/tdigest/package.json                                 │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.637Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.637Z] │ app/node_modules/toidentifier/package.json                            │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.637Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.637Z] │ app/node_modules/type-is/package.json                                 │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.637Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.637Z] │ app/node_modules/undici-types/package.json                            │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.637Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.637Z] │ app/node_modules/unpipe/package.json                                  │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.637Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.637Z] │ app/node_modules/utils-merge/package.json                             │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.637Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.637Z] │ app/node_modules/validator/package.json                               │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.637Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.637Z] │ app/node_modules/vary/package.json                                    │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.637Z] ├───────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:20.637Z] │ app/package.json                                                      │ node-pkg │        0        │    -    │
+[2026-10-29T12:19:20.637Z] └───────────────────────────────────────────────────────────────────────┴──────────┴─────────────────┴─────────┘
+[2026-10-29T12:19:20.637Z] Legend:
+[2026-10-29T12:19:20.637Z] - '-': Not scanned
+[2026-10-29T12:19:20.637Z] - '0': Clean (no security findings detected)
+[2026-10-29T12:19:20.637Z] 
+[Pipeline] sh
+[2026-10-29T12:19:20.959Z] + trivy image --severity CRITICAL,HIGH,MEDIUM --exit-code 0 --format table -o trivy-blogapp-frontend-report.txt blogapp-frontend:1-29944b2
+[2026-10-29T12:19:20.959Z] 2026-10-29T12:19:20Z	INFO	[vuln] Vulnerability scanning is enabled
+[2026-10-29T12:19:20.959Z] 2026-10-29T12:19:20Z	INFO	[secret] Secret scanning is enabled
+[2026-10-29T12:19:20.959Z] 2026-10-29T12:19:20Z	INFO	[secret] If your scanning is slow, please try '--scanners vuln' to disable secret scanning
+[2026-10-29T12:19:20.959Z] 2026-10-29T12:19:20Z	INFO	[secret] Please see https://trivy.dev/docs/v0.76/guide/scanner/secret#recommendation for faster secret detection
+[2026-10-29T12:19:23.452Z] 2026-10-29T12:19:23Z	INFO	Detected OS	family="alpine" version="3.24.2"
+[2026-10-29T12:19:23.452Z] 2026-10-29T12:19:23Z	INFO	[alpine] Detecting vulnerabilities...	os_version="3.24" repository="3.24" pkg_num=70
+[2026-10-29T12:19:23.452Z] 2026-10-29T12:19:23Z	INFO	Number of language-specific files	num=0
+[2026-10-29T12:19:23.452Z] + trivy image --severity CRITICAL,HIGH --ignore-unfixed --exit-code 1 blogapp-frontend:1-29944b2
+[2026-10-29T12:19:23.452Z] 2026-10-29T12:19:23Z	INFO	[vuln] Vulnerability scanning is enabled
+[2026-10-29T12:19:23.452Z] 2026-10-29T12:19:23Z	INFO	[secret] Secret scanning is enabled
+[2026-10-29T12:19:23.452Z] 2026-10-29T12:19:23Z	INFO	[secret] If your scanning is slow, please try '--scanners vuln' to disable secret scanning
+[2026-10-29T12:19:23.452Z] 2026-10-29T12:19:23Z	INFO	[secret] Please see https://trivy.dev/docs/v0.76/guide/scanner/secret#recommendation for faster secret detection
+[2026-10-29T12:19:23.452Z] 2026-10-29T12:19:23Z	INFO	Detected OS	family="alpine" version="3.24.2"
+[2026-10-29T12:19:23.452Z] 2026-10-29T12:19:23Z	INFO	[alpine] Detecting vulnerabilities...	os_version="3.24" repository="3.24" pkg_num=70
+[2026-10-29T12:19:23.452Z] 2026-10-29T12:19:23Z	INFO	Number of language-specific files	num=0
+[2026-10-29T12:19:23.452Z] 
+[2026-10-29T12:19:23.452Z] Report Summary
+[2026-10-29T12:19:23.452Z] 
+[2026-10-29T12:19:23.452Z] ┌────────────────────────────────────────────┬────────┬─────────────────┬─────────┐
+[2026-10-29T12:19:23.452Z] │                   Target                   │  Type  │ Vulnerabilities │ Secrets │
+[2026-10-29T12:19:23.452Z] ├────────────────────────────────────────────┼────────┼─────────────────┼─────────┤
+[2026-10-29T12:19:23.452Z] │ blogapp-frontend:1-29944b2 (alpine 3.24.2) │ alpine │        0        │    -    │
+[2026-10-29T12:19:23.452Z] └────────────────────────────────────────────┴────────┴─────────────────┴─────────┘
+[2026-10-29T12:19:23.452Z] Legend:
+[2026-10-29T12:19:23.452Z] - '-': Not scanned
+[2026-10-29T12:19:23.452Z] - '0': Clean (no security findings detected)
+[2026-10-29T12:19:23.452Z] 
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Push Images)
+[Pipeline] parallel
+[Pipeline] { (Branch: Push to Nexus registry)
+[Pipeline] { (Branch: Push to Amazon ECR)
+[Pipeline] stage
+[Pipeline] { (Push to Nexus registry)
+[Pipeline] stage
+[Pipeline] { (Push to Amazon ECR)
+[Pipeline] withCredentials
+[2026-10-29T12:19:23.852Z] Masking supported pattern matches of $NEXUS_PASS
+[Pipeline] withCredentials
+[2026-10-29T12:19:23.907Z] Masking supported pattern matches of $AWS_ACCESS_KEY_ID or $AWS_SECRET_ACCESS_KEY
+[Pipeline] {
+[Pipeline] {
+[Pipeline] sh
+[Pipeline] script
+[Pipeline] {
+[Pipeline] sh
+[2026-10-29T12:19:24.242Z] + echo ****
+[2026-10-29T12:19:24.242Z] + docker login localhost:8083 -u admin --password-stdin
+[2026-10-29T12:19:24.242Z] 
+[2026-10-29T12:19:24.242Z] WARNING! Your credentials are stored unencrypted in '/var/lib/jenkins/.docker/config.json'.
+[2026-10-29T12:19:24.242Z] Configure a credential helper to remove this warning. See
+[2026-10-29T12:19:24.242Z] https://docs.docker.com/go/credential-store/
+[2026-10-29T12:19:24.242Z] 
+[2026-10-29T12:19:24.242Z] Login Succeeded
+[2026-10-29T12:19:24.242Z] + docker tag blogapp-backend:1-29944b2 localhost:8083/blogapp-backend:1-29944b2
+[2026-10-29T12:19:24.455Z] + aws sts get-caller-identity --query Account --output text
+[2026-10-29T12:19:24.493Z] + docker push localhost:8083/blogapp-backend:1-29944b2
+[2026-10-29T12:19:24.493Z] The push refers to repository [localhost:8083/blogapp-backend]
+[2026-10-29T12:19:24.493Z] 8776aa3d2ba7: Waiting
+[2026-10-29T12:19:24.493Z] 44136fa355b3: Waiting
+[2026-10-29T12:19:24.493Z] e37497b17e9e: Waiting
+[2026-10-29T12:19:24.493Z] 7b229517ed22: Waiting
+[2026-10-29T12:19:24.747Z] 44136fa355b3: Waiting
+[2026-10-29T12:19:24.747Z] 7b229517ed22: Waiting
+[2026-10-29T12:19:24.998Z] 7246d4c6a55d: Waiting
+[2026-10-29T12:19:24.998Z] 304511616d6a: Waiting
+[2026-10-29T12:19:24.998Z] 44136fa355b3: Pushed
+[2026-10-29T12:19:24.998Z] e37497b17e9e: Pushed
+[2026-10-29T12:19:25.248Z] 7246d4c6a55d: Waiting
+[2026-10-29T12:19:25.249Z] 304511616d6a: Waiting
+[2026-10-29T12:19:25.249Z] 8382fcb62bc7: Waiting
+[2026-10-29T12:19:25.499Z] 8382fcb62bc7: Pushed
+[2026-10-29T12:19:25.499Z] 6472c524a3c6: Waiting
+[2026-10-29T12:19:25.499Z] 304511616d6a: Pushed
+[2026-10-29T12:19:25.499Z] 194a7dedcff0: Waiting
+[2026-10-29T12:19:26.050Z] d9c31e1eff30: Waiting
+[2026-10-29T12:19:26.050Z] 6472c524a3c6: Pushed
+[2026-10-29T12:19:26.050Z] d9c31e1eff30: Pushed
+[2026-10-29T12:19:26.050Z] e7e7f784fc46: Waiting
+[2026-10-29T12:19:26.313Z] 7246d4c6a55d: Pushed
+[2026-10-29T12:19:26.313Z] e7e7f784fc46: Pushed
+[2026-10-29T12:19:26.564Z] 7b229517ed22: Pushed
+[2026-10-29T12:19:26.815Z] 194a7dedcff0: Pushed
+[Pipeline] }
+[2026-10-29T12:19:28.678Z] 8776aa3d2ba7: Pushed
+[Pipeline] // script
+[Pipeline] sh
+[2026-10-29T12:19:29.060Z] + aws ecr get-login-password --region ap-south-1
+[2026-10-29T12:19:29.060Z] + docker login --username AWS --password-stdin 778436624052.dkr.ecr.ap-south-1.amazonaws.com
+[2026-10-29T12:19:29.230Z] 1-29944b2: digest: sha256:1e98837fefa5bb41ee57a00343061be36457c188337cb43e3e08e75843b15514 size: 856
+[2026-10-29T12:19:29.230Z] + docker tag blogapp-frontend:1-29944b2 localhost:8083/blogapp-frontend:1-29944b2
+[2026-10-29T12:19:29.230Z] + docker push localhost:8083/blogapp-frontend:1-29944b2
+[2026-10-29T12:19:29.483Z] The push refers to repository [localhost:8083/blogapp-frontend]
+[2026-10-29T12:19:29.483Z] 618365c07317: Waiting
+[2026-10-29T12:19:29.483Z] de23ddd72623: Waiting
+[2026-10-29T12:19:29.483Z] e2de96513ba9: Waiting
+[2026-10-29T12:19:29.483Z] 44136fa355b3: Waiting
+[2026-10-29T12:19:29.483Z] 618365c07317: Waiting
+[2026-10-29T12:19:29.483Z] 44136fa355b3: Waiting
+[2026-10-29T12:19:29.733Z] 44136fa355b3: Already exists
+[2026-10-29T12:19:29.734Z] a13df183ba7f: Waiting
+[2026-10-29T12:19:29.984Z] de23ddd72623: Pushed
+[2026-10-29T12:19:29.984Z] a13b50162360: Waiting
+[2026-10-29T12:19:29.984Z] a13df183ba7f: Pushed
+[2026-10-29T12:19:29.984Z] 3cbf0502908f: Waiting
+[2026-10-29T12:19:29.984Z] 0513567031b1: Waiting
+[2026-10-29T12:19:29.984Z] 3cbf0502908f: Waiting
+[2026-10-29T12:19:30.235Z] a13b50162360: Pushed
+[2026-10-29T12:19:30.235Z] 511976c6ab3d: Waiting
+[2026-10-29T12:19:30.235Z] 911bd3a49d26: Waiting
+[2026-10-29T12:19:30.235Z] 0513567031b1: Pushed
+[2026-10-29T12:19:30.485Z] 3cbf0502908f: Pushed
+[2026-10-29T12:19:30.485Z] f298a130347e: Waiting
+[2026-10-29T12:19:30.485Z] 511976c6ab3d: Pushed
+[2026-10-29T12:19:30.485Z] 99317ba58df4: Waiting
+[2026-10-29T12:19:30.485Z] 911bd3a49d26: Pushed
+[2026-10-29T12:19:30.736Z] f298a130347e: Waiting
+[2026-10-29T12:19:30.736Z] 99317ba58df4: Waiting
+[2026-10-29T12:19:30.736Z] 99317ba58df4: Waiting
+[2026-10-29T12:19:30.736Z] f298a130347e: Waiting
+[2026-10-29T12:19:30.987Z] f298a130347e: Waiting
+[2026-10-29T12:19:30.987Z] 99317ba58df4: Waiting
+[2026-10-29T12:19:30.987Z] e2de96513ba9: Pushed
+[2026-10-29T12:19:30.987Z] b5de589d3898: Waiting
+[2026-10-29T12:19:31.237Z] 618365c07317: Pushed
+[2026-10-29T12:19:31.237Z] b5de589d3898: Waiting
+[2026-10-29T12:19:31.237Z] 99317ba58df4: Pushed
+[2026-10-29T12:19:31.488Z] b5de589d3898: Pushed
+[2026-10-29T12:19:31.488Z] f298a130347e: Pushed
+[2026-10-29T12:19:31.544Z] 
+[2026-10-29T12:19:31.544Z] WARNING! Your credentials are stored unencrypted in '/var/lib/jenkins/.docker/config.json'.
+[2026-10-29T12:19:31.544Z] Configure a credential helper to remove this warning. See
+[2026-10-29T12:19:31.544Z] https://docs.docker.com/go/credential-store/
+[2026-10-29T12:19:31.544Z] 
+[2026-10-29T12:19:31.544Z] Login Succeeded
+[2026-10-29T12:19:31.544Z] + aws ecr describe-repositories --repository-names blogapp-backend --region ap-south-1
+[2026-10-29T12:19:33.527Z] ff3fbed5e913: Pushed
+[2026-10-29T12:19:34.087Z] 1-29944b2: digest: sha256:a48cdc3a7e8445f8fb72c62309fdd1604a6252867d351e17f34424e13ffbe4be size: 856
+[2026-10-29T12:19:34.087Z] + docker logout localhost:8083
+[2026-10-29T12:19:34.087Z] Removing login credentials for localhost:8083
+[Pipeline] }
+[2026-10-29T12:19:34.152Z] + docker tag blogapp-backend:1-29944b2 778436624052.dkr.ecr.ap-south-1.amazonaws.com/blogapp-backend:1-29944b2
+[2026-10-29T12:19:34.152Z] + docker push 778436624052.dkr.ecr.ap-south-1.amazonaws.com/blogapp-backend:1-29944b2
+[2026-10-29T12:19:34.152Z] The push refers to repository [778436624052.dkr.ecr.ap-south-1.amazonaws.com/blogapp-backend]
+[2026-10-29T12:19:34.152Z] 8776aa3d2ba7: Waiting
+[2026-10-29T12:19:34.152Z] e37497b17e9e: Waiting
+[2026-10-29T12:19:34.152Z] 7b229517ed22: Waiting
+[Pipeline] // withCredentials
+[Pipeline] }
+[Pipeline] // stage
+[2026-10-29T12:19:34.404Z] e37497b17e9e: Pushed
+[2026-10-29T12:19:34.404Z] 44136fa355b3: Pushed
+[Pipeline] }
+[2026-10-29T12:19:34.657Z] 7b229517ed22: Pushed
+[2026-10-29T12:19:34.657Z] 6472c524a3c6: Waiting
+[2026-10-29T12:19:34.657Z] 8382fcb62bc7: Pushed
+[2026-10-29T12:19:34.657Z] 194a7dedcff0: Waiting
+[2026-10-29T12:19:34.657Z] 7246d4c6a55d: Pushed
+[2026-10-29T12:19:34.657Z] 304511616d6a: Pushed
+[2026-10-29T12:19:34.657Z] e7e7f784fc46: Waiting
+[2026-10-29T12:19:34.908Z] 6472c524a3c6: Pushed
+[2026-10-29T12:19:35.158Z] e7e7f784fc46: Pushed
+[2026-10-29T12:19:35.158Z] 194a7dedcff0: Pushed
+[2026-10-29T12:19:35.158Z] d9c31e1eff30: Pushed
+[2026-10-29T12:19:36.071Z] 8776aa3d2ba7: Pushed
+[2026-10-29T12:19:36.321Z] 1-29944b2: digest: sha256:1e98837fefa5bb41ee57a00343061be36457c188337cb43e3e08e75843b15514 size: 856
+[2026-10-29T12:19:36.321Z] + aws ecr describe-repositories --repository-names blogapp-frontend --region ap-south-1
+[2026-10-29T12:19:37.666Z] + docker tag blogapp-frontend:1-29944b2 778436624052.dkr.ecr.ap-south-1.amazonaws.com/blogapp-frontend:1-29944b2
+[2026-10-29T12:19:37.666Z] + docker push 778436624052.dkr.ecr.ap-south-1.amazonaws.com/blogapp-frontend:1-29944b2
+[2026-10-29T12:19:37.666Z] The push refers to repository [778436624052.dkr.ecr.ap-south-1.amazonaws.com/blogapp-frontend]
+[2026-10-29T12:19:37.666Z] 618365c07317: Waiting
+[2026-10-29T12:19:37.666Z] de23ddd72623: Waiting
+[2026-10-29T12:19:37.666Z] 44136fa355b3: Waiting
+[2026-10-29T12:19:37.666Z] e2de96513ba9: Waiting
+[2026-10-29T12:19:37.916Z] e2de96513ba9: Pushed
+[2026-10-29T12:19:37.916Z] a13b50162360: Waiting
+[2026-10-29T12:19:37.916Z] 0513567031b1: Waiting
+[2026-10-29T12:19:37.916Z] 3cbf0502908f: Waiting
+[2026-10-29T12:19:37.916Z] de23ddd72623: Pushed
+[2026-10-29T12:19:37.916Z] 44136fa355b3: Pushed
+[2026-10-29T12:19:38.167Z] 618365c07317: Pushed
+[2026-10-29T12:19:38.418Z] 99317ba58df4: Waiting
+[2026-10-29T12:19:38.418Z] b5de589d3898: Waiting
+[2026-10-29T12:19:38.418Z] 511976c6ab3d: Pushed
+[2026-10-29T12:19:38.418Z] 0513567031b1: Pushed
+[2026-10-29T12:19:38.418Z] f298a130347e: Waiting
+[2026-10-29T12:19:38.418Z] a13df183ba7f: Pushed
+[2026-10-29T12:19:38.418Z] a13b50162360: Pushed
+[2026-10-29T12:19:38.418Z] 3cbf0502908f: Pushed
+[2026-10-29T12:19:38.418Z] 911bd3a49d26: Pushed
+[2026-10-29T12:19:38.669Z] f298a130347e: Pushed
+[2026-10-29T12:19:38.669Z] 99317ba58df4: Pushed
+[2026-10-29T12:19:38.669Z] b5de589d3898: Pushed
+[2026-10-29T12:19:38.919Z] ff3fbed5e913: Pushed
+[2026-10-29T12:19:39.471Z] 1-29944b2: digest: sha256:a48cdc3a7e8445f8fb72c62309fdd1604a6252867d351e17f34424e13ffbe4be size: 856
+[Pipeline] }
+[Pipeline] // withCredentials
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // parallel
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Deploy to EKS)
+[Pipeline] withCredentials
+[2026-10-29T12:19:40.264Z] Masking supported pattern matches of $AWS_ACCESS_KEY_ID or $AWS_SECRET_ACCESS_KEY or $MYSQL_ROOT_PASSWORD or $MYSQL_APP_PASSWORD or $JWT_SECRET
+[Pipeline] {
+[Pipeline] sh
+[2026-10-29T12:19:40.597Z] + set -e
+[2026-10-29T12:19:40.598Z] + aws eks update-kubeconfig --name blogapp-eks-cluster --region ap-south-1
+[2026-10-29T12:19:41.509Z] Added new context arn:aws:eks:ap-south-1:778436624052:cluster/blogapp-eks-cluster to /var/lib/jenkins/.kube/config
+[2026-10-29T12:19:41.760Z] + kubectl apply -f k8s/base/namespace.yaml
+[2026-10-29T12:19:43.622Z] namespace/blogapp created
+[2026-10-29T12:19:43.623Z] + kubectl -n blogapp create secret generic mysql-secret --from-literal=MYSQL_ROOT_PASSWORD=**** --from-literal=MYSQL_USER=bloguser --from-literal=MYSQL_PASSWORD=**** --dry-run=client -o yaml
+[2026-10-29T12:19:43.623Z] + kubectl apply -f -
+[2026-10-29T12:19:46.106Z] secret/mysql-secret created
+[2026-10-29T12:19:46.106Z] + kubectl -n blogapp create secret generic backend-secret --from-literal=JWT_SECRET=**** --dry-run=client -o yaml
+[2026-10-29T12:19:46.106Z] + kubectl apply -f -
+[2026-10-29T12:19:47.970Z] secret/backend-secret created
+[2026-10-29T12:19:47.970Z] + kubectl -n blogapp create configmap mysql-init-script --from-file=init.sql=database/init.sql --dry-run=client -o yaml
+[2026-10-29T12:19:47.970Z] + kubectl apply -f -
+[2026-10-29T12:19:50.454Z] configmap/mysql-init-script created
+[2026-10-29T12:19:50.454Z] + sed -i -e s#newName: ECR_REGISTRY/#newName: 778436624052.dkr.ecr.ap-south-1.amazonaws.com/# -e s#newTag: latest#newTag: 1-29944b2# k8s/kustomization.yaml
+[2026-10-29T12:19:50.454Z] + kubectl kustomize k8s/
+[2026-10-29T12:19:50.454Z] + kubectl apply -k k8s/
+[2026-10-29T12:19:52.317Z] namespace/blogapp unchanged
+[2026-10-29T12:19:52.317Z] resourcequota/blogapp-quota created
+[2026-10-29T12:19:52.568Z] storageclass.storage.k8s.io/gp3 configured
+[2026-10-29T12:19:52.568Z] configmap/backend-config created
+[2026-10-29T12:19:52.568Z] service/backend-service created
+[2026-10-29T12:19:52.568Z] service/frontend-service created
+[2026-10-29T12:19:52.568Z] service/mysql-service created
+[2026-10-29T12:19:52.568Z] limitrange/blogapp-defaults created
+[2026-10-29T12:19:52.568Z] Warning: would violate PodSecurity "restricted:latest": unrestricted capabilities (container "wait-for-mysql" must set securityContext.capabilities.drop=["ALL"])
+[2026-10-29T12:19:52.568Z] deployment.apps/backend created
+[2026-10-29T12:19:52.568Z] deployment.apps/frontend created
+[2026-10-29T12:19:52.819Z] Warning: would violate PodSecurity "restricted:latest": allowPrivilegeEscalation != false (container "mysql" must set securityContext.allowPrivilegeEscalation=false), unrestricted capabilities (container "mysql" must set securityContext.capabilities.drop=["ALL"]), runAsNonRoot != true (pod or container "mysql" must set securityContext.runAsNonRoot=true), seccompProfile (pod or container "mysql" must set securityContext.seccompProfile.type to "RuntimeDefault" or "Localhost")
+[2026-10-29T12:19:52.819Z] statefulset.apps/mysql created
+[2026-10-29T12:19:52.819Z] poddisruptionbudget.policy/backend-pdb created
+[2026-10-29T12:19:52.819Z] poddisruptionbudget.policy/frontend-pdb created
+[2026-10-29T12:19:52.819Z] horizontalpodautoscaler.autoscaling/backend-hpa created
+[2026-10-29T12:19:52.819Z] horizontalpodautoscaler.autoscaling/frontend-hpa created
+[2026-10-29T12:19:53.070Z] ingress.networking.k8s.io/blogapp-ingress created
+[2026-10-29T12:19:53.320Z] networkpolicy.networking.k8s.io/backend-allow-frontend-and-monitoring created
+[2026-10-29T12:19:53.320Z] networkpolicy.networking.k8s.io/mysql-allow-backend-only created
+[2026-10-29T12:19:53.320Z] + kubectl get crd servicemonitors.monitoring.coreos.com
+[2026-10-29T12:19:54.665Z] + kubectl apply -k k8s/monitoring/
+[2026-10-29T12:19:56.012Z] configmap/blogapp-grafana-dashboard created
+[2026-10-29T12:19:56.012Z] prometheusrule.monitoring.coreos.com/blogapp-alerts created
+[2026-10-29T12:19:56.012Z] servicemonitor.monitoring.coreos.com/backend-metrics created
+[2026-10-29T12:19:56.012Z] + kubectl -n blogapp rollout status statefulset/mysql --timeout=300s
+[2026-10-29T12:19:57.356Z] Waiting for 1 pods to be ready...
+[2026-10-29T12:20:43.868Z] partitioned roll out complete: 1 new pods have been updated...
+[2026-10-29T12:20:43.868Z] + kubectl -n blogapp rollout status deployment/backend --timeout=300s
+[2026-10-29T12:20:44.780Z] Waiting for deployment "backend" rollout to finish: 0 of 3 updated replicas are available...
+[2026-10-29T12:21:06.580Z] Waiting for deployment "backend" rollout to finish: 1 of 3 updated replicas are available...
+[2026-10-29T12:21:06.580Z] Waiting for deployment "backend" rollout to finish: 2 of 3 updated replicas are available...
+[2026-10-29T12:21:06.581Z] deployment "backend" successfully rolled out
+[2026-10-29T12:21:06.581Z] + kubectl -n blogapp rollout status deployment/frontend --timeout=300s
+[2026-10-29T12:21:06.581Z] deployment "frontend" successfully rolled out
+[Pipeline] }
+[Pipeline] // withCredentials
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Deployment Validation)
+[Pipeline] withCredentials
+[2026-10-29T12:21:07.032Z] Masking supported pattern matches of $AWS_ACCESS_KEY_ID or $AWS_SECRET_ACCESS_KEY
+[Pipeline] {
+[Pipeline] sh
+[2026-10-29T12:21:07.357Z] + set -e
+[2026-10-29T12:21:07.357Z] + echo --- Running pods ---
+[2026-10-29T12:21:07.357Z] --- Running pods ---
+[2026-10-29T12:21:07.357Z] + kubectl -n blogapp get pods,svc,hpa,ingress
+[2026-10-29T12:21:08.700Z] NAME                            READY   STATUS    RESTARTS   AGE
+[2026-10-29T12:21:08.701Z] pod/backend-5944575cfb-bdcmn    1/1     Running   0          76s
+[2026-10-29T12:21:08.701Z] pod/backend-5944575cfb-fsx8l    1/1     Running   0          76s
+[2026-10-29T12:21:08.701Z] pod/backend-5944575cfb-sq2hk    1/1     Running   0          76s
+[2026-10-29T12:21:08.701Z] pod/frontend-86c56c8856-rjjzh   1/1     Running   0          76s
+[2026-10-29T12:21:08.701Z] pod/frontend-86c56c8856-vlx6p   1/1     Running   0          76s
+[2026-10-29T12:21:08.701Z] pod/frontend-86c56c8856-zxwtl   1/1     Running   0          76s
+[2026-10-29T12:21:08.701Z] pod/mysql-0                     1/1     Running   0          76s
+[2026-10-29T12:21:08.701Z] 
+[2026-10-29T12:21:08.701Z] NAME                       TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+[2026-10-29T12:21:08.701Z] service/backend-service    ClusterIP   10.100.236.222   <none>        5000/TCP   76s
+[2026-10-29T12:21:08.701Z] service/frontend-service   ClusterIP   10.100.224.91    <none>        80/TCP     76s
+[2026-10-29T12:21:08.701Z] service/mysql-service      ClusterIP   None             <none>        3306/TCP   76s
+[2026-10-29T12:21:08.701Z] 
+[2026-10-29T12:21:08.701Z] NAME                                               REFERENCE             TARGETS                                     MINPODS   MAXPODS   REPLICAS   AGE
+[2026-10-29T12:21:08.701Z] horizontalpodautoscaler.autoscaling/backend-hpa    Deployment/backend    cpu: <unknown>/70%, memory: <unknown>/80%   3         10        3          76s
+[2026-10-29T12:21:08.701Z] horizontalpodautoscaler.autoscaling/frontend-hpa   Deployment/frontend   cpu: 2%/70%                                 3         8         3          76s
+[2026-10-29T12:21:08.701Z] 
+[2026-10-29T12:21:08.701Z] NAME                                        CLASS   HOSTS   ADDRESS                                                          PORTS   AGE
+[2026-10-29T12:21:08.701Z] ingress.networking.k8s.io/blogapp-ingress   alb     *       k8s-blogapp-deac8921dc-1417542765.ap-south-1.elb.amazonaws.com   80      76s
+[2026-10-29T12:21:08.701Z] + echo --- In-cluster smoke tests ---
+[2026-10-29T12:21:08.701Z] --- In-cluster smoke tests ---
+[2026-10-29T12:21:08.701Z] + kubectl -n blogapp run smoke-1 --rm -i --restart=Never --image=curlimages/curl:8.10.1 --labels=role=smoke-test -- sh -c 
+[2026-10-29T12:21:08.701Z]                             set -e
+[2026-10-29T12:21:08.701Z]                             curl -fsS http://frontend-service/healthz && echo " frontend OK"
+[2026-10-29T12:21:08.701Z]                             curl -fsS http://backend-service:5000/healthz && echo " backend live"
+[2026-10-29T12:21:08.701Z]                             curl -fsS http://backend-service:5000/readyz  && echo " backend ready (DB reachable)"
+[2026-10-29T12:21:08.701Z]                             curl -fsS "http://frontend-service/api/posts?limit=1" | grep -q "\"data\"" && echo "frontend -> backend -> DB path OK"
+[2026-10-29T12:21:08.701Z]                           
+[2026-10-29T12:21:10.564Z] Warning: would violate PodSecurity "restricted:latest": allowPrivilegeEscalation != false (container "smoke-1" must set securityContext.allowPrivilegeEscalation=false), unrestricted capabilities (container "smoke-1" must set securityContext.capabilities.drop=["ALL"]), runAsNonRoot != true (pod or container "smoke-1" must set securityContext.runAsNonRoot=true), seccompProfile (pod or container "smoke-1" must set securityContext.seccompProfile.type to "RuntimeDefault" or "Localhost")
+[2026-10-29T12:21:15.764Z] ok frontend OK
+[2026-10-29T12:21:15.764Z] All commands and output from this session will be recorded in container logs, including credentials and sensitive information passed through the command prompt.
+[2026-10-29T12:21:15.764Z] If you don't see a command prompt, try pressing enter.
+[2026-10-29T12:21:18.993Z] {"status":"ok"} backend live
+[2026-10-29T12:21:18.993Z] {"status":"ready"} backend ready (DB reachable)
+[2026-10-29T12:21:18.993Z] frontend -> backend -> DB path OK
+[2026-10-29T12:21:20.858Z] pod "smoke-1" deleted from blogapp namespace
+[2026-10-29T12:21:20.858Z] + echo --- EKS deployment report (archived as eks-deployment-report.txt) ---
+[2026-10-29T12:21:20.858Z] --- EKS deployment report (archived as eks-deployment-report.txt) ---
+[2026-10-29T12:21:20.858Z] + tee eks-deployment-report.txt
+[2026-10-29T12:21:20.858Z] + date -u
+[2026-10-29T12:21:20.858Z] + echo ### Build 1  image tag 1-29944b2  Thu Oct 29 12:21:20 UTC 2026
+[2026-10-29T12:21:20.858Z] + echo
+[2026-10-29T12:21:20.858Z] + echo ### Workloads, services, ingress, autoscaling
+[2026-10-29T12:21:20.858Z] + kubectl -n blogapp get deploy,sts,pods,svc,ingress,hpa,pdb -o wide
+[2026-10-29T12:21:20.858Z] ### Build 1  image tag 1-29944b2  Thu Oct 29 12:21:20 UTC 2026
+[2026-10-29T12:21:20.858Z] 
+[2026-10-29T12:21:20.858Z] ### Workloads, services, ingress, autoscaling
+[2026-10-29T12:21:22.202Z] NAME                       READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES                                                                     SELECTOR
+[2026-10-29T12:21:22.202Z] deployment.apps/backend    3/3     3            3           89s   backend      778436624052.dkr.ecr.ap-south-1.amazonaws.com/blogapp-backend:1-29944b2    app=backend
+[2026-10-29T12:21:22.202Z] deployment.apps/frontend   3/3     3            3           89s   frontend     778436624052.dkr.ecr.ap-south-1.amazonaws.com/blogapp-frontend:1-29944b2   app=frontend
+[2026-10-29T12:21:22.202Z] 
+[2026-10-29T12:21:22.202Z] NAME                     READY   AGE   CONTAINERS   IMAGES
+[2026-10-29T12:21:22.202Z] statefulset.apps/mysql   1/1     89s   mysql        mysql:8.0
+[2026-10-29T12:21:22.202Z] 
+[2026-10-29T12:21:22.202Z] NAME                            READY   STATUS    RESTARTS   AGE   IP                NODE                                             NOMINATED NODE   READINESS GATES
+[2026-10-29T12:21:22.202Z] pod/backend-5944575cfb-bdcmn    1/1     Running   0          89s   192.168.120.111   ip-192-168-111-239.ap-south-1.compute.internal   <none>           <none>
+[2026-10-29T12:21:22.202Z] pod/backend-5944575cfb-fsx8l    1/1     Running   0          89s   192.168.96.130    ip-192-168-111-239.ap-south-1.compute.internal   <none>           <none>
+[2026-10-29T12:21:22.202Z] pod/backend-5944575cfb-sq2hk    1/1     Running   0          89s   192.168.167.81    ip-192-168-179-240.ap-south-1.compute.internal   <none>           <none>
+[2026-10-29T12:21:22.202Z] pod/frontend-86c56c8856-rjjzh   1/1     Running   0          89s   192.168.180.226   ip-192-168-179-240.ap-south-1.compute.internal   <none>           <none>
+[2026-10-29T12:21:22.202Z] pod/frontend-86c56c8856-vlx6p   1/1     Running   0          89s   192.168.96.96     ip-192-168-111-239.ap-south-1.compute.internal   <none>           <none>
+[2026-10-29T12:21:22.202Z] pod/frontend-86c56c8856-zxwtl   1/1     Running   0          89s   192.168.111.110   ip-192-168-111-239.ap-south-1.compute.internal   <none>           <none>
+[2026-10-29T12:21:22.202Z] pod/mysql-0                     1/1     Running   0          89s   192.168.184.155   ip-192-168-179-240.ap-south-1.compute.internal   <none>           <none>
+[2026-10-29T12:21:22.202Z] 
+[2026-10-29T12:21:22.202Z] NAME                       TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE   SELECTOR
+[2026-10-29T12:21:22.202Z] service/backend-service    ClusterIP   10.100.236.222   <none>        5000/TCP   90s   app=backend
+[2026-10-29T12:21:22.202Z] service/frontend-service   ClusterIP   10.100.224.91    <none>        80/TCP     90s   app=frontend
+[2026-10-29T12:21:22.202Z] service/mysql-service      ClusterIP   None             <none>        3306/TCP   90s   app=mysql
+[2026-10-29T12:21:22.202Z] 
+[2026-10-29T12:21:22.202Z] NAME                                        CLASS   HOSTS   ADDRESS                                                          PORTS   AGE
+[2026-10-29T12:21:22.202Z] ingress.networking.k8s.io/blogapp-ingress   alb     *       k8s-blogapp-deac8921dc-1417542765.ap-south-1.elb.amazonaws.com   80      90s
+[2026-10-29T12:21:22.202Z] 
+[2026-10-29T12:21:22.205Z] NAME                                               REFERENCE             TARGETS                                     MINPODS   MAXPODS   REPLICAS   AGE
+[2026-10-29T12:21:22.205Z] horizontalpodautoscaler.autoscaling/backend-hpa    Deployment/backend    cpu: <unknown>/70%, memory: <unknown>/80%   3         10        3          90s
+[2026-10-29T12:21:22.205Z] horizontalpodautoscaler.autoscaling/frontend-hpa   Deployment/frontend   cpu: 2%/70%                                 3         8         3          90s
+[2026-10-29T12:21:22.205Z] 
+[2026-10-29T12:21:22.205Z] NAME                                      MIN AVAILABLE   MAX UNAVAILABLE   ALLOWED DISRUPTIONS   AGE
+[2026-10-29T12:21:22.205Z] poddisruptionbudget.policy/backend-pdb    2               N/A               1                     90s
+[2026-10-29T12:21:22.205Z] poddisruptionbudget.policy/frontend-pdb   2               N/A               1                     90s
+[2026-10-29T12:21:22.205Z] + echo
+[2026-10-29T12:21:22.205Z] + echo ### Image versions running in the cluster
+[2026-10-29T12:21:22.205Z] 
+[2026-10-29T12:21:22.205Z] ### Image versions running in the cluster
+[2026-10-29T12:21:22.205Z] + kubectl -n blogapp get pods -o custom-columns=POD:.metadata.name,IMAGE:.spec.containers[0].image,READY:.status.containerStatuses[0].ready
+[2026-10-29T12:21:23.549Z] POD                         IMAGE                                                                      READY
+[2026-10-29T12:21:23.549Z] backend-5944575cfb-bdcmn    778436624052.dkr.ecr.ap-south-1.amazonaws.com/blogapp-backend:1-29944b2    true
+[2026-10-29T12:21:23.549Z] backend-5944575cfb-fsx8l    778436624052.dkr.ecr.ap-south-1.amazonaws.com/blogapp-backend:1-29944b2    true
+[2026-10-29T12:21:23.549Z] backend-5944575cfb-sq2hk    778436624052.dkr.ecr.ap-south-1.amazonaws.com/blogapp-backend:1-29944b2    true
+[2026-10-29T12:21:23.549Z] frontend-86c56c8856-rjjzh   778436624052.dkr.ecr.ap-south-1.amazonaws.com/blogapp-frontend:1-29944b2   true
+[2026-10-29T12:21:23.549Z] frontend-86c56c8856-vlx6p   778436624052.dkr.ecr.ap-south-1.amazonaws.com/blogapp-frontend:1-29944b2   true
+[2026-10-29T12:21:23.549Z] frontend-86c56c8856-zxwtl   778436624052.dkr.ecr.ap-south-1.amazonaws.com/blogapp-frontend:1-29944b2   true
+[2026-10-29T12:21:23.549Z] mysql-0                     mysql:8.0                                                                  true
+[2026-10-29T12:21:23.549Z] + echo
+[2026-10-29T12:21:23.549Z] + echo ### Persistent storage (MySQL on EBS gp3)
+[2026-10-29T12:21:23.549Z] + kubectl -n blogapp get pvc -o wide
+[2026-10-29T12:21:23.549Z] 
+[2026-10-29T12:21:23.549Z] ### Persistent storage (MySQL on EBS gp3)
+[2026-10-29T12:21:24.893Z] NAME                 STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE   VOLUMEMODE
+[2026-10-29T12:21:24.893Z] mysql-data-mysql-0   Bound    pvc-5e57830c-2f10-48ab-99f6-88f76de13d5b   10Gi       RWO            gp3            <unset>                 92s   Filesystem
+[2026-10-29T12:21:24.893Z] + echo
+[2026-10-29T12:21:24.893Z] + echo ### ConfigMaps and Secrets (names only - values never printed)
+[2026-10-29T12:21:24.893Z] + kubectl -n blogapp get configmap,secret
+[2026-10-29T12:21:24.893Z] 
+[2026-10-29T12:21:24.893Z] ### ConfigMaps and Secrets (names only - values never printed)
+[2026-10-29T12:21:25.804Z] NAME                                  DATA   AGE
+[2026-10-29T12:21:25.804Z] configmap/backend-config              6      93s
+[2026-10-29T12:21:25.804Z] configmap/blogapp-grafana-dashboard   1      90s
+[2026-10-29T12:21:25.804Z] configmap/kube-root-ca.crt            1      102s
+[2026-10-29T12:21:25.804Z] configmap/mysql-init-script           1      95s
+[2026-10-29T12:21:25.804Z] 
+[2026-10-29T12:21:25.804Z] NAME                    TYPE     DATA   AGE
+[2026-10-29T12:21:25.804Z] secret/backend-secret   Opaque   1      98s
+[2026-10-29T12:21:25.804Z] secret/mysql-secret     Opaque   3      100s
+[2026-10-29T12:21:25.804Z] + echo
+[2026-10-29T12:21:25.804Z] + echo ### Network policies
+[2026-10-29T12:21:25.804Z] + kubectl
+[2026-10-29T12:21:25.804Z]  -n blogapp get networkpolicy
+[2026-10-29T12:21:25.804Z] ### Network policies
+[2026-10-29T12:21:27.148Z] NAME                                    POD-SELECTOR   AGE
+[2026-10-29T12:21:27.148Z] backend-allow-frontend-and-monitoring   app=backend    93s
+[2026-10-29T12:21:27.148Z] mysql-allow-backend-only                app=mysql      93s
+[2026-10-29T12:21:27.148Z] + echo
+[2026-10-29T12:21:27.148Z] + echo ### Probes, resources and rollout strategy
+[2026-10-29T12:21:27.148Z] + kubectl -n blogapp get deploy -o
+[2026-10-29T12:21:27.148Z] ### Probes, resources and rollout strategy
+[2026-10-29T12:21:27.148Z]  custom-columns=NAME:.metadata.name,REPLICAS:.spec.replicas,STRATEGY:.spec.strategy.type,MAX_UNAVAILABLE:.spec.strategy.rollingUpdate.maxUnavailable,READINESS:.spec.template.spec.containers[0].readinessProbe.httpGet.path,LIVENESS:.spec.template.spec.containers[0].livenessProbe.httpGet.path,CPU_REQ:.spec.template.spec.containers[0].resources.requests.cpu,MEM_LIMIT:.spec.template.spec.containers[0].resources.limits.memory
+[2026-10-29T12:21:28.059Z] NAME       REPLICAS   STRATEGY        MAX_UNAVAILABLE   READINESS   LIVENESS   CPU_REQ   MEM_LIMIT
+[2026-10-29T12:21:28.059Z] backend    3          RollingUpdate   0                 /readyz     /healthz   100m      512Mi
+[2026-10-29T12:21:28.059Z] frontend   3          RollingUpdate   0                 /healthz    /healthz   50m       256Mi
+[2026-10-29T12:21:28.059Z] + echo
+[2026-10-29T12:21:28.059Z] + echo ### Database contents (backend -> MySQL integration)
+[2026-10-29T12:21:28.059Z] 
+[2026-10-29T12:21:28.059Z] ### Database contents (backend -> MySQL integration)
+[2026-10-29T12:21:28.059Z] + kubectl -n blogapp exec mysql-0 -- sh -c mysql -uroot -p"$MYSQL_ROOT_PASSWORD" blogdb -e "SHOW TABLES; SELECT COUNT(*) AS users FROM users; SELECT id,title,author_id,created_at FROM posts ORDER BY id;"
+[2026-10-29T12:21:29.403Z] Tables_in_blogdb
+[2026-10-29T12:21:29.403Z] comments
+[2026-10-29T12:21:29.403Z] posts
+[2026-10-29T12:21:29.403Z] users
+[2026-10-29T12:21:29.403Z] users
+[2026-10-29T12:21:29.403Z] 1
+[2026-10-29T12:21:29.403Z] id	title	author_id	created_at
+[2026-10-29T12:21:29.403Z] 1	Shipping to EKS Without Losing Sleep	1	2026-10-29 12:20:31
+[2026-10-29T12:21:29.403Z] 2	Why We Moved Artifact Storage to Nexus	1	2026-10-29 12:20:31
+[2026-10-29T12:21:29.403Z] 3	Static Analysis That Developers Actually Like	1	2026-10-29 12:20:31
+[2026-10-29T12:21:29.403Z] 4	Trivy in CI: Catching CVEs Before Production	1	2026-10-29 12:20:31
+[2026-10-29T12:21:29.403Z] + echo
+[2026-10-29T12:21:29.403Z] + echo ### Rollout history
+[2026-10-29T12:21:29.403Z] + kubectl -n blogapp rollout history deployment/backend
+[2026-10-29T12:21:29.403Z] 
+[2026-10-29T12:21:29.403Z] ### Rollout history
+[2026-10-29T12:21:30.315Z] deployment.apps/backend 
+[2026-10-29T12:21:30.315Z] REVISION  CHANGE-CAUSE
+[2026-10-29T12:21:30.315Z] 1         <none>
+[2026-10-29T12:21:30.315Z] 
+[2026-10-29T12:21:30.315Z] + kubectl -n blogapp rollout history deployment/frontend
+[2026-10-29T12:21:31.659Z] deployment.apps/frontend 
+[2026-10-29T12:21:31.659Z] REVISION  CHANGE-CAUSE
+[2026-10-29T12:21:31.659Z] 1         <none>
+[2026-10-29T12:21:31.659Z] 
+[2026-10-29T12:21:31.659Z] + echo --- Public ALB check ---
+[2026-10-29T12:21:31.659Z] --- Public ALB check ---
+[2026-10-29T12:21:31.659Z] + seq 1 30
+[2026-10-29T12:21:31.659Z] + kubectl -n blogapp get ingress blogapp-ingress -o jsonpath={.status.loadBalancer.ingress[0].hostname}
+[2026-10-29T12:21:33.002Z] + ALB=k8s-blogapp-deac8921dc-1417542765.ap-south-1.elb.amazonaws.com
+[2026-10-29T12:21:33.002Z] + [ -n k8s-blogapp-deac8921dc-1417542765.ap-south-1.elb.amazonaws.com ]
+[2026-10-29T12:21:33.003Z] + curl -fsS -o /dev/null http://k8s-blogapp-deac8921dc-1417542765.ap-south-1.elb.amazonaws.com/healthz
+[2026-10-29T12:21:33.003Z] curl: (6) Could not resolve host: k8s-blogapp-deac8921dc-1417542765.ap-south-1.elb.amazonaws.com
+[2026-10-29T12:21:33.003Z] + echo Waiting for ALB (1/30)...
+[2026-10-29T12:21:33.003Z] Waiting for ALB (1/30)...
+[2026-10-29T12:21:33.003Z] + sleep 20
+[2026-10-29T12:21:54.803Z] + kubectl -n blogapp get ingress blogapp-ingress -o jsonpath={.status.loadBalancer.ingress[0].hostname}
+[2026-10-29T12:21:54.803Z] + ALB=k8s-blogapp-deac8921dc-1417542765.ap-south-1.elb.amazonaws.com
+[2026-10-29T12:21:54.803Z] + [ -n k8s-blogapp-deac8921dc-1417542765.ap-south-1.elb.amazonaws.com ]
+[2026-10-29T12:21:54.803Z] + curl -fsS -o /dev/null http://k8s-blogapp-deac8921dc-1417542765.ap-south-1.elb.amazonaws.com/healthz
+[2026-10-29T12:21:54.803Z] + echo Application is live at: http://k8s-blogapp-deac8921dc-1417542765.ap-south-1.elb.amazonaws.com
+[2026-10-29T12:21:54.803Z] Application is live at: http://k8s-blogapp-deac8921dc-1417542765.ap-south-1.elb.amazonaws.com
+[2026-10-29T12:21:54.803Z] + echo http://k8s-blogapp-deac8921dc-1417542765.ap-south-1.elb.amazonaws.com
+[2026-10-29T12:21:54.803Z] + exit 0
+[Pipeline] }
+[Pipeline] // withCredentials
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] archiveArtifacts
+[2026-10-29T12:21:55.069Z] Archiving artifacts
+[Pipeline] sh
+[2026-10-29T12:21:55.386Z] + docker rmi blogapp-backend:1-29944b2 blogapp-frontend:1-29944b2
+[2026-10-29T12:21:55.386Z] Untagged: blogapp-backend:1-29944b2
+[2026-10-29T12:21:55.386Z] Untagged: blogapp-frontend:1-29944b2
+[2026-10-29T12:21:55.386Z] + docker image prune -f
+[2026-10-29T12:21:55.386Z] Total reclaimed space: 0B
+[Pipeline] cleanWs
+[2026-10-29T12:21:55.435Z] [WS-CLEANUP] Deleting project workspace...
+[2026-10-29T12:21:55.444Z] [WS-CLEANUP] Deferred wipeout is used...
+[2026-10-29T12:21:55.494Z] [WS-CLEANUP] done
+[Pipeline] echo
+[2026-10-29T12:21:55.586Z] ✅ Build 1-29944b2 deployed. Grafana dashboard: 'BlogApp – Three-Tier Overview'
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // timeout
+[Pipeline] }
+[Pipeline] // timestamps
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS

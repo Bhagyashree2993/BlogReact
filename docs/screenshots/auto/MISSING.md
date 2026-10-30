@@ -1,0 +1,3 @@
+- [ ] `A1-jenkins-pipeline-overview.png` - open http://3.110.221.125:8080/job/blogapp-cicd/1/pipeline-graph/ and press Win+Shift+S
+- [ ] `A2-jenkins-stage-view.png` - open http://3.110.221.125:8080/job/blogapp-cicd/ and press Win+Shift+S
+- [ ] `A3-jenkins-build-summary.png` - open http://3.110.221.125:8080/job/blogapp-cicd/1/ and press Win+Shift+S

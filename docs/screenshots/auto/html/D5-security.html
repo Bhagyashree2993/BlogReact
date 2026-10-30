@@ -1,0 +1,127 @@
+<!doctype html><meta charset="utf-8"><style>
+      body{margin:0;background:#0d1117;font:13px/17px Consolas,"Cascadia Mono",monospace;color:#d1d7e0}
+      .bar{background:#161b22;padding:9px 14px;color:#8b949e;border-bottom:1px solid #30363d;font-family:Segoe UI,sans-serif}
+      .bar b{color:#e6edf3} .dot{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px}
+      pre{margin:0;padding:12px 16px;white-space:pre}
+      .ok{color:#3fb950}.bad{color:#f85149}.cmd{color:#79c0ff}.hd{color:#d2a8ff;font-weight:bold}</style>
+<div class="bar"><span class="dot" style="background:#f85149"></span><span class="dot" style="background:#d29922"></span><span class="dot" style="background:#3fb950"></span> <b>Network policies, pod security, quotas, IAM access entries, IRSA</b> &nbsp; — captured 2026-10-29 18:13</div><pre>
+<span class="hd">========== Network security: NetworkPolicies (frontend -&gt; backend -&gt; mysql only) ==========</span>
+
+<span class="cmd">$ kubectl -n blogapp describe networkpolicy</span>
+Name:         backend-allow-frontend-and-monitoring
+Namespace:    blogapp
+Created on:   2026-10-29 17:49:53 +0530 IST
+Labels:       app.kubernetes.io/part-of=blogapp
+Annotations:  &lt;none&gt;
+Spec:
+  PodSelector:     app=backend
+  Allowing ingress traffic:
+    To Port: 5000/TCP
+    From:
+      PodSelector: app=frontend
+    From:
+      PodSelector: role=smoke-test
+    ----------
+    To Port: 5000/TCP
+    From:
+      NamespaceSelector: kubernetes.io/metadata.name=monitoring
+  Not affecting egress traffic
+  Policy Types: Ingress
+
+
+Name:         mysql-allow-backend-only
+Namespace:    blogapp
+Created on:   2026-10-29 17:49:53 +0530 IST
+Labels:       app.kubernetes.io/part-of=blogapp
+Annotations:  &lt;none&gt;
+Spec:
+  PodSelector:     app=mysql
+  Allowing ingress traffic:
+    To Port: 3306/TCP
+    From:
+      PodSelector: app=backend
+  Not affecting egress traffic
+  Policy Types: Ingress
+
+<span class="hd">========== Container security: pod security context per workload ==========</span>
+
+<span class="cmd">$ kubectl -n blogapp get pods -o custom-columns=POD:.metadata.name,RUN_AS_NON_ROOT:.spec.securityContext.runAsNonRoot,USER:.spec.securityContext.runAsUser,SECCOMP:.spec.securityContext.seccompProfile.type,NO_PRIV_ESC:.spec.containers[0].securityContext.allowPrivilegeEscalation,READONLY_FS:.spec.containers[0].securityContext.readOnlyRootFilesystem,DROP_CAPS:.spec.containers[0].securityContext.capabilities.drop</span>
+POD                         RUN_AS_NON_ROOT   USER     SECCOMP          NO_PRIV_ESC   READONLY_FS   DROP_CAPS
+backend-5944575cfb-bdcmn    true              1000     RuntimeDefault   false         true          [ALL]
+backend-5944575cfb-fsx8l    true              1000     RuntimeDefault   false         true          [ALL]
+backend-5944575cfb-sq2hk    true              1000     RuntimeDefault   false         true          [ALL]
+frontend-86c56c8856-rjjzh   true              101      RuntimeDefault   false         &lt;none&gt;        [ALL]
+frontend-86c56c8856-vlx6p   true              101      RuntimeDefault   false         &lt;none&gt;        [ALL]
+frontend-86c56c8856-zxwtl   true              101      RuntimeDefault   false         &lt;none&gt;        [ALL]
+mysql-0                     &lt;none&gt;            &lt;none&gt;   &lt;none&gt;           &lt;none&gt;        &lt;none&gt;        &lt;none&gt;
+
+<span class="cmd">$ kubectl get ns blogapp --show-labels</span>
+NAME      STATUS   AGE   LABELS
+blogapp   Active   22m   app.kubernetes.io/part-of=blogapp,kubernetes.io/metadata.name=blogapp,pod-security.kubernetes.io/enforce=baseline,pod-security.kubernetes.io/warn=restricted
+
+<span class="hd">========== Namespace quotas and default limits ==========</span>
+
+<span class="cmd">$ kubectl -n blogapp describe resourcequota,limitrange</span>
+Name:                   blogapp-quota
+Namespace:              blogapp
+Resource                Used    Hard
+--------                ----    ----
+limits.cpu              3250m   12
+limits.memory           3328Mi  16Gi
+persistentvolumeclaims  1       5
+requests.cpu            700m    6
+requests.memory         1088Mi  8Gi
+
+
+Name:       blogapp-defaults
+Namespace:  blogapp
+Type        Resource  Min  Max  Default Request  Default Limit  Max Limit/Request Ratio
+----        --------  ---  ---  ---------------  -------------  -----------------------
+Container   memory    -    -    128Mi            512Mi          -
+Container   cpu       -    -    100m             500m           -
+
+<span class="hd">========== IAM / RBAC: who can access the cluster (EKS access entries) and IRSA service accounts ==========</span>
+
+<span class="cmd">$ aws eks list-access-entries --cluster-name blogapp-eks-cluster --output table</span>
+-------------------------------------------------------------------------------------------------------
+|                                          ListAccessEntries                                          |
++-----------------------------------------------------------------------------------------------------+
+||                                           accessEntries                                           ||
+|+---------------------------------------------------------------------------------------------------+|
+||  arn:aws:iam::778436624052:role/aws-service-role/eks.amazonaws.com/AWSServiceRoleForAmazonEKS     ||
+||  arn:aws:iam::778436624052:role/eksctl-blogapp-eks-cluster-nodegro-NodeInstanceRole-GQzSWOv2Uw37  ||
+||  arn:aws:iam::778436624052:user/blogapp-admin                                                     ||
+|+---------------------------------------------------------------------------------------------------+|
+
+<span class="cmd">$ kubectl -n kube-system get sa aws-load-balancer-controller ebs-csi-controller-sa -o custom-columns=SA:.metadata.name,IAM_ROLE:.metadata.annotations.eks\.amazonaws\.com/role-arn</span>
+SA                             IAM_ROLE
+aws-load-balancer-controller   arn:aws:iam::778436624052:role/eksctl-blogapp-eks-cluster-addon-iamserviceac-Role1-7xesywqegq9E
+ebs-csi-controller-sa          arn:aws:iam::778436624052:role/eksctl-blogapp-eks-cluster-addon-aws-ebs-csi--Role1-UOf1YqB5SYDV
+
+<span class="cmd">$ kubectl auth can-i --list -n blogapp --as=system:serviceaccount:blogapp:default</span>
+Warning: the list may be incomplete: webhook authorizer does not support user rule resolution
+Resources                                       Non-Resource URLs                      Resource Names   Verbs
+selfsubjectreviews.authentication.k8s.io        []                                     []               [create]
+selfsubjectaccessreviews.authorization.k8s.io   []                                     []               [create]
+selfsubjectrulesreviews.authorization.k8s.io    []                                     []               [create]
+                                                [/.well-known/openid-configuration/]   []               [get]
+                                                [/.well-known/openid-configuration]    []               [get]
+                                                [/api/*]                               []               [get]
+                                                [/api]                                 []               [get]
+                                                [/apis/*]                              []               [get]
+                                                [/apis]                                []               [get]
+                                                [/healthz]                             []               [get]
+                                                [/healthz]                             []               [get]
+                                                [/livez]                               []               [get]
+                                                [/livez]                               []               [get]
+                                                [/openapi/*]                           []               [get]
+                                                [/openapi]                             []               [get]
+                                                [/openid/v1/jwks/]                     []               [get]
+                                                [/openid/v1/jwks]                      []               [get]
+                                                [/readyz]                              []               [get]
+                                                [/readyz]                              []               [get]
+                                                [/version/]                            []               [get]
+                                                [/version/]                            []               [get]
+                                                [/version]                             []               [get]
+                                                [/version]                             []               [get]
+</pre>

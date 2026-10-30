@@ -1,0 +1,77 @@
+
+========== Prometheus + Grafana (kube-prometheus-stack) ==========
+
+$ kubectl -n monitoring get pods,svc,pvc
+NAME                                                           READY   STATUS    RESTARTS   AGE
+pod/alertmanager-kube-prometheus-stack-alertmanager-0          2/2     Running   0          58m
+pod/kube-prometheus-stack-grafana-5d57c95bf4-lvjr4             3/3     Running   0          58m
+pod/kube-prometheus-stack-kube-state-metrics-7977bf78c-4lccx   1/1     Running   0          58m
+pod/kube-prometheus-stack-operator-66956fcc4f-pfvl7            1/1     Running   0          58m
+pod/kube-prometheus-stack-prometheus-node-exporter-9vj7l       1/1     Running   0          58m
+pod/kube-prometheus-stack-prometheus-node-exporter-pj9xk       1/1     Running   0          58m
+pod/prometheus-kube-prometheus-stack-prometheus-0              2/2     Running   0          58m
+
+NAME                                                     TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                      AGE
+service/alertmanager-operated                            ClusterIP   None             <none>        9093/TCP,9094/TCP,9094/UDP   58m
+service/kube-prometheus-stack-alertmanager               ClusterIP   10.100.162.231   <none>        9093/TCP,8080/TCP            58m
+service/kube-prometheus-stack-grafana                    ClusterIP   10.100.130.157   <none>        80/TCP                       58m
+service/kube-prometheus-stack-kube-state-metrics         ClusterIP   10.100.237.69    <none>        8080/TCP                     58m
+service/kube-prometheus-stack-operator                   ClusterIP   10.100.240.93    <none>        443/TCP                      58m
+service/kube-prometheus-stack-prometheus                 ClusterIP   10.100.107.89    <none>        9090/TCP,8080/TCP            58m
+service/kube-prometheus-stack-prometheus-node-exporter   ClusterIP   10.100.237.104   <none>        9100/TCP                     58m
+service/prometheus-operated                              ClusterIP   None             <none>        9090/TCP                     58m
+
+NAME                                                                                                                         STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+persistentvolumeclaim/alertmanager-kube-prometheus-stack-alertmanager-db-alertmanager-kube-prometheus-stack-alertmanager-0   Bound    pvc-075504d3-ed56-4157-afe3-8a8da4e58688   2Gi        RWO            gp3            <unset>                 58m
+persistentvolumeclaim/prometheus-kube-prometheus-stack-prometheus-db-prometheus-kube-prometheus-stack-prometheus-0           Bound    pvc-50a86726-3ed8-446e-9ee8-cbea60c650b9   20Gi       RWO            gp3            <unset>                 58m
+
+$ kubectl -n blogapp get servicemonitor,prometheusrule
+NAME                                                   AGE
+servicemonitor.monitoring.coreos.com/backend-metrics   21m
+
+NAME                                                  AGE
+prometheusrule.monitoring.coreos.com/blogapp-alerts   21m
+
+========== Prometheus is scraping the backend /metrics (query: up{namespace="blogapp"}) ==========
+  backend-5944575cfb-bdcmn       backend-service      up=1
+  backend-5944575cfb-fsx8l       backend-service      up=1
+  backend-5944575cfb-sq2hk       backend-service      up=1
+
+========== Request rate by route (last 5 min) ==========
+  /metrics                       0.200 req/s
+  /readyz                        0.307 req/s
+  /healthz                       0.147 req/s
+  /api/posts/                    0.004 req/s
+  /api/posts/:slug/comments      0.000 req/s
+  /api/posts/:slug               0.000 req/s
+  /api/auth/register             0.000 req/s
+  /api/auth/login                0.000 req/s
+
+========== Alert rules loaded ==========
+  BlogBackendHigh5xxRate       state=pending
+  BlogBackendHighLatency       state=inactive
+  BlogPodCrashLooping          state=inactive
+  BlogBackendDown              state=inactive
+  BlogDatabaseNotReady         state=inactive
+  BlogMySQLVolumeFilling       state=inactive
+
+========== Logging: recent backend logs (morgan access log) ==========
+
+$ kubectl -n blogapp logs deploy/backend --tail=15
+Found 3 pods, using pod/backend-5944575cfb-bdcmn
+Defaulted container "backend" out of: backend, wait-for-mysql (init)
+::ffff:192.168.111.239 - - [29/Oct/2026:12:40:33 +0000] "GET /readyz HTTP/1.1" 503 68 "-" "kube-probe/1.31"
+::ffff:192.168.184.149 - - [29/Oct/2026:12:40:41 +0000] "GET /metrics HTTP/1.1" 200 - "-" "Prometheus/3.15.1"
+::ffff:192.168.111.239 - - [29/Oct/2026:12:40:43 +0000] "GET /readyz HTTP/1.1" 503 68 "-" "kube-probe/1.31"
+::ffff:192.168.111.239 - - [29/Oct/2026:12:40:43 +0000] "GET /readyz HTTP/1.1" 503 68 "-" "kube-probe/1.31"
+::ffff:192.168.111.239 - - [29/Oct/2026:12:40:53 +0000] "GET /healthz HTTP/1.1" 200 15 "-" "kube-probe/1.31"
+::ffff:192.168.111.239 - - [29/Oct/2026:12:40:53 +0000] "GET /readyz HTTP/1.1" 503 68 "-" "kube-probe/1.31"
+::ffff:192.168.184.149 - - [29/Oct/2026:12:40:56 +0000] "GET /metrics HTTP/1.1" 200 - "-" "Prometheus/3.15.1"
+::ffff:192.168.111.239 - - [29/Oct/2026:12:41:03 +0000] "GET /readyz HTTP/1.1" 200 18 "-" "kube-probe/1.31"
+::ffff:192.168.184.149 - - [29/Oct/2026:12:41:11 +0000] "GET /metrics HTTP/1.1" 200 - "-" "Prometheus/3.15.1"
+::ffff:192.168.111.239 - - [29/Oct/2026:12:41:13 +0000] "GET /healthz HTTP/1.1" 200 15 "-" "kube-probe/1.31"
+::ffff:192.168.111.239 - - [29/Oct/2026:12:41:13 +0000] "GET /readyz HTTP/1.1" 200 18 "-" "kube-probe/1.31"
+::ffff:192.168.111.239 - - [29/Oct/2026:12:41:23 +0000] "GET /readyz HTTP/1.1" 200 18 "-" "kube-probe/1.31"
+::ffff:192.168.184.149 - - [29/Oct/2026:12:41:26 +0000] "GET /metrics HTTP/1.1" 200 - "-" "Prometheus/3.15.1"
+::ffff:192.168.111.239 - - [29/Oct/2026:12:41:33 +0000] "GET /healthz HTTP/1.1" 200 15 "-" "kube-probe/1.31"
+::ffff:192.168.111.239 - - [29/Oct/2026:12:41:33 +0000] "GET /readyz HTTP/1.1" 200 18 "-" "kube-probe/1.31"

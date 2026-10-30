@@ -1,0 +1,38 @@
+<!doctype html><meta charset="utf-8"><style>
+      body{margin:0;background:#0d1117;font:13px/17px Consolas,"Cascadia Mono",monospace;color:#d1d7e0}
+      .bar{background:#161b22;padding:9px 14px;color:#8b949e;border-bottom:1px solid #30363d;font-family:Segoe UI,sans-serif}
+      .bar b{color:#e6edf3} .dot{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px}
+      pre{margin:0;padding:12px 16px;white-space:pre}
+      .ok{color:#3fb950}.bad{color:#f85149}.cmd{color:#79c0ff}.hd{color:#d2a8ff;font-weight:bold}</style>
+<div class="bar"><span class="dot" style="background:#f85149"></span><span class="dot" style="background:#d29922"></span><span class="dot" style="background:#3fb950"></span> <b>kubectl -n blogapp get deploy,sts,pods,svc,ingress,hpa,pdb -o wide</b> &nbsp; — captured 2026-10-29 18:13</div><pre>NAME                       READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES                                                                     SELECTOR
+deployment.apps/backend    3/3     3            3           23m   backend      778436624052.dkr.ecr.ap-south-1.amazonaws.com/blogapp-backend:1-29944b2    app=backend
+deployment.apps/frontend   3/3     3            3           23m   frontend     778436624052.dkr.ecr.ap-south-1.amazonaws.com/blogapp-frontend:1-29944b2   app=frontend
+
+NAME                     READY   AGE   CONTAINERS   IMAGES
+statefulset.apps/mysql   1/1     23m   mysql        mysql:8.0
+
+NAME                            READY   STATUS    RESTARTS   AGE     IP                NODE                                             NOMINATED NODE   READINESS GATES
+pod/backend-5944575cfb-bdcmn    1/1     <span class="ok">Running</span>   0          23m     192.168.120.111   ip-192-168-111-239.ap-south-1.compute.internal   &lt;none&gt;           &lt;none&gt;
+pod/backend-5944575cfb-fsx8l    1/1     <span class="ok">Running</span>   0          23m     192.168.96.130    ip-192-168-111-239.ap-south-1.compute.internal   &lt;none&gt;           &lt;none&gt;
+pod/backend-5944575cfb-sq2hk    1/1     <span class="ok">Running</span>   0          23m     192.168.167.81    ip-192-168-179-240.ap-south-1.compute.internal   &lt;none&gt;           &lt;none&gt;
+pod/frontend-86c56c8856-rjjzh   1/1     <span class="ok">Running</span>   0          23m     192.168.180.226   ip-192-168-179-240.ap-south-1.compute.internal   &lt;none&gt;           &lt;none&gt;
+pod/frontend-86c56c8856-vlx6p   1/1     <span class="ok">Running</span>   0          23m     192.168.96.96     ip-192-168-111-239.ap-south-1.compute.internal   &lt;none&gt;           &lt;none&gt;
+pod/frontend-86c56c8856-zxwtl   1/1     <span class="ok">Running</span>   0          23m     192.168.111.110   ip-192-168-111-239.ap-south-1.compute.internal   &lt;none&gt;           &lt;none&gt;
+pod/mysql-0                     1/1     <span class="ok">Running</span>   0          2m45s   192.168.173.16    ip-192-168-179-240.ap-south-1.compute.internal   &lt;none&gt;           &lt;none&gt;
+
+NAME                       TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE   SELECTOR
+service/backend-service    ClusterIP   10.100.236.222   &lt;none&gt;        5000/TCP   23m   app=backend
+service/frontend-service   ClusterIP   10.100.224.91    &lt;none&gt;        80/TCP     23m   app=frontend
+service/mysql-service      ClusterIP   None             &lt;none&gt;        3306/TCP   23m   app=mysql
+
+NAME                                        CLASS   HOSTS   ADDRESS                                                          PORTS   AGE
+ingress.networking.k8s.io/blogapp-ingress   alb     *       k8s-blogapp-deac8921dc-1417542765.ap-south-1.elb.amazonaws.com   80      23m
+
+NAME                                               REFERENCE             TARGETS                        MINPODS   MAXPODS   REPLICAS   AGE
+horizontalpodautoscaler.autoscaling/backend-hpa    Deployment/backend    cpu: 6%/70%, memory: 28%/80%   3         10        3          23m
+horizontalpodautoscaler.autoscaling/frontend-hpa   Deployment/frontend   cpu: 2%/70%                    3         8         3          23m
+
+NAME                                      MIN AVAILABLE   MAX UNAVAILABLE   ALLOWED DISRUPTIONS   AGE
+poddisruptionbudget.policy/backend-pdb    2               N/A               1                     23m
+poddisruptionbudget.policy/frontend-pdb   2               N/A               1                     23m
+</pre>

@@ -1,0 +1,52 @@
+<!doctype html><meta charset="utf-8"><style>
+      body{margin:0;background:#0d1117;font:13px/17px Consolas,"Cascadia Mono",monospace;color:#d1d7e0}
+      .bar{background:#161b22;padding:9px 14px;color:#8b949e;border-bottom:1px solid #30363d;font-family:Segoe UI,sans-serif}
+      .bar b{color:#e6edf3} .dot{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px}
+      pre{margin:0;padding:12px 16px;white-space:pre}
+      .ok{color:#3fb950}.bad{color:#f85149}.cmd{color:#79c0ff}.hd{color:#d2a8ff;font-weight:bold}</style>
+<div class="bar"><span class="dot" style="background:#f85149"></span><span class="dot" style="background:#d29922"></span><span class="dot" style="background:#3fb950"></span> <b>Three-tier flow: ALB -> nginx frontend -> Node API -> MySQL</b> &nbsp; — captured 2026-10-29 18:12</div><pre>
+<span class="hd">========== Three-tier flow through the public ALB:  browser -&gt; ALB -&gt; frontend (nginx) -&gt; /api -&gt; backend (Node) -&gt; MySQL ==========</span>
+Application URL: http://k8s-blogapp-deac8921dc-1417542765.ap-south-1.elb.amazonaws.com
+
+<span class="hd">========== 1. Frontend (nginx serving the React app) ==========</span>
+<span class="cmd">$ curl -s http://k8s-blogapp-deac8921dc-1417542765.ap-south-1.elb.amazonaws.com/ | grep -o "&lt;title&gt;.*&lt;/title&gt;"</span>
+&lt;title&gt;Marginal &amp;mdash; Field Notes for Engineers&lt;/title&gt;
+
+<span class="cmd">$ curl -s -o /dev/null -w HTTP %{http_code}  %{size_download} bytes  %{time_total}s\n http://k8s-blogapp-deac8921dc-1417542765.ap-south-1.elb.amazonaws.com/</span>
+HTTP 200  0 bytes  0.063586s
+
+<span class="hd">========== 2. Frontend health  /healthz ==========</span>
+
+<span class="cmd">$ curl -s http://k8s-blogapp-deac8921dc-1417542765.ap-south-1.elb.amazonaws.com/healthz</span>
+ok
+
+<span class="hd">========== 3. Backend API via the frontend proxy:  GET /api/posts ==========</span>
+
+<span class="cmd">$ curl -s http://k8s-blogapp-deac8921dc-1417542765.ap-south-1.elb.amazonaws.com/api/posts?limit=3</span>
+{"data":[{"id":1,"title":"Shipping to EKS Without Losing Sleep","slug":"shipping-to-eks-without-losing-sleep","excerpt":"A deep dive into building a resilient GitOps pipeline for Kubernetes on AWS EKS.","cover_image":null,"tag":"devops","read_minutes":6,"created_at":"2026-10-29T12:20:31.000Z","author_name":"Ada Editorial"},{"id":2,"title":"Why We Moved Artifact Storage to Nexus","slug":"why-we-moved-artifact-storage-to-nexus","excerpt":"How centralizing artifacts in Nexus cut our build times in half.","cover_image":null,"tag":"tooling","read_minutes":4,"created_at":"2026-10-29T12:20:31.000Z","author_name":"Ada Editorial"},{"id":3,"title":"Static Analysis That Developers Actually Like","slug":"static-analysis-developers-actually-like","excerpt":"Rolling out SonarQube quality gates without slowing teams down.","cover_image":null,"tag":"quality","read_minutes":5,"created_at":"2026-10-29T12:20:31.000Z","author_name":"Ada Editorial"}],"page":1,"limit":3,"total":4,"totalPages":2}
+
+<span class="hd">========== 4. Register a user  (backend writes to MySQL) ==========</span>
+{"token":"&lt;JWT issued - hidden&gt;","user":{"id":2,"name":"Evaluator","email":"evaluator1793277570@blogapp.dev"}}
+
+<span class="hd">========== 5. Log in  (backend reads the user back from MySQL, bcrypt check) ==========</span>
+{"token":"&lt;JWT - hidden&gt;","user":{"id":2,"name":"Evaluator","email":"evaluator1793277570@blogapp.dev"}}
+
+<span class="hd">========== 6. Create a post with the JWT  (authenticated write) ==========</span>
+{"id":5,"slug":"evaluation-post-from-the-ci-cd-demo-mvtj5zw6"}
+
+<span class="hd">========== 7. Read it back  GET /api/posts/evaluation-post-from-the-ci-cd-demo-mvtj5zw6 ==========</span>
+
+<span class="cmd">$ curl -s http://k8s-blogapp-deac8921dc-1417542765.ap-south-1.elb.amazonaws.com/api/posts/evaluation-post-from-the-ci-cd-demo-mvtj5zw6</span>
+{"id":5,"title":"Evaluation post from the CI/CD demo","slug":"evaluation-post-from-the-ci-cd-demo-mvtj5zw6","body":"This post was written through the ALB, the nginx frontend and the Node.js API, and stored in MySQL running as a StatefulSet on EKS with an encrypted EBS gp3 volume.","excerpt":"This post was written through the ALB, the nginx frontend and the Node.js API, and stored in MySQL running as a StatefulSet on EKS with an encrypted EBS gp3 vol","cover_image":null,"tag":"devops","read_minutes":1,"status":"published","author_id":2,"created_at":"2026-10-29T12:39:34.000Z","updated_at":"2026-10-29T12:39:34.000Z","author_name":"Evaluator","comments":[]}
+
+<span class="hd">========== 8. Add a comment and read the post again ==========</span>
+{"message":"Comment added"}
+"comments":[{"id":1,"body":"Verified end-to-end.","created_at":"2026-10-29T12:39:34.000Z","author_name":"Evaluator"}]
+
+<span class="hd">========== 9. Unauthenticated write is rejected ==========</span>
+
+<span class="cmd">$ curl -s -w   (HTTP %{http_code})\n -X POST http://k8s-blogapp-deac8921dc-1417542765.ap-south-1.elb.amazonaws.com/api/posts -H Content-Type: application/json -d {"title":"x","body":"no token"}</span>
+{"error":"Authentication required"}  (HTTP 401)
+
+Open in a browser: http://k8s-blogapp-deac8921dc-1417542765.ap-south-1.elb.amazonaws.com/post/evaluation-post-from-the-ci-cd-demo-mvtj5zw6
+</pre>

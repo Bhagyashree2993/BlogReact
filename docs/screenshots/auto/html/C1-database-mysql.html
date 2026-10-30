@@ -1,0 +1,127 @@
+<!doctype html><meta charset="utf-8"><style>
+      body{margin:0;background:#0d1117;font:13px/17px Consolas,"Cascadia Mono",monospace;color:#d1d7e0}
+      .bar{background:#161b22;padding:9px 14px;color:#8b949e;border-bottom:1px solid #30363d;font-family:Segoe UI,sans-serif}
+      .bar b{color:#e6edf3} .dot{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px}
+      pre{margin:0;padding:12px 16px;white-space:pre}
+      .ok{color:#3fb950}.bad{color:#f85149}.cmd{color:#79c0ff}.hd{color:#d2a8ff;font-weight:bold}</style>
+<div class="bar"><span class="dot" style="background:#f85149"></span><span class="dot" style="background:#d29922"></span><span class="dot" style="background:#3fb950"></span> <b>MySQL StatefulSet: storage, credentials, schema, data, persistence test</b> &nbsp; — captured 2026-10-29 18:13</div><pre>
+<span class="hd">========== MySQL StatefulSet, headless service and persistent volume ==========</span>
+
+<span class="cmd">$ kubectl -n blogapp get sts,pod/mysql-0,svc/mysql-service -o wide</span>
+error: arguments in resource/name form may not have more than one slash
+
+<span class="cmd">$ kubectl -n blogapp get pvc -o wide</span>
+NAME                 STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE   VOLUMEMODE
+mysql-data-mysql-0   <span class="ok">Bound</span>    pvc-5e57830c-2f10-48ab-99f6-88f76de13d5b   10Gi       RWO            gp3            &lt;unset&gt;                 19m   Filesystem
+
+<span class="cmd">$ kubectl get pv -o custom-columns=PV:.metadata.name,CLAIM:.spec.claimRef.name,SIZE:.spec.capacity.storage,CLASS:.spec.storageClassName,RECLAIM:.spec.persistentVolumeReclaimPolicy,EBS_VOLUME:.spec.csi.volumeHandle</span>
+PV                                         CLAIM                                                                                                  SIZE   CLASS   RECLAIM   EBS_VOLUME
+pvc-075504d3-ed56-4157-afe3-8a8da4e58688   alertmanager-kube-prometheus-stack-alertmanager-db-alertmanager-kube-prometheus-stack-alertmanager-0   2Gi    gp3     Retain    vol-076591aca1ac3eedc
+pvc-50a86726-3ed8-446e-9ee8-cbea60c650b9   prometheus-kube-prometheus-stack-prometheus-db-prometheus-kube-prometheus-stack-prometheus-0           20Gi   gp3     Retain    vol-0c22b755fc776e707
+pvc-5e57830c-2f10-48ab-99f6-88f76de13d5b   mysql-data-mysql-0                                                                                     10Gi   gp3     Retain    vol-05540c9956c17666a
+
+<span class="cmd">$ kubectl get storageclass gp3 -o custom-columns=NAME:.metadata.name,PROVISIONER:.provisioner,TYPE:.parameters.type,ENCRYPTED:.parameters.encrypted,RECLAIM:.reclaimPolicy</span>
+NAME   PROVISIONER       TYPE   ENCRYPTED   RECLAIM
+gp3    ebs.csi.aws.com   gp3    true        Retain
+
+<span class="hd">========== Credentials come from a Kubernetes Secret (injected by Jenkins), not from git ==========</span>
+
+<span class="cmd">$ kubectl -n blogapp get sts mysql -o jsonpath={range .spec.template.spec.containers[0].env[*]}{.name}{" &lt;- "}{.valueFrom.secretKeyRef.name}{"/"}{.valueFrom.secretKeyRef.key}{.value}{"\n"}{end}</span>
+MYSQL_ROOT_PASSWORD &lt;- mysql-secret/MYSQL_ROOT_PASSWORD
+MYSQL_DATABASE &lt;- /blogdb
+MYSQL_USER &lt;- mysql-secret/MYSQL_USER
+MYSQL_PASSWORD &lt;- mysql-secret/MYSQL_PASSWORD
+
+<span class="hd">========== Initialization: schema from ConfigMap mysql-init-script (database/init.sql) ==========</span>
+<span class="cmd">$ SHOW TABLES;</span>
++------------------+
+| Tables_in_blogdb |
++------------------+
+| comments         |
+| posts            |
+| users            |
++------------------+
+<span class="cmd">$ DESCRIBE posts;</span>
++--------------+---------------------------+------+-----+-------------------+-----------------------------------------------+
+| Field        | Type                      | Null | Key | Default           | Extra                                         |
++--------------+---------------------------+------+-----+-------------------+-----------------------------------------------+
+| id           | int                       | NO   | PRI | NULL              | auto_increment                                |
+| title        | varchar(255)              | NO   |     | NULL              |                                               |
+| slug         | varchar(280)              | NO   | UNI | NULL              |                                               |
+| body         | mediumtext                | NO   |     | NULL              |                                               |
+| excerpt      | varchar(300)              | YES  |     | NULL              |                                               |
+| cover_image  | varchar(500)              | YES  |     | NULL              |                                               |
+| tag          | varchar(60)               | YES  | MUL | general           |                                               |
+| read_minutes | int                       | YES  |     | 1                 |                                               |
+| status       | enum('draft','published') | YES  |     | published         |                                               |
+| author_id    | int                       | NO   | MUL | NULL              |                                               |
+| created_at   | timestamp                 | YES  | MUL | CURRENT_TIMESTAMP | DEFAULT_GENERATED                             |
+| updated_at   | timestamp                 | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
++--------------+---------------------------+------+-----+-------------------+-----------------------------------------------+
+
+<span class="hd">========== Backend integration: rows written by the API calls in 07-three-tier-application-output.txt ==========</span>
+<span class="cmd">$ SELECT id,name,email,created_at FROM users;</span>
++----+---------------+---------------------------------+---------------------+
+| id | name          | email                           | created_at          |
++----+---------------+---------------------------------+---------------------+
+|  1 | Ada Editorial | editor@blogapp.dev              | 2026-10-29 12:20:31 |
+|  2 | Evaluator     | evaluator1793277570@blogapp.dev | 2026-10-29 12:39:32 |
++----+---------------+---------------------------------+---------------------+
+<span class="cmd">$ SELECT id,title,tag,author_id,created_at FROM posts;</span>
++----+-----------------------------------------------+----------+-----------+---------------------+
+| id | title                                         | tag      | author_id | created_at          |
++----+-----------------------------------------------+----------+-----------+---------------------+
+|  1 | Shipping to EKS Without Losing Sleep          | devops   |         1 | 2026-10-29 12:20:31 |
+|  2 | Why We Moved Artifact Storage to Nexus        | tooling  |         1 | 2026-10-29 12:20:31 |
+|  3 | Static Analysis That Developers Actually Like | quality  |         1 | 2026-10-29 12:20:31 |
+|  4 | Trivy in CI: Catching CVEs Before Production  | security |         1 | 2026-10-29 12:20:31 |
+|  5 | Evaluation post from the CI/CD demo           | devops   |         2 | 2026-10-29 12:39:34 |
++----+-----------------------------------------------+----------+-----------+---------------------+
+<span class="cmd">$ SELECT id,post_id,author_id,body FROM comments;</span>
++----+---------+-----------+----------------------+
+| id | post_id | author_id | body                 |
++----+---------+-----------+----------------------+
+|  1 |       5 |         2 | Verified end-to-end. |
++----+---------+-----------+----------------------+
+
+<span class="hd">========== Backend connects as the least-privilege app user, not root ==========</span>
+
+<span class="cmd">$ kubectl -n blogapp get deploy backend -o jsonpath={range .spec.template.spec.containers[0].env[*]}{.name}{" &lt;- "}{.valueFrom.secretKeyRef.name}{"/"}{.valueFrom.secretKeyRef.key}{"\n"}{end}</span>
+DB_USER &lt;- mysql-secret/MYSQL_USER
+DB_PASSWORD &lt;- mysql-secret/MYSQL_PASSWORD
+JWT_SECRET &lt;- backend-secret/JWT_SECRET
+<span class="cmd">$ SHOW GRANTS FOR 'bloguser'@'%';</span>
++------------------------------------------------------+
+| Grants for bloguser@%                                |
++------------------------------------------------------+
+| GRANT USAGE ON *.* TO `bloguser`@`%`                 |
+| GRANT ALL PRIVILEGES ON `blogdb`.* TO `bloguser`@`%` |
++------------------------------------------------------+
+
+<span class="hd">========== Persistence test: delete the MySQL pod, Kubernetes recreates it on the same EBS volume ==========</span>
++--------------+
+| posts_before |
++--------------+
+|            5 |
++--------------+
+
+<span class="cmd">$ kubectl -n blogapp delete pod mysql-0 --wait=true</span>
+pod "mysql-0" deleted
+
+<span class="cmd">$ kubectl -n blogapp wait --for=condition=Ready pod/mysql-0 --timeout=300s</span>
+pod/mysql-0 condition met
++---------------------+
+| posts_after_restart |
++---------------------+
+|                   5 |
++---------------------+
+
+<span class="cmd">$ kubectl -n blogapp get pod mysql-0 -o wide</span>
+NAME      READY   STATUS    RESTARTS   AGE   IP               NODE                                             NOMINATED NODE   READINESS GATES
+mysql-0   1/1     <span class="ok">Running</span>   0          48s   192.168.173.16   ip-192-168-179-240.ap-south-1.compute.internal   &lt;none&gt;           &lt;none&gt;
+
+<span class="hd">========== Backend readiness (checks the DB connection) after the restart ==========</span>
+
+<span class="cmd">$ curl -s http://k8s-blogapp-deac8921dc-1417542765.ap-south-1.elb.amazonaws.com/api/posts?limit=1</span>
+{"data":[{"id":5,"title":"Evaluation post from the CI/CD demo","slug":"evaluation-post-from-the-ci-cd-demo-mvtj5zw6","excerpt":"This post was written through the ALB, the nginx frontend and the Node.js API, and stored in MySQL running as a StatefulSet on EKS with an encrypted EBS gp3 vol","cover_image":null,"tag":"devops","read_minutes":1,"created_at":"2026-10-29T12:39:34.000Z","author_name":"Evaluator"}],"page":1,"limit":1,"total":5,"totalPages":5}
+</pre>

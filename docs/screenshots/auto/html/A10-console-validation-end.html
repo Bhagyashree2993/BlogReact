@@ -1,0 +1,77 @@
+<!doctype html><meta charset="utf-8"><style>
+      body{margin:0;background:#0d1117;font:13px/17px Consolas,"Cascadia Mono",monospace;color:#d1d7e0}
+      .bar{background:#161b22;padding:9px 14px;color:#8b949e;border-bottom:1px solid #30363d;font-family:Segoe UI,sans-serif}
+      .bar b{color:#e6edf3} .dot{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px}
+      pre{margin:0;padding:12px 16px;white-space:pre}
+      .ok{color:#3fb950}.bad{color:#f85149}.cmd{color:#79c0ff}.hd{color:#d2a8ff;font-weight:bold}</style>
+<div class="bar"><span class="dot" style="background:#f85149"></span><span class="dot" style="background:#d29922"></span><span class="dot" style="background:#3fb950"></span> <b>Console output - deployment validation, Finished: SUCCESS</b> &nbsp; — captured 2026-10-29 18:12</div><pre>[2026-10-29T12:21:29.403Z] 2	Why We Moved Artifact Storage to Nexus	1	2026-10-29 12:20:31
+[2026-10-29T12:21:29.403Z] 3	Static Analysis That Developers Actually Like	1	2026-10-29 12:20:31
+[2026-10-29T12:21:29.403Z] 4	Trivy in CI: Catching CVEs Before Production	1	2026-10-29 12:20:31
+[2026-10-29T12:21:29.403Z] + echo
+[2026-10-29T12:21:29.403Z] + echo ### Rollout history
+[2026-10-29T12:21:29.403Z] + kubectl -n blogapp rollout history deployment/backend
+[2026-10-29T12:21:29.403Z] 
+[2026-10-29T12:21:29.403Z] ### Rollout history
+[2026-10-29T12:21:30.315Z] deployment.apps/backend 
+[2026-10-29T12:21:30.315Z] REVISION  CHANGE-CAUSE
+[2026-10-29T12:21:30.315Z] 1         &lt;none&gt;
+[2026-10-29T12:21:30.315Z] 
+[2026-10-29T12:21:30.315Z] + kubectl -n blogapp rollout history deployment/frontend
+[2026-10-29T12:21:31.659Z] deployment.apps/frontend 
+[2026-10-29T12:21:31.659Z] REVISION  CHANGE-CAUSE
+[2026-10-29T12:21:31.659Z] 1         &lt;none&gt;
+[2026-10-29T12:21:31.659Z] 
+[2026-10-29T12:21:31.659Z] + echo --- Public ALB check ---
+[2026-10-29T12:21:31.659Z] --- Public ALB check ---
+[2026-10-29T12:21:31.659Z] + seq 1 30
+[2026-10-29T12:21:31.659Z] + kubectl -n blogapp get ingress blogapp-ingress -o jsonpath={.status.loadBalancer.ingress[0].hostname}
+[2026-10-29T12:21:33.002Z] + ALB=k8s-blogapp-deac8921dc-1417542765.ap-south-1.elb.amazonaws.com
+[2026-10-29T12:21:33.002Z] + [ -n k8s-blogapp-deac8921dc-1417542765.ap-south-1.elb.amazonaws.com ]
+[2026-10-29T12:21:33.003Z] + curl -fsS -o /dev/null http://k8s-blogapp-deac8921dc-1417542765.ap-south-1.elb.amazonaws.com/healthz
+[2026-10-29T12:21:33.003Z] curl: (6) Could not resolve host: k8s-blogapp-deac8921dc-1417542765.ap-south-1.elb.amazonaws.com
+[2026-10-29T12:21:33.003Z] + echo Waiting for ALB (1/30)...
+[2026-10-29T12:21:33.003Z] Waiting for ALB (1/30)...
+[2026-10-29T12:21:33.003Z] + sleep 20
+[2026-10-29T12:21:54.803Z] + kubectl -n blogapp get ingress blogapp-ingress -o jsonpath={.status.loadBalancer.ingress[0].hostname}
+[2026-10-29T12:21:54.803Z] + ALB=k8s-blogapp-deac8921dc-1417542765.ap-south-1.elb.amazonaws.com
+[2026-10-29T12:21:54.803Z] + [ -n k8s-blogapp-deac8921dc-1417542765.ap-south-1.elb.amazonaws.com ]
+[2026-10-29T12:21:54.803Z] + curl -fsS -o /dev/null http://k8s-blogapp-deac8921dc-1417542765.ap-south-1.elb.amazonaws.com/healthz
+[2026-10-29T12:21:54.803Z] + echo Application is live at: http://k8s-blogapp-deac8921dc-1417542765.ap-south-1.elb.amazonaws.com
+[2026-10-29T12:21:54.803Z] Application is live at: http://k8s-blogapp-deac8921dc-1417542765.ap-south-1.elb.amazonaws.com
+[2026-10-29T12:21:54.803Z] + echo http://k8s-blogapp-deac8921dc-1417542765.ap-south-1.elb.amazonaws.com
+[2026-10-29T12:21:54.803Z] + exit 0
+[Pipeline] }
+[Pipeline] // withCredentials
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] archiveArtifacts
+[2026-10-29T12:21:55.069Z] Archiving artifacts
+[Pipeline] sh
+[2026-10-29T12:21:55.386Z] + docker rmi blogapp-backend:1-29944b2 blogapp-frontend:1-29944b2
+[2026-10-29T12:21:55.386Z] Untagged: blogapp-backend:1-29944b2
+[2026-10-29T12:21:55.386Z] Untagged: blogapp-frontend:1-29944b2
+[2026-10-29T12:21:55.386Z] + docker image prune -f
+[2026-10-29T12:21:55.386Z] Total reclaimed space: 0B
+[Pipeline] cleanWs
+[2026-10-29T12:21:55.435Z] [WS-CLEANUP] Deleting project workspace...
+[2026-10-29T12:21:55.444Z] [WS-CLEANUP] Deferred wipeout is used...
+[2026-10-29T12:21:55.494Z] [WS-CLEANUP] done
+[Pipeline] echo
+[2026-10-29T12:21:55.586Z] ✅ Build 1-29944b2 deployed. Grafana dashboard: 'BlogApp – Three-Tier Overview'
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // timeout
+[Pipeline] }
+[Pipeline] // timestamps
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: <span class="ok">SUCCESS</span>
+</pre>

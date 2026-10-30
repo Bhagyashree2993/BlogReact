@@ -1,0 +1,12 @@
+
+========== SonarQube Quality Gate (project blogapp) ==========
+Quality Gate: OK
+
+========== SonarQube measures ==========
+  coverage                     48.0
+  bugs                         5
+  code_smells                  12
+  duplicated_lines_density     0.0
+  ncloc                        997
+  vulnerabilities              0
+  security_hotspots            0

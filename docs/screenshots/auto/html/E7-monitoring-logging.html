@@ -1,0 +1,84 @@
+<!doctype html><meta charset="utf-8"><style>
+      body{margin:0;background:#0d1117;font:13px/17px Consolas,"Cascadia Mono",monospace;color:#d1d7e0}
+      .bar{background:#161b22;padding:9px 14px;color:#8b949e;border-bottom:1px solid #30363d;font-family:Segoe UI,sans-serif}
+      .bar b{color:#e6edf3} .dot{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px}
+      pre{margin:0;padding:12px 16px;white-space:pre}
+      .ok{color:#3fb950}.bad{color:#f85149}.cmd{color:#79c0ff}.hd{color:#d2a8ff;font-weight:bold}</style>
+<div class="bar"><span class="dot" style="background:#f85149"></span><span class="dot" style="background:#d29922"></span><span class="dot" style="background:#3fb950"></span> <b>Prometheus targets, metrics, alert rules, backend logs</b> &nbsp; — captured 2026-10-29 18:15</div><pre>
+<span class="hd">========== Prometheus + Grafana (kube-prometheus-stack) ==========</span>
+
+<span class="cmd">$ kubectl -n monitoring get pods,svc,pvc</span>
+NAME                                                           READY   STATUS    RESTARTS   AGE
+pod/alertmanager-kube-prometheus-stack-alertmanager-0          2/2     <span class="ok">Running</span>   0          58m
+pod/kube-prometheus-stack-grafana-5d57c95bf4-lvjr4             3/3     <span class="ok">Running</span>   0          58m
+pod/kube-prometheus-stack-kube-state-metrics-7977bf78c-4lccx   1/1     <span class="ok">Running</span>   0          58m
+pod/kube-prometheus-stack-operator-66956fcc4f-pfvl7            1/1     <span class="ok">Running</span>   0          58m
+pod/kube-prometheus-stack-prometheus-node-exporter-9vj7l       1/1     <span class="ok">Running</span>   0          58m
+pod/kube-prometheus-stack-prometheus-node-exporter-pj9xk       1/1     <span class="ok">Running</span>   0          58m
+pod/prometheus-kube-prometheus-stack-prometheus-0              2/2     <span class="ok">Running</span>   0          58m
+
+NAME                                                     TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                      AGE
+service/alertmanager-operated                            ClusterIP   None             &lt;none&gt;        9093/TCP,9094/TCP,9094/UDP   58m
+service/kube-prometheus-stack-alertmanager               ClusterIP   10.100.162.231   &lt;none&gt;        9093/TCP,8080/TCP            58m
+service/kube-prometheus-stack-grafana                    ClusterIP   10.100.130.157   &lt;none&gt;        80/TCP                       58m
+service/kube-prometheus-stack-kube-state-metrics         ClusterIP   10.100.237.69    &lt;none&gt;        8080/TCP                     58m
+service/kube-prometheus-stack-operator                   ClusterIP   10.100.240.93    &lt;none&gt;        443/TCP                      58m
+service/kube-prometheus-stack-prometheus                 ClusterIP   10.100.107.89    &lt;none&gt;        9090/TCP,8080/TCP            58m
+service/kube-prometheus-stack-prometheus-node-exporter   ClusterIP   10.100.237.104   &lt;none&gt;        9100/TCP                     58m
+service/prometheus-operated                              ClusterIP   None             &lt;none&gt;        9090/TCP                     58m
+
+NAME                                                                                                                         STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+persistentvolumeclaim/alertmanager-kube-prometheus-stack-alertmanager-db-alertmanager-kube-prometheus-stack-alertmanager-0   <span class="ok">Bound</span>    pvc-075504d3-ed56-4157-afe3-8a8da4e58688   2Gi        RWO            gp3            &lt;unset&gt;                 58m
+persistentvolumeclaim/prometheus-kube-prometheus-stack-prometheus-db-prometheus-kube-prometheus-stack-prometheus-0           <span class="ok">Bound</span>    pvc-50a86726-3ed8-446e-9ee8-cbea60c650b9   20Gi       RWO            gp3            &lt;unset&gt;                 58m
+
+<span class="cmd">$ kubectl -n blogapp get servicemonitor,prometheusrule</span>
+NAME                                                   AGE
+servicemonitor.monitoring.coreos.com/backend-metrics   21m
+
+NAME                                                  AGE
+prometheusrule.monitoring.coreos.com/blogapp-alerts   21m
+
+<span class="hd">========== Prometheus is scraping the backend /metrics (query: up{namespace="blogapp"}) ==========</span>
+  backend-5944575cfb-bdcmn       backend-service      up=1
+  backend-5944575cfb-fsx8l       backend-service      up=1
+  backend-5944575cfb-sq2hk       backend-service      up=1
+
+<span class="hd">========== Request rate by route (last 5 min) ==========</span>
+  /metrics                       0.200 req/s
+  /readyz                        0.307 req/s
+  /healthz                       0.147 req/s
+  /api/posts/                    0.004 req/s
+  /api/posts/:slug/comments      0.000 req/s
+  /api/posts/:slug               0.000 req/s
+  /api/auth/register             0.000 req/s
+  /api/auth/login                0.000 req/s
+
+<span class="hd">========== Alert rules loaded ==========</span>
+  BlogBackendHigh5xxRate       state=pending
+  BlogBackendHighLatency       state=inactive
+  BlogPodCrashLooping          state=inactive
+  BlogBackendDown              state=inactive
+  BlogDatabaseNotReady         state=inactive
+  BlogMySQLVolumeFilling       state=inactive
+
+<span class="hd">========== Logging: recent backend logs (morgan access log) ==========</span>
+
+<span class="cmd">$ kubectl -n blogapp logs deploy/backend --tail=15</span>
+Found 3 pods, using pod/backend-5944575cfb-bdcmn
+Defaulted container "backend" out of: backend, wait-for-mysql (init)
+::ffff:192.168.111.239 - - [29/Oct/2026:12:40:33 +0000] "GET /readyz HTTP/1.1" 503 68 "-" "kube-probe/1.31"
+::ffff:192.168.184.149 - - [29/Oct/2026:12:40:41 +0000] "GET /metrics HTTP/1.1" 200 - "-" "Prometheus/3.15.1"
+::ffff:192.168.111.239 - - [29/Oct/2026:12:40:43 +0000] "GET /readyz HTTP/1.1" 503 68 "-" "kube-probe/1.31"
+::ffff:192.168.111.239 - - [29/Oct/2026:12:40:43 +0000] "GET /readyz HTTP/1.1" 503 68 "-" "kube-probe/1.31"
+::ffff:192.168.111.239 - - [29/Oct/2026:12:40:53 +0000] "GET /healthz HTTP/1.1" 200 15 "-" "kube-probe/1.31"
+::ffff:192.168.111.239 - - [29/Oct/2026:12:40:53 +0000] "GET /readyz HTTP/1.1" 503 68 "-" "kube-probe/1.31"
+::ffff:192.168.184.149 - - [29/Oct/2026:12:40:56 +0000] "GET /metrics HTTP/1.1" 200 - "-" "Prometheus/3.15.1"
+::ffff:192.168.111.239 - - [29/Oct/2026:12:41:03 +0000] "GET /readyz HTTP/1.1" 200 18 "-" "kube-probe/1.31"
+::ffff:192.168.184.149 - - [29/Oct/2026:12:41:11 +0000] "GET /metrics HTTP/1.1" 200 - "-" "Prometheus/3.15.1"
+::ffff:192.168.111.239 - - [29/Oct/2026:12:41:13 +0000] "GET /healthz HTTP/1.1" 200 15 "-" "kube-probe/1.31"
+::ffff:192.168.111.239 - - [29/Oct/2026:12:41:13 +0000] "GET /readyz HTTP/1.1" 200 18 "-" "kube-probe/1.31"
+::ffff:192.168.111.239 - - [29/Oct/2026:12:41:23 +0000] "GET /readyz HTTP/1.1" 200 18 "-" "kube-probe/1.31"
+::ffff:192.168.184.149 - - [29/Oct/2026:12:41:26 +0000] "GET /metrics HTTP/1.1" 200 - "-" "Prometheus/3.15.1"
+::ffff:192.168.111.239 - - [29/Oct/2026:12:41:33 +0000] "GET /healthz HTTP/1.1" 200 15 "-" "kube-probe/1.31"
+::ffff:192.168.111.239 - - [29/Oct/2026:12:41:33 +0000] "GET /readyz HTTP/1.1" 200 18 "-" "kube-probe/1.31"
+</pre>

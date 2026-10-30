@@ -1,0 +1,373 @@
+<!doctype html><meta charset="utf-8"><style>
+      body{margin:0;background:#0d1117;font:13px/17px Consolas,"Cascadia Mono",monospace;color:#d1d7e0}
+      .bar{background:#161b22;padding:9px 14px;color:#8b949e;border-bottom:1px solid #30363d;font-family:Segoe UI,sans-serif}
+      .bar b{color:#e6edf3} .dot{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px}
+      pre{margin:0;padding:12px 16px;white-space:pre}
+      .ok{color:#3fb950}.bad{color:#f85149}.cmd{color:#79c0ff}.hd{color:#d2a8ff;font-weight:bold}</style>
+<div class="bar"><span class="dot" style="background:#f85149"></span><span class="dot" style="background:#d29922"></span><span class="dot" style="background:#3fb950"></span> <b>EKS deployment - full report</b> &nbsp; — captured 2026-10-29 18:13</div><pre>
+<span class="hd">========== Cluster and nodes ==========</span>
+
+<span class="cmd">$ kubectl get nodes -o wide</span>
+NAME                                             STATUS   ROLES    AGE   VERSION                INTERNAL-IP       EXTERNAL-IP   OS-IMAGE                        KERNEL-VERSION                    CONTAINER-RUNTIME
+ip-192-168-111-239.ap-south-1.compute.internal   Ready    &lt;none&gt;   61m   v1.31.14-eks-577a51e   192.168.111.239   &lt;none&gt;        Amazon Linux 2023.12.20261026   6.1.189-236.399.amzn2023.x86_64   containerd://2.3.7+unknown
+ip-192-168-179-240.ap-south-1.compute.internal   Ready    &lt;none&gt;   61m   v1.31.14-eks-577a51e   192.168.179.240   &lt;none&gt;        Amazon Linux 2023.12.20261026   6.1.189-236.399.amzn2023.x86_64   containerd://2.3.7+unknown
+
+<span class="hd">========== All application resources ==========</span>
+
+<span class="cmd">$ kubectl -n blogapp get deploy,sts,rs,pods,svc,ingress,hpa,pdb -o wide</span>
+NAME                       READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES                                                                     SELECTOR
+deployment.apps/backend    3/3     3            3           19m   backend      778436624052.dkr.ecr.ap-south-1.amazonaws.com/blogapp-backend:1-29944b2    app=backend
+deployment.apps/frontend   3/3     3            3           19m   frontend     778436624052.dkr.ecr.ap-south-1.amazonaws.com/blogapp-frontend:1-29944b2   app=frontend
+
+NAME                     READY   AGE   CONTAINERS   IMAGES
+statefulset.apps/mysql   1/1     19m   mysql        mysql:8.0
+
+NAME                                  DESIRED   CURRENT   READY   AGE   CONTAINERS   IMAGES                                                                     SELECTOR
+replicaset.apps/backend-5944575cfb    3         3         3       19m   backend      778436624052.dkr.ecr.ap-south-1.amazonaws.com/blogapp-backend:1-29944b2    app=backend,pod-template-hash=5944575cfb
+replicaset.apps/frontend-86c56c8856   3         3         3       19m   frontend     778436624052.dkr.ecr.ap-south-1.amazonaws.com/blogapp-frontend:1-29944b2   app=frontend,pod-template-hash=86c56c8856
+
+NAME                            READY   STATUS    RESTARTS   AGE   IP                NODE                                             NOMINATED NODE   READINESS GATES
+pod/backend-5944575cfb-bdcmn    1/1     <span class="ok">Running</span>   0          19m   192.168.120.111   ip-192-168-111-239.ap-south-1.compute.internal   &lt;none&gt;           &lt;none&gt;
+pod/backend-5944575cfb-fsx8l    1/1     <span class="ok">Running</span>   0          19m   192.168.96.130    ip-192-168-111-239.ap-south-1.compute.internal   &lt;none&gt;           &lt;none&gt;
+pod/backend-5944575cfb-sq2hk    1/1     <span class="ok">Running</span>   0          19m   192.168.167.81    ip-192-168-179-240.ap-south-1.compute.internal   &lt;none&gt;           &lt;none&gt;
+pod/frontend-86c56c8856-rjjzh   1/1     <span class="ok">Running</span>   0          19m   192.168.180.226   ip-192-168-179-240.ap-south-1.compute.internal   &lt;none&gt;           &lt;none&gt;
+pod/frontend-86c56c8856-vlx6p   1/1     <span class="ok">Running</span>   0          19m   192.168.96.96     ip-192-168-111-239.ap-south-1.compute.internal   &lt;none&gt;           &lt;none&gt;
+pod/frontend-86c56c8856-zxwtl   1/1     <span class="ok">Running</span>   0          19m   192.168.111.110   ip-192-168-111-239.ap-south-1.compute.internal   &lt;none&gt;           &lt;none&gt;
+pod/mysql-0                     1/1     <span class="ok">Running</span>   0          19m   192.168.184.155   ip-192-168-179-240.ap-south-1.compute.internal   &lt;none&gt;           &lt;none&gt;
+
+NAME                       TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE   SELECTOR
+service/backend-service    ClusterIP   10.100.236.222   &lt;none&gt;        5000/TCP   19m   app=backend
+service/frontend-service   ClusterIP   10.100.224.91    &lt;none&gt;        80/TCP     19m   app=frontend
+service/mysql-service      ClusterIP   None             &lt;none&gt;        3306/TCP   19m   app=mysql
+
+NAME                                        CLASS   HOSTS   ADDRESS                                                          PORTS   AGE
+ingress.networking.k8s.io/blogapp-ingress   alb     *       k8s-blogapp-deac8921dc-1417542765.ap-south-1.elb.amazonaws.com   80      19m
+
+NAME                                               REFERENCE             TARGETS                        MINPODS   MAXPODS   REPLICAS   AGE
+horizontalpodautoscaler.autoscaling/backend-hpa    Deployment/backend    cpu: 6%/70%, memory: 25%/80%   3         10        3          19m
+horizontalpodautoscaler.autoscaling/frontend-hpa   Deployment/frontend   cpu: 2%/70%                    3         8         3          19m
+
+NAME                                      MIN AVAILABLE   MAX UNAVAILABLE   ALLOWED DISRUPTIONS   AGE
+poddisruptionbudget.policy/backend-pdb    2               N/A               1                     19m
+poddisruptionbudget.policy/frontend-pdb   2               N/A               1                     19m
+
+<span class="hd">========== Image versions actually running (match the pipeline build tag) ==========</span>
+
+<span class="cmd">$ kubectl -n blogapp get pods -o custom-columns=POD:.metadata.name,IMAGE:.spec.containers[*].image,NODE:.spec.nodeName,READY:.status.containerStatuses[*].<span class="ok">ready</span></span>
+POD                         IMAGE                                                                      NODE                                             READY
+backend-5944575cfb-bdcmn    778436624052.dkr.ecr.ap-south-1.amazonaws.com/blogapp-backend:1-29944b2    ip-192-168-111-239.ap-south-1.compute.internal   true
+backend-5944575cfb-fsx8l    778436624052.dkr.ecr.ap-south-1.amazonaws.com/blogapp-backend:1-29944b2    ip-192-168-111-239.ap-south-1.compute.internal   true
+backend-5944575cfb-sq2hk    778436624052.dkr.ecr.ap-south-1.amazonaws.com/blogapp-backend:1-29944b2    ip-192-168-179-240.ap-south-1.compute.internal   true
+frontend-86c56c8856-rjjzh   778436624052.dkr.ecr.ap-south-1.amazonaws.com/blogapp-frontend:1-29944b2   ip-192-168-179-240.ap-south-1.compute.internal   true
+frontend-86c56c8856-vlx6p   778436624052.dkr.ecr.ap-south-1.amazonaws.com/blogapp-frontend:1-29944b2   ip-192-168-111-239.ap-south-1.compute.internal   true
+frontend-86c56c8856-zxwtl   778436624052.dkr.ecr.ap-south-1.amazonaws.com/blogapp-frontend:1-29944b2   ip-192-168-111-239.ap-south-1.compute.internal   true
+mysql-0                     mysql:8.0                                                                  ip-192-168-179-240.ap-south-1.compute.internal   true
+
+<span class="hd">========== Replicas, rolling update strategy, probes, requests/limits ==========</span>
+
+<span class="cmd">$ kubectl -n blogapp get deploy -o custom-columns=NAME:.metadata.name,REPLICAS:.spec.replicas,STRATEGY:.spec.strategy.type,MAX_SURGE:.spec.strategy.rollingUpdate.maxSurge,MAX_UNAVAIL:.spec.strategy.rollingUpdate.maxUnavailable,READINESS:.spec.template.spec.containers[0].readinessProbe.httpGet.path,LIVENESS:.spec.template.spec.containers[0].livenessProbe.httpGet.path,CPU_REQ:.spec.template.spec.containers[0].resources.requests.cpu,CPU_LIM:.spec.template.spec.containers[0].resources.limits.cpu,MEM_REQ:.spec.template.spec.containers[0].resources.requests.memory,MEM_LIM:.spec.template.spec.containers[0].resources.limits.memory</span>
+NAME       REPLICAS   STRATEGY        MAX_SURGE   MAX_UNAVAIL   READINESS   LIVENESS   CPU_REQ   CPU_LIM   MEM_REQ   MEM_LIM
+backend    3          RollingUpdate   1           0             /readyz     /healthz   100m      500m      128Mi     512Mi
+frontend   3          RollingUpdate   1           0             /healthz    /healthz   50m       250m      64Mi      256Mi
+
+<span class="hd">========== Backend deployment (full description) ==========</span>
+
+<span class="cmd">$ kubectl -n blogapp describe deploy backend</span>
+Name:                   backend
+Namespace:              blogapp
+CreationTimestamp:      Thu, 29 Oct 2026 17:49:52 +0530
+Labels:                 app=backend
+                        app.kubernetes.io/part-of=blogapp
+                        tier=api
+Annotations:            deployment.kubernetes.io/revision: 1
+Selector:               app=backend
+Replicas:               3 desired | 3 updated | 3 total | 3 available | 0 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  0 max unavailable, 1 max surge
+Pod Template:
+  Labels:  app=backend
+           tier=api
+  Init Containers:
+   wait-for-mysql:
+    Image:      busybox:1.36
+    Port:       &lt;none&gt;
+    Host Port:  &lt;none&gt;
+    Command:
+      sh
+      -c
+      until nc -z mysql-service 3306; do echo waiting for mysql; sleep 3; done
+    Limits:
+      cpu:     50m
+      memory:  32Mi
+    Requests:
+      cpu:        10m
+      memory:     16Mi
+    Environment:  &lt;none&gt;
+    Mounts:       &lt;none&gt;
+  Containers:
+   backend:
+    Image:      778436624052.dkr.ecr.ap-south-1.amazonaws.com/blogapp-backend:1-29944b2
+    Port:       5000/TCP
+    Host Port:  0/TCP
+    Limits:
+      cpu:     500m
+      memory:  512Mi
+    Requests:
+      cpu:      100m
+      memory:   128Mi
+    Liveness:   http-get http://:http/healthz delay=15s timeout=1s period=20s #success=1 #failure=3
+    Readiness:  http-get http://:http/readyz delay=5s timeout=1s period=10s #success=1 #failure=3
+    Environment Variables from:
+      backend-config  ConfigMap  Optional: false
+    Environment:
+      DB_USER:                  &lt;set to the key 'MYSQL_USER' in secret 'mysql-secret'&gt;      Optional: false
+      DB_PASSWORD:              &lt;set to the key 'MYSQL_PASSWORD' in secret 'mysql-secret'&gt;  Optional: false
+      JWT_SECRET:               &lt;set to the key 'JWT_SECRET' in secret 'backend-secret'&gt;    Optional: false
+    Mounts:                     &lt;none&gt;
+  Volumes:                      &lt;none&gt;
+  Topology Spread Constraints:  topology.kubernetes.io/zone:ScheduleAnyway when max skew 1 is exceeded for selector app=backend
+  Node-Selectors:               &lt;none&gt;
+  Tolerations:                  &lt;none&gt;
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      True    MinimumReplicasAvailable
+  Progressing    True    NewReplicaSetAvailable
+OldReplicaSets:  &lt;none&gt;
+NewReplicaSet:   backend-5944575cfb (3/3 replicas created)
+Events:
+  Type    Reason             Age   From                   Message
+  ----    ------             ----  ----                   -------
+  Normal  ScalingReplicaSet  19m   deployment-controller  Scaled up replica set backend-5944575cfb to 3
+
+<span class="hd">========== Frontend deployment (full description) ==========</span>
+
+<span class="cmd">$ kubectl -n blogapp describe deploy frontend</span>
+Name:                   frontend
+Namespace:              blogapp
+CreationTimestamp:      Thu, 29 Oct 2026 17:49:52 +0530
+Labels:                 app=frontend
+                        app.kubernetes.io/part-of=blogapp
+                        tier=web
+Annotations:            deployment.kubernetes.io/revision: 1
+Selector:               app=frontend
+Replicas:               3 desired | 3 updated | 3 total | 3 available | 0 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  0 max unavailable, 1 max surge
+Pod Template:
+  Labels:  app=frontend
+           tier=web
+  Containers:
+   frontend:
+    Image:      778436624052.dkr.ecr.ap-south-1.amazonaws.com/blogapp-frontend:1-29944b2
+    Port:       8080/TCP
+    Host Port:  0/TCP
+    Limits:
+      cpu:     250m
+      memory:  256Mi
+    Requests:
+      cpu:      50m
+      memory:   64Mi
+    Liveness:   http-get http://:http/healthz delay=10s timeout=1s period=20s #success=1 #failure=3
+    Readiness:  http-get http://:http/healthz delay=0s timeout=1s period=10s #success=1 #failure=3
+    Environment:
+      BACKEND_HOST:             backend-service
+      BACKEND_PORT:             5000
+    Mounts:                     &lt;none&gt;
+  Volumes:                      &lt;none&gt;
+  Topology Spread Constraints:  topology.kubernetes.io/zone:ScheduleAnyway when max skew 1 is exceeded for selector app=frontend
+  Node-Selectors:               &lt;none&gt;
+  Tolerations:                  &lt;none&gt;
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      True    MinimumReplicasAvailable
+  Progressing    True    NewReplicaSetAvailable
+OldReplicaSets:  &lt;none&gt;
+NewReplicaSet:   frontend-86c56c8856 (3/3 replicas created)
+Events:
+  Type    Reason             Age   From                   Message
+  ----    ------             ----  ----                   -------
+  Normal  ScalingReplicaSet  19m   deployment-controller  Scaled up replica set frontend-86c56c8856 to 3
+
+<span class="hd">========== Service discovery (ClusterIP services + endpoints) ==========</span>
+
+<span class="cmd">$ kubectl -n blogapp get endpoints</span>
+NAME               ENDPOINTS                                                      AGE
+backend-service    192.168.120.111:5000,192.168.167.81:5000,192.168.96.130:5000   19m
+frontend-service   192.168.111.110:8080,192.168.180.226:8080,192.168.96.96:8080   19m
+mysql-service      192.168.184.155:3306                                           19m
+
+<span class="hd">========== External access - ALB Ingress ==========</span>
+
+<span class="cmd">$ kubectl -n blogapp describe ingress blogapp-ingress</span>
+Name:             blogapp-ingress
+Labels:           app.kubernetes.io/part-of=blogapp
+Namespace:        blogapp
+Address:          k8s-blogapp-deac8921dc-1417542765.ap-south-1.elb.amazonaws.com
+Ingress Class:    alb
+Default backend:  &lt;default&gt;
+Rules:
+  Host        Path  Backends
+  ----        ----  --------
+  *           
+              /   frontend-service:80 (192.168.180.226:8080,192.168.111.110:8080,192.168.96.96:8080)
+Annotations:  alb.ingress.kubernetes.io/group.name: blogapp
+              alb.ingress.kubernetes.io/healthcheck-path: /healthz
+              alb.ingress.kubernetes.io/scheme: internet-facing
+              alb.ingress.kubernetes.io/target-type: ip
+Events:
+  Type    Reason                  Age   From     Message
+  ----    ------                  ----  ----     -------
+  Normal  SuccessfullyReconciled  19m   ingress  Successfully reconciled
+
+<span class="hd">========== ConfigMaps and Secrets (names/keys only - values are never printed) ==========</span>
+
+<span class="cmd">$ kubectl -n blogapp get configmap</span>
+NAME                        DATA   AGE
+backend-config              6      19m
+blogapp-grafana-dashboard   1      19m
+kube-root-ca.crt            1      19m
+mysql-init-script           1      19m
+
+<span class="cmd">$ kubectl -n blogapp get secret</span>
+NAME             TYPE     DATA   AGE
+backend-secret   Opaque   1      19m
+mysql-secret     Opaque   3      19m
+
+<span class="cmd">$ kubectl -n blogapp describe secret mysql-secret backend-secret</span>
+Name:         mysql-secret
+Namespace:    blogapp
+Labels:       &lt;none&gt;
+Annotations:  &lt;none&gt;
+
+Type:  Opaque
+
+Data
+====
+MYSQL_USER:           8 bytes
+MYSQL_PASSWORD:       32 bytes
+MYSQL_ROOT_PASSWORD:  32 bytes
+
+
+Name:         backend-secret
+Namespace:    blogapp
+Labels:       &lt;none&gt;
+Annotations:  &lt;none&gt;
+
+Type:  Opaque
+
+Data
+====
+JWT_SECRET:  64 bytes
+
+<span class="hd">========== Rollout history ==========</span>
+
+<span class="cmd">$ kubectl -n blogapp rollout history deployment/backend</span>
+deployment.apps/backend 
+REVISION  CHANGE-CAUSE
+1         &lt;none&gt;
+
+
+<span class="cmd">$ kubectl -n blogapp rollout history deployment/frontend</span>
+deployment.apps/frontend 
+REVISION  CHANGE-CAUSE
+1         &lt;none&gt;
+
+
+<span class="hd">========== Archived by the pipeline: eks-deployment-report.txt ==========</span>
+### Build 1  image tag 1-29944b2  Thu Oct 29 12:21:20 UTC 2026
+
+### Workloads, services, ingress, autoscaling
+NAME                       READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES                                                                     SELECTOR
+deployment.apps/backend    3/3     3            3           89s   backend      778436624052.dkr.ecr.ap-south-1.amazonaws.com/blogapp-backend:1-29944b2    app=backend
+deployment.apps/frontend   3/3     3            3           89s   frontend     778436624052.dkr.ecr.ap-south-1.amazonaws.com/blogapp-frontend:1-29944b2   app=frontend
+
+NAME                     READY   AGE   CONTAINERS   IMAGES
+statefulset.apps/mysql   1/1     89s   mysql        mysql:8.0
+
+NAME                            READY   STATUS    RESTARTS   AGE   IP                NODE                                             NOMINATED NODE   READINESS GATES
+pod/backend-5944575cfb-bdcmn    1/1     <span class="ok">Running</span>   0          89s   192.168.120.111   ip-192-168-111-239.ap-south-1.compute.internal   &lt;none&gt;           &lt;none&gt;
+pod/backend-5944575cfb-fsx8l    1/1     <span class="ok">Running</span>   0          89s   192.168.96.130    ip-192-168-111-239.ap-south-1.compute.internal   &lt;none&gt;           &lt;none&gt;
+pod/backend-5944575cfb-sq2hk    1/1     <span class="ok">Running</span>   0          89s   192.168.167.81    ip-192-168-179-240.ap-south-1.compute.internal   &lt;none&gt;           &lt;none&gt;
+pod/frontend-86c56c8856-rjjzh   1/1     <span class="ok">Running</span>   0          89s   192.168.180.226   ip-192-168-179-240.ap-south-1.compute.internal   &lt;none&gt;           &lt;none&gt;
+pod/frontend-86c56c8856-vlx6p   1/1     <span class="ok">Running</span>   0          89s   192.168.96.96     ip-192-168-111-239.ap-south-1.compute.internal   &lt;none&gt;           &lt;none&gt;
+pod/frontend-86c56c8856-zxwtl   1/1     <span class="ok">Running</span>   0          89s   192.168.111.110   ip-192-168-111-239.ap-south-1.compute.internal   &lt;none&gt;           &lt;none&gt;
+pod/mysql-0                     1/1     <span class="ok">Running</span>   0          89s   192.168.184.155   ip-192-168-179-240.ap-south-1.compute.internal   &lt;none&gt;           &lt;none&gt;
+
+NAME                       TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE   SELECTOR
+service/backend-service    ClusterIP   10.100.236.222   &lt;none&gt;        5000/TCP   90s   app=backend
+service/frontend-service   ClusterIP   10.100.224.91    &lt;none&gt;        80/TCP     90s   app=frontend
+service/mysql-service      ClusterIP   None             &lt;none&gt;        3306/TCP   90s   app=mysql
+
+NAME                                        CLASS   HOSTS   ADDRESS                                                          PORTS   AGE
+ingress.networking.k8s.io/blogapp-ingress   alb     *       k8s-blogapp-deac8921dc-1417542765.ap-south-1.elb.amazonaws.com   80      90s
+
+NAME                                               REFERENCE             TARGETS                                     MINPODS   MAXPODS   REPLICAS   AGE
+horizontalpodautoscaler.autoscaling/backend-hpa    Deployment/backend    cpu: &lt;unknown&gt;/70%, memory: &lt;unknown&gt;/80%   3         10        3          90s
+horizontalpodautoscaler.autoscaling/frontend-hpa   Deployment/frontend   cpu: 2%/70%                                 3         8         3          90s
+
+NAME                                      MIN AVAILABLE   MAX UNAVAILABLE   ALLOWED DISRUPTIONS   AGE
+poddisruptionbudget.policy/backend-pdb    2               N/A               1                     90s
+poddisruptionbudget.policy/frontend-pdb   2               N/A               1                     90s
+
+### Image versions running in the cluster
+POD                         IMAGE                                                                      READY
+backend-5944575cfb-bdcmn    778436624052.dkr.ecr.ap-south-1.amazonaws.com/blogapp-backend:1-29944b2    true
+backend-5944575cfb-fsx8l    778436624052.dkr.ecr.ap-south-1.amazonaws.com/blogapp-backend:1-29944b2    true
+backend-5944575cfb-sq2hk    778436624052.dkr.ecr.ap-south-1.amazonaws.com/blogapp-backend:1-29944b2    true
+frontend-86c56c8856-rjjzh   778436624052.dkr.ecr.ap-south-1.amazonaws.com/blogapp-frontend:1-29944b2   true
+frontend-86c56c8856-vlx6p   778436624052.dkr.ecr.ap-south-1.amazonaws.com/blogapp-frontend:1-29944b2   true
+frontend-86c56c8856-zxwtl   778436624052.dkr.ecr.ap-south-1.amazonaws.com/blogapp-frontend:1-29944b2   true
+mysql-0                     mysql:8.0                                                                  true
+
+### Persistent storage (MySQL on EBS gp3)
+NAME                 STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE   VOLUMEMODE
+mysql-data-mysql-0   <span class="ok">Bound</span>    pvc-5e57830c-2f10-48ab-99f6-88f76de13d5b   10Gi       RWO            gp3            &lt;unset&gt;                 92s   Filesystem
+
+### ConfigMaps and Secrets (names only - values never printed)
+NAME                                  DATA   AGE
+configmap/backend-config              6      93s
+configmap/blogapp-grafana-dashboard   1      90s
+configmap/kube-root-ca.crt            1      102s
+configmap/mysql-init-script           1      95s
+
+NAME                    TYPE     DATA   AGE
+secret/backend-secret   Opaque   1      98s
+secret/mysql-secret     Opaque   3      100s
+
+### Network policies
+NAME                                    POD-SELECTOR   AGE
+backend-allow-frontend-and-monitoring   app=backend    93s
+mysql-allow-backend-only                app=mysql      93s
+
+### Probes, resources and rollout strategy
+NAME       REPLICAS   STRATEGY        MAX_UNAVAILABLE   READINESS   LIVENESS   CPU_REQ   MEM_LIMIT
+backend    3          RollingUpdate   0                 /readyz     /healthz   100m      512Mi
+frontend   3          RollingUpdate   0                 /healthz    /healthz   50m       256Mi
+
+### Database contents (backend -&gt; MySQL integration)
+Tables_in_blogdb
+comments
+posts
+users
+users
+1
+id	title	author_id	created_at
+1	Shipping to EKS Without Losing Sleep	1	2026-10-29 12:20:31
+2	Why We Moved Artifact Storage to Nexus	1	2026-10-29 12:20:31
+3	Static Analysis That Developers Actually Like	1	2026-10-29 12:20:31
+4	Trivy in CI: Catching CVEs Before Production	1	2026-10-29 12:20:31
+
+### Rollout history
+deployment.apps/backend 
+REVISION  CHANGE-CAUSE
+1         &lt;none&gt;
+
+deployment.apps/frontend 
+REVISION  CHANGE-CAUSE
+1         &lt;none&gt;
+
+</pre>

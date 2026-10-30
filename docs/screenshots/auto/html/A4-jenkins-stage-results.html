@@ -1,0 +1,36 @@
+<!doctype html><meta charset="utf-8"><style>
+      body{margin:0;background:#0d1117;font:13px/17px Consolas,"Cascadia Mono",monospace;color:#d1d7e0}
+      .bar{background:#161b22;padding:9px 14px;color:#8b949e;border-bottom:1px solid #30363d;font-family:Segoe UI,sans-serif}
+      .bar b{color:#e6edf3} .dot{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px}
+      pre{margin:0;padding:12px 16px;white-space:pre}
+      .ok{color:#3fb950}.bad{color:#f85149}.cmd{color:#79c0ff}.hd{color:#d2a8ff;font-weight:bold}</style>
+<div class="bar"><span class="dot" style="background:#f85149"></span><span class="dot" style="background:#d29922"></span><span class="dot" style="background:#3fb950"></span> <b>Jenkins build #1 - stage results</b> &nbsp; — captured 2026-10-29 18:12</div><pre>
+<span class="hd">========== Jenkins pipeline - last build, every stage ==========</span>
+Build #1 (29944b2)   status: <span class="ok">SUCCESS</span>   total: 5.4 min
+
+#   STAGE                                      STATUS         TIME
+1   Declarative: Checkout SCM                  <span class="ok">SUCCESS</span>        1.4s
+2   Checkout                                   <span class="ok">SUCCESS</span>        1.7s
+3   Install Dependencies                       <span class="ok">SUCCESS</span>        0.2s
+4   Backend                                    <span class="ok">SUCCESS</span>       36.4s
+5   Frontend                                   <span class="ok">SUCCESS</span>        8.0s
+6   Lint &amp; Unit Test                           <span class="ok">SUCCESS</span>        0.2s
+7   Backend tests                              <span class="ok">SUCCESS</span>        6.4s
+8   Frontend build check                       <span class="ok">SUCCESS</span>        6.4s
+9   SonarQube Analysis                         <span class="ok">SUCCESS</span>       41.3s
+10  Quality Gate                               <span class="ok">SUCCESS</span>        8.2s
+11  Trivy Filesystem Scan                      <span class="ok">SUCCESS</span>       21.5s
+12  Package &amp; Publish Artifacts to Nexus       <span class="ok">SUCCESS</span>        3.3s
+13  Docker Build                               <span class="ok">SUCCESS</span>        0.2s
+14  Backend image                              <span class="ok">SUCCESS</span>       26.3s
+15  Frontend image                             <span class="ok">SUCCESS</span>       30.1s
+16  Trivy Image Scan                           <span class="ok">SUCCESS</span>        8.6s
+17  Push Images                                <span class="ok">SUCCESS</span>        0.1s
+18  Push to Nexus registry                     <span class="ok">SUCCESS</span>       10.7s
+19  Push to Amazon ECR                         <span class="ok">SUCCESS</span>       15.9s
+20  Deploy to EKS                              <span class="ok">SUCCESS</span>       87.1s
+21  Deployment Validation                      <span class="ok">SUCCESS</span>       48.0s
+22  Declarative: Post Actions                  <span class="ok">SUCCESS</span>        0.8s
+
+<span class="hd">========== Build history ==========</span>
+</pre>
